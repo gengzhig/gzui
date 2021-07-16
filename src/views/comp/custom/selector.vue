@@ -22,7 +22,10 @@
           @selectItem="selectItem"
         ></gz-selector>
       </div>
-      <div class="description">介绍api</div>
+      <div class="description">
+        介绍api
+        <a href="javascript:;">copy</a>
+      </div>
       <div class="highlight">
         <pre>{{ code.toString() }}</pre>
       </div>
@@ -32,7 +35,11 @@
 
 <script>
 import { reactive, toRefs } from "vue";
+import moduleName from 'module';
 export default {
+  directives: {
+    copy
+  },
   setup() {
     const state = reactive({
       value: "",
@@ -48,70 +55,70 @@ export default {
         {
           id: 1,
           value: "1",
-          text: "选项1",
+          text: "选项1"
         },
         {
           id: 2,
           value: "2",
-          text: "选项2",
+          text: "选项2"
         },
         {
           id: 3,
           value: "3",
-          text: "选项3",
+          text: "选项3"
         },
         {
           id: 4,
           value: "4",
-          text: "选项4",
+          text: "选项4"
         },
         {
           id: 5,
           value: "5",
-          text: "选项5",
+          text: "选项5"
         },
         {
           id: 6,
           value: "6",
-          text: "选项6",
+          text: "选项6"
         },
         {
           id: 7,
           value: "7",
-          text: "选项7",
+          text: "选项7"
         },
         {
           id: 8,
           value: "8",
-          text: "选项8",
+          text: "选项8"
         },
         {
           id: 9,
           value: "9",
-          text: "选项9",
+          text: "选项9"
         },
         {
           id: 10,
           value: "10",
-          text: "选项10",
+          text: "选项10"
         },
         {
           id: 11,
           value: "11",
-          text: "选项11",
+          text: "选项11"
         },
         {
           id: 12,
           value: "12",
-          text: "选项12",
-        },
-      ],
+          text: "选项12"
+        }
+      ]
     });
     const selectItem = (item) => {
       state.value = item;
     };
     return { ...toRefs(state), selectItem };
-  },
+  }
 };
 </script>
 
@@ -143,6 +150,11 @@ export default {
       box-sizing: border-box;
       border-top: 1px solid #ebebeb;
       border-bottom: 1px solid #ebebeb;
+      a {
+        color: rgba(24, 228, 24, 0.733);
+        float: right;
+        text-decoration: none;
+      }
     }
     .highlight {
       font-size: 12px;

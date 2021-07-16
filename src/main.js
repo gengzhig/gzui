@@ -17,10 +17,13 @@ import "styles/index.scss";
 // 全局引入element3
 import element3 from "plugins/element3";
 
+// 全局引入工具类
+import tool from '@/assets/js/tool.js';
 // 全局引入gzUI
 import gzUI from "@/libs/gz-ui"
 const app = createApp(App);
 app.config.globalProperties.$axios = axios;
+app.config.globalProperties.$tool = tool;
 app.use(router);
 app.use(store);
 app.use(element3);
