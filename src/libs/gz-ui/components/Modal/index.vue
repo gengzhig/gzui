@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-mask" ref="modalMask" style="position: fixed">
+  <div class="modal-mask" ref="modalMask" style="position: static">
     <div
       class="ui-modal"
       ref="uiModal"
