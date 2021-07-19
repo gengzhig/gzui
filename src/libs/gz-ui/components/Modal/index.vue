@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-mask">
+  <div class="modal-mask" ref="modalMask">
     <div
       class="ui-modal"
       ref="uiModal"
@@ -40,7 +40,7 @@
 import { onMounted, reactive, ref, toRefs } from "vue";
 export default {
   name: "gzModal",
- 
+
   props: {
     show: {
       type: Boolean,
@@ -81,6 +81,7 @@ export default {
   },
   setup(props, ctx) {
     const uiModal = ref(null);
+    const modalMask = ref(null);
     const state = reactive({
       modalHeight: 0,
       showModal: props.show
@@ -88,7 +89,10 @@ export default {
     onMounted(() => {
       state.modalHeight = uiModal.value.offsetHeight;
     });
-
+    const changeModel = () => {
+      console.log(123);
+      console.log(modalMask.value);
+    };
     // 关闭弹窗
     const closeModal = () => {
       state.showModal = false;
@@ -108,8 +112,10 @@ export default {
     };
 
     return {
+      modalMask,
       uiModal,
       ...toRefs(state),
+      changeModel,
       closeModal,
       cancelModal,
       confirmModal

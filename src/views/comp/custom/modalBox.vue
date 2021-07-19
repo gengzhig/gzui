@@ -8,6 +8,7 @@
     <div class="meta">
       <div class="demo">
         <gz-modal
+          ref="gzModel"
           :show="true"
           :width="400"
           :borderRadius="1"
@@ -21,18 +22,22 @@
           >中间内容
         </gz-modal>
       </div>
-      <div class="description">介绍api</div>
-      <div class="highlight">
-        <pre>{{ code.toString() }}</pre>
-      </div>
+      <base-copy :code="code"></base-copy>
     </div>
   </div>
 </template>
 
 <script>
-import { reactive, toRefs } from "@vue/reactivity";
+import { reactive, ref, toRefs } from "@vue/reactivity";
+import baseCopy from "@/layouts/components/baseFunction/Copy.vue";
+import copy from "@/libs/gz-ui/directives/copy.js";
 export default {
+  components: { baseCopy },
+  directives: {
+    copy
+  },
   setup() {
+    const gzModel = ref(null);
     const state = reactive({
       code: `<template>
   <gz-modal
@@ -52,8 +57,12 @@ export default {
 </template>`
     });
     // 关闭 提交表单的数据用value接收
-    const closeModal = (value) => {};
-    return { ...toRefs(state), closeModal };
+    const closeModal = (value) => {
+      if (!value) {
+        gzModel.value.changeModel();
+      }
+    };
+    return { gzModel, ...toRefs(state), closeModal };
   }
 };
 </script>
@@ -80,17 +89,6 @@ export default {
     border-radius: 3px;
     .demo {
       padding: 24px;
-    }
-    .description {
-      padding: 20px;
-      box-sizing: border-box;
-      border-top: 1px solid #ebebeb;
-      border-bottom: 1px solid #ebebeb;
-    }
-    .highlight {
-      font-size: 12px;
-      padding: 18px 24px;
-      background-color: #fafafa;
     }
   }
 }
