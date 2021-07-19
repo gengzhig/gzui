@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-mask" ref="modalMask">
+  <div class="modal-mask" ref="modalMask" style="position: fixed">
     <div
       class="ui-modal"
       ref="uiModal"
@@ -7,7 +7,7 @@
         width: width + 'px',
         borderRadius: borderRadius + 'px',
         marginLeft: -width / 2 + 'px',
-        marginTop: -modalHeight / 2 + 'px'
+        marginTop: -modalHeight / 2 + 'px',
       }"
       v-show="showModal"
     >
@@ -15,7 +15,7 @@
       <header
         :style="{
           color: headerTitleColor,
-          backgroundColor: headerTitleBackground
+          backgroundColor: headerTitleBackground,
         }"
       >
         {{ headerTitle
@@ -37,67 +37,67 @@
 </template>
 
 <script>
-import { onMounted, reactive, ref, toRefs } from "vue";
+import { onMounted, reactive, ref, toRefs, watch } from "vue";
 export default {
   name: "gzModal",
-
   props: {
     show: {
       type: Boolean,
-      default: true
+      default: true,
     },
     width: {
       type: Number,
-      default: 400
+      default: 400,
     },
     borderRadius: {
       type: Number,
-      default: 1
+      default: 1,
     },
     headerTitle: {
       type: String,
-      default: "提示"
+      default: "提示",
     },
     headerTitleColor: {
       type: String,
-      default: "#303133"
+      default: "#303133",
     },
     headerTitleBackground: {
       type: String,
-      default: "#ff7c40"
+      default: "#ff7c40",
     },
     showBtnGroup: {
       type: Boolean,
-      default: true
+      default: true,
     },
     cancelText: {
       type: String,
-      default: "取消"
+      default: "取消",
     },
     confirmText: {
       type: String,
-      default: "确定"
-    }
+      default: "确定",
+    },
   },
   setup(props, ctx) {
     const uiModal = ref(null);
     const modalMask = ref(null);
     const state = reactive({
       modalHeight: 0,
-      showModal: props.show
+      showModal: props.show,
     });
     onMounted(() => {
       state.modalHeight = uiModal.value.offsetHeight;
     });
     const changeModel = () => {
-      console.log(123);
-      console.log(modalMask.value);
+      modalMask.value.style.position = "static";
+    };
+    const openModal = () => {
+      state.showModal = true;
+      modalMask.value.style.position = "fixed";
     };
     // 关闭弹窗
     const closeModal = () => {
       state.showModal = false;
-      uiModal.value.style.backgroundColor = "red";
-      // console.log(vm.$tool.getStyle(uiModal.value, "backgroundColor"));
       ctx.emit("closeModal", false);
     };
     // 取消
@@ -116,17 +116,17 @@ export default {
       uiModal,
       ...toRefs(state),
       changeModel,
+      openModal,
       closeModal,
       cancelModal,
-      confirmModal
+      confirmModal,
     };
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .modal-mask {
-  position: fixed;
   top: 0;
   left: 0;
   width: 100%;

@@ -3,13 +3,13 @@
     <h1>Modal 模态框</h1>
     <p>在保留当前页面状态的情况下，告知用户并承载相关操作。</p>
     <h3>基础用法</h3>
-    <p>Dialog 弹出一个对话框，适合需要定制性更大的场景。</p>
-
+    <p>弹出一个对话框，适合需要定制性更大的场景。</p>
     <div class="meta">
       <div class="demo">
+        <button class="gz-btn gz-btn-confirm" @click="openDialog">新增</button>
         <gz-modal
           ref="gzModel"
-          :show="true"
+          :show="show"
           :width="400"
           :borderRadius="1"
           headerTitle="新增"
@@ -29,16 +29,17 @@
 
 <script>
 import { reactive, ref, toRefs } from "@vue/reactivity";
-import baseCopy from "@/layouts/components/baseFunction/Copy.vue";
+import baseCopy from "@/components/baseFunction/Copy.vue";
 import copy from "@/libs/gz-ui/directives/copy.js";
 export default {
   components: { baseCopy },
   directives: {
-    copy
+    copy,
   },
   setup() {
     const gzModel = ref(null);
     const state = reactive({
+      show: true,
       code: `<template>
   <gz-modal
     :show="true"
@@ -54,7 +55,7 @@ export default {
   >
   中间内容
   </gz-modal>
-</template>`
+</template>`,
     });
     // 关闭 提交表单的数据用value接收
     const closeModal = (value) => {
@@ -62,8 +63,11 @@ export default {
         gzModel.value.changeModel();
       }
     };
-    return { gzModel, ...toRefs(state), closeModal };
-  }
+    const openDialog = () => {
+      gzModel.value.openModal();
+    };
+    return { gzModel, ...toRefs(state), closeModal,openDialog };
+  },
 };
 </script>
 

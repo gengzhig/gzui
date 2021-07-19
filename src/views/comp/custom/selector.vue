@@ -29,7 +29,7 @@
 
 <script>
 import { reactive, toRefs } from "vue";
-import baseCopy from "@/layouts/components/baseFunction/Copy.vue";
+import baseCopy from "@/components/baseFunction/Copy.vue";
 
 import copy from "@/libs/gz-ui/directives/copy.js";
 export default {
