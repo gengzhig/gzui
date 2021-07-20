@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-mask" ref="modalMask" style="position: static">
+  <div class="modal-mask" ref="modalMask" style="position: fixed">
     <div
       class="ui-modal"
       ref="uiModal"
@@ -7,7 +7,7 @@
         width: width + 'px',
         borderRadius: borderRadius + 'px',
         marginLeft: -width / 2 + 'px',
-        marginTop: -modalHeight / 2 + 'px',
+        marginTop: -modalHeight / 2 + 'px'
       }"
       v-show="showModal"
     >
@@ -15,7 +15,7 @@
       <header
         :style="{
           color: headerTitleColor,
-          backgroundColor: headerTitleBackground,
+          backgroundColor: headerTitleBackground
         }"
       >
         {{ headerTitle
@@ -43,54 +43,56 @@ export default {
   props: {
     show: {
       type: Boolean,
-      default: true,
+      default: true
     },
     width: {
       type: Number,
-      default: 400,
+      default: 400
     },
     borderRadius: {
       type: Number,
-      default: 1,
+      default: 1
     },
     headerTitle: {
       type: String,
-      default: "提示",
+      default: "提示"
     },
     headerTitleColor: {
       type: String,
-      default: "#303133",
+      default: "#303133"
     },
     headerTitleBackground: {
       type: String,
-      default: "#ff7c40",
+      default: "#ff7c40"
     },
     showBtnGroup: {
       type: Boolean,
-      default: true,
+      default: true
     },
     cancelText: {
       type: String,
-      default: "取消",
+      default: "取消"
     },
     confirmText: {
       type: String,
-      default: "确定",
-    },
+      default: "确定"
+    }
   },
   setup(props, ctx) {
     const uiModal = ref(null);
     const modalMask = ref(null);
     const state = reactive({
       modalHeight: 0,
-      showModal: props.show,
+      showModal: props.show
     });
     onMounted(() => {
       state.modalHeight = uiModal.value.offsetHeight;
     });
+    // 改变弹窗
     const changeModel = () => {
       modalMask.value.style.position = "static";
     };
+    // 打开弹窗
     const openModal = () => {
       state.showModal = true;
       modalMask.value.style.position = "fixed";
@@ -119,9 +121,9 @@ export default {
       openModal,
       closeModal,
       cancelModal,
-      confirmModal,
+      confirmModal
     };
-  },
+  }
 };
 </script>
 

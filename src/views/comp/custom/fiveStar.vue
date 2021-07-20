@@ -1,14 +1,21 @@
 <template>
-  <div>五星好评</div>
+  <div>
+    <gz-five-star :num="1" :size="20" highColor="orange" @change="change">
+    </gz-five-star>
+  </div>
 </template>
 
 <script>
 export default {
   setup() {
-    return {};
-  },
+    const change = (value) => {
+      console.log(value);
+    };
+    return {
+      change
+    };
+  }
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

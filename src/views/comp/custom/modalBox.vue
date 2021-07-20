@@ -39,7 +39,7 @@ export default {
   setup() {
     const gzModel = ref(null);
     const state = reactive({
-      show: false,
+      show: true,
       code: `<template>
   <gz-modal
     :show="true"
