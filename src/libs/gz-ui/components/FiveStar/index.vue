@@ -8,8 +8,8 @@
       :style="{ fontSize: size + 'px' }"
       @click="changeSatr($event)"
     >
-      {{ starNum }}
     </span>
+    {{ num }}
   </div>
 </template>
 
@@ -19,7 +19,7 @@ import active from "../../directives/active";
 
 export default {
   name: "gzFiveStar",
-  directives:{active},
+  directives: { active },
   props: {
     num: {
       type: Number,
@@ -38,17 +38,11 @@ export default {
     const starContainer = ref(null);
     const changeSatr = (e) => {
       let currentClassName = e.target.className;
-      console.log(e.target);
-      //   if (currentClassName.includes("active")) {
-      //       return;
-      //   }else{
-      //       currentClassName=""
-      //   }
-      //   let activeStarNum = starContainer.value.querySelectorAll(
-      //     ".iconfont.icon-star.active"
-      //   );
-      //   console.log(activeStarNum);
-      //   ctx.emit("change", 1);
+      if (currentClassName.includes("active")) {
+        ctx.emit("change", -1);
+      } else {
+        ctx.emit("change", 1);
+      }
     };
     return { starContainer, changeSatr };
   }
@@ -72,6 +66,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #999;
+  margin-right: 10px;
   &.icon-star {
     transition: color 0.3s;
   }

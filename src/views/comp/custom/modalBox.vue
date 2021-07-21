@@ -71,29 +71,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.page-component {
-  h1 {
-    color: #1f2f3d;
-    margin: 20px 0 20px;
-  }
-  p {
-    font-size: 14px;
-    color: #5e6d82;
-    line-height: 1.5em;
-    margin: 1em 0;
-  }
-  h3 {
-    color: #1f2f3d;
-    font-size: 22px;
-    margin: 55px 0 20px;
-  }
-  .meta {
-    border: 1px solid #ebebeb;
-    border-radius: 3px;
-    .demo {
-      padding: 24px;
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>

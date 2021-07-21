@@ -29,6 +29,14 @@ const router = createRouter({
           component: () => import("views/comp/home.vue")
         },
         {
+          path: "virtualList",
+          name: "VirtualList",
+          meta: {
+            title: "虚拟列表"
+          },
+          component: () => import("views/comp/custom/virtualList.vue")
+        },
+        {
           path: "selector",
           name: "Selector",
           meta: {
