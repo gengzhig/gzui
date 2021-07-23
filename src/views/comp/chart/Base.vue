@@ -120,7 +120,7 @@ const setChartType = (item, index) => {
   state.options = state.chartButtonGroup[index].options;
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .demo {
   height: 300px;
   button {
