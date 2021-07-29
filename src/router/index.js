@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2021-01-30 09:48:09
- * @LastEditTime: 2021-01-30 16:42:15
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-29 16:46:56
+ * @LastEditors: gz
  * @Description: In User Settings Edit
- * @FilePath: \zimeigui-vite2-vue3\src\router\index.js
+ * @FilePath: \gi-ui\src\router\index.js
  */
 import { createRouter, createWebHashHistory, createWebHistory } from "vue-router";
 // 工厂函数创建router实例
@@ -27,6 +27,14 @@ const router = createRouter({
             title: "设计原则"
           },
           component: () => import("views/comp/home.vue")
+        },
+        {
+          path: "tabs",
+          name: "Tabs",
+          meta: {
+            title: "Tabs标签页"
+          },
+          component: () => import("views/comp/custom/tabs.vue")
         },
         {
           path: "virtualList",
