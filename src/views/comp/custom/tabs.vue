@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-07-29 16:25:51
  * @LastEditors: gz
- * @LastEditTime: 2021-07-29 17:44:37
+ * @LastEditTime: 2021-07-29 17:48:40
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\tabs.vue
 -->
@@ -40,7 +40,6 @@ export default {
         { name: "2", content: "222" },
         { name: "3", content: "333" }
       ],
-      data: [],
       code: `<template>
     <gz-tabs
       :width="400"
@@ -51,21 +50,9 @@ export default {
     </gz-tabs>
 </template>`
     });
-    onMounted(() => {
-      let result = [];
-      for (let i = 1; i <= 2000; i++) {
-        result.push({
-          title: i,
-          desc: "说明：这是第" + i + "个虚拟列表"
-        });
-      }
-      state.data = result;
-    });
     return {
       ...toRefs(state)
     };
   }
 };
 </script>
-
-<style lang="scss" scoped></style>
