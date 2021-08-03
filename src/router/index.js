@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-30 09:48:09
- * @LastEditTime: 2021-07-29 16:46:56
+ * @LastEditTime: 2021-08-03 09:34:38
  * @LastEditors: gz
  * @Description: In User Settings Edit
  * @FilePath: \gi-ui\src\router\index.js
@@ -35,6 +35,14 @@ const router = createRouter({
             title: "Tabs标签页"
           },
           component: () => import("views/comp/custom/tabs.vue")
+        },
+        {
+          path: "table",
+          name: "Table",
+          meta: {
+            title: "Table表格"
+          },
+          component: () => import("views/comp/custom/table.vue")
         },
         {
           path: "virtualList",
