@@ -1,3 +1,11 @@
+<!--
+ * @Author: gz
+ * @Date: 2021-08-11 09:36:48
+ * @LastEditors: gz
+ * @LastEditTime: 2021-08-11 10:02:52
+ * @Description: file content
+ * @FilePath: \gi-ui\src\views\comp\custom\modalBox.vue
+-->
 <template>
   <div class="page-component">
     <h1>Modal 模态框</h1>
@@ -28,7 +36,7 @@
 </template>
 
 <script>
-import { reactive, ref, toRefs } from "@vue/reactivity";
+import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 import copy from "@/libs/gz-ui/directives/copy.js";
 export default {
