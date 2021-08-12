@@ -1,26 +1,30 @@
 // 基础按钮样式
 .gz-btn {
-  min-height: 40px;
-  white-space: nowrap;
-  cursor: pointer;
-  background: #fff;
-  border: 1px solid #dcdfe6;
-  color: #606266;
-  text-align: center;
-  box-sizing: border-box;
-  outline: none;
-  margin: 0;
-  padding: 12px 20px;
-  font-size: 14px;
-  border-radius: 4px;
+	min-height: 40px;
+	white-space: nowrap;
+	cursor: pointer;
+	background: #fff;
+	border: 1px solid #dcdfe6;
+	color: #606266;
+	text-align: center;
+	box-sizing: border-box;
+	outline: none;
+	margin: 0;
+	padding: 12px 20px;
+	font-size: 14px;
+	border-radius: 4px;
+}
+.gz-small-btn {
+	min-height: 25px;
+	padding: 6px 20px;
 }
 // 取消
 .gz-btn-cancel {
-  background: #fff;
+	background: #fff;
 }
 // 确定
 .gz-btn-confirm {
-  color: #fff;
-  background-color: #ff7c40;
-  border-color: #ff7c40;
+	color: #fff;
+	background-color: #ff7c40;
+	border-color: #ff7c40;
 }

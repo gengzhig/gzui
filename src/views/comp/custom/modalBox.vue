@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-08-11 09:36:48
  * @LastEditors: gz
- * @LastEditTime: 2021-08-11 10:02:52
+ * @LastEditTime: 2021-08-12 13:34:46
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\modalBox.vue
 -->
@@ -66,7 +66,7 @@ export default {
 </template>`,
     });
     // 关闭 提交表单的数据用value接收
-    const closeModal = (value) => {
+    const closeModal = value => {
       if (!value) {
         gzModel.value.changeModel();
       }
@@ -74,7 +74,7 @@ export default {
     const openDialog = () => {
       gzModel.value.openModal();
     };
-    return { gzModel, ...toRefs(state), closeModal,openDialog };
+    return { gzModel, ...toRefs(state), closeModal, openDialog };
   },
 };
 </script>
