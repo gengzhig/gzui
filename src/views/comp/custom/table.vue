@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-08-03 09:40:14
  * @LastEditors: gz
- * @LastEditTime: 2021-08-12 16:54:54
+ * @LastEditTime: 2021-08-13 16:42:04
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\table.vue
 -->
@@ -15,142 +15,147 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-table :config="config"></gz-table>
+				<gz-table :config="state.config" @rClick="rClick"></gz-table>
 			</div>
-			<base-copy :code="code"></base-copy>
+			<base-copy :code="state.code"></base-copy>
 		</div>
 	</div>
 </template>
 
 <script>
-import { reactive, toRefs } from "vue";
-import { onMounted } from "vue";
-import baseCopy from "@/components/baseFunction/Copy.vue";
 export default {
 	components: { baseCopy },
-	setup() {
-		const state = reactive({
-			config: {
-				// type:0 一般列 1：索引列 2：扩展列
-				columnData: [
-					{
-						prop: "index",
-						label: "序号",
-						width: 100,
-						fixed: true,
-						type: 1,
-					},
-					{
-						prop: "name",
-						label: "名称",
-						width: 300,
-						fixed: false,
-						type: 0,
-					},
-					{
-						prop: "address",
-						label: "地址",
-						width: 300,
-						fixed: false,
-						type: 0,
-					},
-					{
-						prop: "phone",
-						label: "手机",
-						width: 300,
-						fixed: false,
-						type: 0,
-					},
-					{
-						prop: "isbn",
-						label: "ISBN",
-						width: 300,
-						fixed: false,
-						type: 0,
-					},
-					{
-						prop: "publish",
-						label: "出版社",
-						width: 300,
-						fixed: false,
-						type: 0,
-					},
-					{
-						prop: "operate",
-						label: "操作",
-						width: 600,
-						fixed: true,
-						type: 2,
-					},
-				],
-				tableData: [
-					{
-						name: "html",
-						address: "北京大学",
-						phone: 1234234234,
-						isbn: "234234234",
-						publish: "北师大",
-						operate: ["edit"],
-					},
-					{
-						name: "css",
-						address: "北京大学",
-						phone: 1234234234,
-						isbn: "234234234",
-						publish: "北师大",
-						operate: ["edit", "del"],
-					},
-					{
-						name: "js",
-						address: "北京大学",
-						phone: 1234234234,
-						isbn: "234234234",
-						publish: "北师大",
-						operate: ["edit", "del"],
-					},
-					{
-						name: "node",
-						address: "北京大学",
-						phone: 1234234234,
-						isbn: "234234234",
-						publish: "北师大",
-						operate: ["edit", "del"],
-					},
-					{
-						name: "web",
-						address: "北京大学",
-						phone: 1234234234,
-						isbn: "234234234",
-						publish: "北师大",
-						operate: ["edit", "del"],
-					},
-					{
-						name: "map",
-						address: "北京大学",
-						phone: 1234234234,
-						isbn: "234234234",
-						publish: "北师大",
-						operate: ["edit", "del"],
-					},
-					{
-						name: "set",
-						address: "北京大学",
-						phone: 1234234234,
-						isbn: "234234234",
-						publish: "北师大",
-						operate: ["edit", "del"],
-					},
-					{
-						name: "jquery",
-						address: "北京大学",
-						phone: 1234234234,
-						isbn: "234234234",
-						publish: "北师大",
-						operate: ["edit", "del"],
-					},
-				],
+};
+</script>
+<script setup>
+import { reactive } from "vue";
+import baseCopy from "@/components/baseFunction/Copy.vue";
+const state = reactive({
+	config: {
+		// type:0 一般列 1：索引列 2：扩展列
+		columnData: [
+			{
+				prop: "index",
+				label: "序号",
+				width: 100,
+				fixed: true,
+				type: 1,
 			},
-			code: `<template>
+			{
+				prop: "name",
+				label: "名称",
+				width: 300,
+				fixed: false,
+				type: 0,
+			},
+			{
+				prop: "address",
+				label: "地址",
+				width: 300,
+				fixed: false,
+				type: 0,
+			},
+			{
+				prop: "phone",
+				label: "手机",
+				width: 300,
+				fixed: false,
+				type: 0,
+			},
+			{
+				prop: "isbn",
+				label: "ISBN",
+				width: 300,
+				fixed: false,
+				type: 0,
+			},
+			{
+				prop: "publish",
+				label: "出版社",
+				width: 300,
+				fixed: false,
+				type: 0,
+			},
+			{
+				prop: "operate",
+				label: "操作",
+				width: 600,
+				fixed: true,
+				type: 2,
+			},
+		],
+		tableData: [
+			{
+				name: "html",
+				address: "北京大学",
+				phone: 1234234234,
+				isbn: "234234234",
+				publish: "北师大",
+				operate: ["edit"],
+			},
+			{
+				name: "css",
+				address: "北京大学",
+				phone: 1234234234,
+				isbn: "234234234",
+				publish: "北师大",
+				operate: ["edit", "del"],
+			},
+			{
+				name: "js",
+				address: "北京大学",
+				phone: 1234234234,
+				isbn: "234234234",
+				publish: "北师大",
+				operate: ["edit", "del"],
+			},
+			{
+				name: "node",
+				address: "北京大学",
+				phone: 1234234234,
+				isbn: "234234234",
+				publish: "北师大",
+				operate: ["edit", "del"],
+			},
+			{
+				name: "web",
+				address: "北京大学",
+				phone: 1234234234,
+				isbn: "234234234",
+				publish: "北师大",
+				operate: ["edit", "del"],
+			},
+			{
+				name: "map",
+				address: "北京大学",
+				phone: 1234234234,
+				isbn: "234234234",
+				publish: "北师大",
+				operate: ["edit", "del"],
+			},
+			{
+				name: "set",
+				address: "北京大学",
+				phone: 1234234234,
+				isbn: "234234234",
+				publish: "北师大",
+				operate: ["edit", "del"],
+			},
+			{
+				name: "jquery",
+				address: "北京大学",
+				phone: 1234234234,
+				isbn: "234234234",
+				publish: "北师大",
+				operate: ["edit", "del"],
+			},
+		],
+		maxHeight: 200,
+		headerStyle: {
+			color: "#fff",
+		},
+	},
+	code: `<template>
     <gz-tabs
       :width="400"
       :height="200"
@@ -159,11 +164,10 @@ export default {
     >
     </gz-tabs>
 </template>`,
-		});
-		return {
-			...toRefs(state),
-		};
-	},
+});
+
+const rClick = data => {
+	console.log(data);
 };
 </script>
 

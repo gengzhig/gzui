@@ -2,14 +2,12 @@
  * @Author: gz
  * @Date: 2021-08-03 09:35:42
  * @LastEditors: gz
- * @LastEditTime: 2021-08-12 17:50:13
+ * @LastEditTime: 2021-08-13 16:46:09
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Table\index.vue
 -->
 <template>
 	<div class="gz-table" style="">
-		<button class="gz-btn gz-small-btn gz-btn-confirm" @click="add">add</button>
-
 		<!-- 表头 -->
 		<div class="div_thead" style="padding-right: 17px">
 			<table border="" class="div-table" cellspacing="" cellpadding="">
@@ -17,20 +15,27 @@
 					<col :style="{ width: item.width + 'px' }" v-for="(item, index) in config.columnData" :key="index" />
 				</colgroup>
 				<thead>
-					<tr style="height: 48px; line-height: 48px; background-color: rgb(255, 124, 64)">
+					<tr
+						:style="{
+							height: '48px',
+							lineHeight: '48px',
+							color: config.headerStyle.color,
+							backgroundColor: 'rgb(255, 124, 64)',
+						}"
+					>
 						<th style="" v-for="(item, index) in config.columnData" :key="index">{{ item.label }}</th>
 					</tr>
 				</thead>
 			</table>
 		</div>
 		<!-- 主体 -->
-		<div class="div_tbody" style="max-height: 200px; overflow: auto">
+		<div class="div_tbody" :style="{ maxHeight: config.maxHeight + 'px', overflow: 'auto' }">
 			<table border="" cellspacing="" cellpadding="" class="div-table">
 				<colgroup>
 					<col :style="{ width: item.width + 'px' }" v-for="(item, index) in config.columnData" :key="index" />
 				</colgroup>
 				<tbody>
-					<tr v-for="(item, index) in config.tableData" :key="index">
+					<tr v-for="(item, index) in config.tableData" :key="index" @click="rowClick(item)">
 						<td>{{ index + 1 }}</td>
 						<td>{{ item.name }}</td>
 						<td>{{ item.address }}</td>
@@ -81,18 +86,32 @@ import { onMounted, reactive } from "vue";
 const props = defineProps({
 	config: {
 		default: {
+			headerStyle: {
+				type: Object,
+				default: {},
+			},
+			maxHeight: {
+				type: Number,
+				default: 200,
+			},
 			tableData: [],
 			columnData: [],
 		},
 		type: Object,
 	},
 });
+
+let emit = defineEmits(["rClick"]);
+
 let state = reactive({
 	tableData: [],
 });
 onMounted(() => {
 	state.tableData = JSON.parse(JSON.stringify(props.tableData));
 });
+const rowClick = data => {
+	emit("rClick", data);
+};
 </script>
 
 <style lang="scss" scoped>
@@ -101,7 +120,6 @@ onMounted(() => {
 		display: table-column;
 	}
 	.div_thead {
-		color: #909399;
 		.div-table {
 			width: 100%;
 			text-align: center;
