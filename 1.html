@@ -1,0 +1,123 @@
+<!--
+ * @Author: gz
+ * @Date: 2021-08-26 17:33:48
+ * @LastEditors: gz
+ * @LastEditTime: 2021-08-27 16:50:10
+ * @Description: file content
+ * @FilePath: \gi-ui\1.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="1.css">
+</head>
+
+<body>
+    <div id="box">00000</div>
+    <div id="app">
+        <div>
+            <input type="text" v-model="name" placeholder="请输入姓名" name="" id="">
+            <input type="number" v-model="age" placeholder="请输入年龄" name="" id="">
+            <input type="email" v-model="email" placeholder="请输入邮箱" name="" id="">
+            <input type="number" v-model="phone" placeholder="请输入电话" name="" id="">
+            <button id="clearBtn">清空</button>
+        </div>
+        <div>
+            <p>姓名：<span>{{ name }}</span></p>
+            <p>年龄：</span><span>{{ age }}</span></p>
+            <p>邮箱：<span>{{ email }}</span></p>
+            <p>电话：<span>{{ phone }}</span></p>
+        </div>
+    </div>
+
+</body>
+<script src="1.js"></script>
+<script>
+    console.log(getComputedStyle(document.getElementById('box')).getPropertyValue('--dataHeight') );
+    box.style.setProperty('--dataHeight', '300px')
+
+
+
+
+    const protecteds = Symbol();
+    class User {
+        #site = "www"
+        constructor(name) {
+            this[protecteds] = {};
+            this[protecteds].host = "https://houdunren.com";
+            this.name = name;
+        }
+        get host() {
+            return this[protecteds].host
+        }
+        set host(value) {
+            this[protecteds].host = value
+        }
+        get site() {
+            return this.#site;
+        }
+    }
+    User.prototype.age = 12;
+    let uu = new User("gengzhi");
+    // uu.#site="hhh"
+    // uu.host="nnnnnnnnn"
+    console.log(uu);
+
+
+    console.log("----------------------------");
+
+    let gzData = [
+        { name: "zhangsan", age: 12 }
+    ];
+
+    function CreateObj(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+    CreateObj.prototype.address = "xian"
+    let obj = new CreateObj("gz", 20)
+    // for (const key in obj) {
+    //     if (Object.hasOwnProperty.call(obj, key)) {
+    //         console.log(key);
+    //     }
+    // }
+    // let arr = ["", 1, 0, undefined, null, +0, -0, false, 234, NaN].filter(Boolean)
+    // console.log(Math.max.apply(this,arr));
+    // arr.push(3);
+    // Array.prototype.push.call(arr,23)
+    // console.log(arr);
+    // console.log(arr.filter(Boolean));
+    let proxy = new Proxy(obj, {
+        get(target, property) {
+            return target[property];
+        },
+        set(target, property, newValue) {
+            if (target[property] != newValue) {
+                target[property] = newValue
+                console.log(target);
+            }
+        }
+    })
+    proxy.address = "baoji"
+    // console.log(proxy.address);
+
+    // 检测空对象
+    // console.log(JSON.stringify({}) === "{}");
+
+    // 实现数据响应式 Object.defineProperty: 无法监听新属性的值,数组push无法监测
+
+    const app = new MVVM("#app", {
+        name: "暂无数据",
+        age: "暂无数据",
+        email: "暂无数据",
+        phone: "暂无数据"
+    })
+
+</script>
+
+</html>

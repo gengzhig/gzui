@@ -1,0 +1,6 @@
+#box {
+    /* v-bind:  --dataHeight */
+    --dataHeight:0;
+    width: 200px;
+    height: var(--dataHeight);
+}

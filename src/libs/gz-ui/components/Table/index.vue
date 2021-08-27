@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-08-03 09:35:42
  * @LastEditors: gz
- * @LastEditTime: 2021-08-13 16:46:09
+ * @LastEditTime: 2021-08-20 17:28:36
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Table\index.vue
 -->
@@ -107,7 +107,7 @@ let state = reactive({
 	tableData: [],
 });
 onMounted(() => {
-	state.tableData = JSON.parse(JSON.stringify(props.tableData));
+	state.tableData = JSON.parse(JSON.stringify(props.config.tableData));
 });
 const rowClick = data => {
 	emit("rClick", data);
