@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-08-03 09:40:14
  * @LastEditors: gz
- * @LastEditTime: 2021-08-30 11:58:39
+ * @LastEditTime: 2021-08-30 17:14:45
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\table.vue
 -->
@@ -42,49 +42,49 @@ const state = reactive({
 			{
 				prop: "index",
 				label: "序号",
-				width: 100,
+				minWidth:100,
 				fixed: true,
 				type: 1,
 			},
 			{
 				prop: "name",
 				label: "名称",
-				width: 200,
+				minWidth: 200,
 				fixed: false,
 				type: 0,
 			},
 			{
 				prop: "address",
 				label: "地址",
-				width: 200,
+				minWidth: 200,
 				fixed: false,
 				type: 0,
 			},
 			{
 				prop: "phone",
 				label: "手机",
-				width: 200,
+				minWidth: 200,
 				fixed: false,
 				type: 0,
 			},
 			{
 				prop: "isbn",
 				label: "ISBN",
-				width: 200,
+				minWidth: 200,
 				fixed: false,
 				type: 0,
 			},
 			{
 				prop: "publish",
 				label: "出版社",
-				width: 200,
+				minWidth: 150,
 				fixed: false,
 				type: 0,
 			},
 			{
 				prop: "operate",
 				label: "操作",
-				width: 300,
+				minWidth: 300,
 				fixed: true,
 				type: 2,
 			},

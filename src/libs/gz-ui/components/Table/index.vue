@@ -2,16 +2,20 @@
  * @Author: gz
  * @Date: 2021-08-03 09:35:42
  * @LastEditors: gz
- * @LastEditTime: 2021-08-30 12:02:03
+ * @LastEditTime: 2021-08-30 17:27:40
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Table\index.vue
 -->
 <template>
 	<div class="gz-table" style="">
-		<div class="div_thead" style="padding-right: 17px">
+		<div class="div_thead" style="padding-right: 17px; overflow: auto" ref="headerRef" @scroll="scrollHeader">
 			<table border="" class="div-table" cellspacing="" cellpadding="">
 				<colgroup>
-					<col :style="{ width: item.width + 'px' }" v-for="(item, index) in config.columnData" :key="index" />
+					<col
+						:style="{ width: item.width + 'px', minWidth: item.minWidth + 'px' }"
+						v-for="(item, index) in config.columnData"
+						:key="index"
+					/>
 				</colgroup>
 				<thead>
 					<tr
@@ -32,11 +36,16 @@
 			v-loading="state.loading"
 			ref="tableBodyRef"
 			class="div_tbody"
+			@scroll="scrollBody"
 			:style="{ maxHeight: config.maxHeight + 'px', overflow: 'auto' }"
 		>
 			<table border="" cellspacing="" cellpadding="" class="div-table">
 				<colgroup>
-					<col :style="{ width: item.width + 'px' }" v-for="(item, index) in config.columnData" :key="index" />
+					<col
+						:style="{ width: item.width + 'px', minWidth: item.minWidth + 'px' }"
+						v-for="(item, index) in config.columnData"
+						:key="index"
+					/>
 				</colgroup>
 				<tbody>
 					<tr v-for="(item, index) in state.currentData" :key="index" @click="rowClick(item)">
@@ -139,6 +148,7 @@ const props = defineProps({
 let emit = defineEmits(["rClick"]);
 
 let tableBodyRef = ref(null);
+let headerRef = ref(null);
 let state = reactive({
 	loading: true,
 	tableData: [],
@@ -247,6 +257,10 @@ const selectItem = item => {
 	state.currentIndex = 0;
 	toggleCurrentPage(0);
 };
+
+const scrollBody = e => {
+	console.log(e.target.scrollLeft);
+};
 </script>
 
 <style lang="scss" scoped>
@@ -304,7 +318,6 @@ const selectItem = item => {
 			border-collapse: collapse;
 		}
 	}
-
 	.div_pagation {
 		margin-top: 5px;
 		display: flex;
@@ -355,7 +368,7 @@ const selectItem = item => {
 				border-radius: 2px;
 				cursor: pointer;
 				&.active {
-					background: #409eff;
+					background: rgb(255, 124, 64);
 					color: #fff;
 				}
 			}
