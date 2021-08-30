@@ -2,13 +2,12 @@
  * @Author: gz
  * @Date: 2021-08-03 09:35:42
  * @LastEditors: gz
- * @LastEditTime: 2021-08-20 17:28:36
+ * @LastEditTime: 2021-08-30 12:02:03
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Table\index.vue
 -->
 <template>
 	<div class="gz-table" style="">
-		<!-- 表头 -->
 		<div class="div_thead" style="padding-right: 17px">
 			<table border="" class="div-table" cellspacing="" cellpadding="">
 				<colgroup>
@@ -29,14 +28,19 @@
 			</table>
 		</div>
 		<!-- 主体 -->
-		<div class="div_tbody" :style="{ maxHeight: config.maxHeight + 'px', overflow: 'auto' }">
+		<div
+			v-loading="state.loading"
+			ref="tableBodyRef"
+			class="div_tbody"
+			:style="{ maxHeight: config.maxHeight + 'px', overflow: 'auto' }"
+		>
 			<table border="" cellspacing="" cellpadding="" class="div-table">
 				<colgroup>
 					<col :style="{ width: item.width + 'px' }" v-for="(item, index) in config.columnData" :key="index" />
 				</colgroup>
 				<tbody>
-					<tr v-for="(item, index) in config.tableData" :key="index" @click="rowClick(item)">
-						<td>{{ index + 1 }}</td>
+					<tr v-for="(item, index) in state.currentData" :key="index" @click="rowClick(item)">
+						<td>{{ item.index }}</td>
 						<td>{{ item.name }}</td>
 						<td>{{ item.address }}</td>
 						<td>{{ item.phone }}</td>
@@ -72,6 +76,33 @@
 				</tfoot>
 			</table>
 		</div>
+
+		<!-- 分页器 -->
+		<div class="div_pagation" v-if="config.pagination">
+			<span class="total">共{{ state.tableData.length }}条</span>
+			<gz-selector
+				:width="120"
+				:height="35"
+				:filtrateData="false"
+				:value="state.defaultLimit"
+				:menuData="state.defaultLimitData"
+				placeholder="请选择"
+				@selectItem="selectItem"
+			></gz-selector>
+			<button class="btn-prev" :disabled="state.prevDisabled" @click="prevPage">上一页</button>
+			<ul class="pager">
+				<li
+					class="number"
+					:class="{ active: state.currentIndex === index }"
+					v-for="(item, index) in state.pageCount"
+					:key="index"
+					@click="toggleCurrentPage(index)"
+				>
+					{{ item }}
+				</li>
+			</ul>
+			<button class="btn-next" :disabled="state.endDisabled" @click="nextPage">下一页</button>
+		</div>
 	</div>
 </template>
 
@@ -82,35 +113,139 @@ export default {
 </script>
 
 <script setup>
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, ref } from "vue";
 const props = defineProps({
 	config: {
-		default: {
-			headerStyle: {
-				type: Object,
-				default: {},
-			},
-			maxHeight: {
-				type: Number,
-				default: 200,
-			},
-			tableData: [],
-			columnData: [],
-		},
+		// default: {
+		// 	headerStyle: {
+		// 		type: Object,
+		// 		default: {},
+		// 	},
+		// 	maxHeight: {
+		// 		type: Number,
+		// 		default: 200,
+		// 	},
+		// 	pagination: {
+		// 		type: Boolean,
+		// 		default: true,
+		// 	},
+		// 	tableData: [],
+		// 	columnData: [],
+		// },
 		type: Object,
 	},
 });
 
 let emit = defineEmits(["rClick"]);
 
+let tableBodyRef = ref(null);
 let state = reactive({
+	loading: true,
 	tableData: [],
+	pageCount: 0,
+	currentIndex: -1,
+	currentData: [],
+	firstIndex: 0,
+	endIndex: 10,
+	prevDisabled: true,
+	endDisabled: false,
+	baseLimit: 10,
+	defaultLimit: "10条/页",
+	defaultLimitData: [
+		{
+			id: 1,
+			value: "10",
+			text: "10条/页",
+		},
+		{
+			id: 2,
+			value: "20",
+			text: "20条/页",
+		},
+		{
+			id: 3,
+			value: "50",
+			text: "50条/页",
+		},
+		{
+			id: 4,
+			value: "100",
+			text: "100条/页",
+		},
+	],
 });
 onMounted(() => {
 	state.tableData = JSON.parse(JSON.stringify(props.config.tableData));
+	state.tableData.map((s, i) => {
+		s.index = i + 1;
+	});
+	// 总条数 先按1页显示10条计算
+	state.pageCount = Math.ceil(state.tableData.length / state.baseLimit);
+	state.currentIndex = 0;
+	state.currentData = state.tableData.slice(state.firstIndex, state.endIndex);
+	setTimeout(() => {
+		state.loading = false;
+	});
 });
+
+// 行点击
 const rowClick = data => {
 	emit("rClick", data);
+};
+
+// 分页器数字切换
+const toggleCurrentPage = index => {
+	state.loading = true;
+	state.currentIndex = index;
+	state.firstIndex = index * state.baseLimit;
+	state.endIndex = (index + 1) * state.baseLimit;
+	state.currentData = state.tableData.slice(state.firstIndex, state.endIndex);
+	tableBodyRef.value.scrollTo(0, 0);
+	if (state.currentIndex !== 0) {
+		state.prevDisabled = false;
+	} else {
+		state.prevDisabled = true;
+	}
+
+	if (state.currentIndex === state.pageCount - 1) {
+		state.endDisabled = true;
+	} else {
+		state.endDisabled = false;
+	}
+	setTimeout(() => {
+		state.loading = false;
+	}, 200);
+};
+
+// 分页器上一页
+const prevPage = () => {
+	if (state.currentIndex == 0) {
+		// 按钮禁止点击
+		state.prevDisabled = true;
+		return false;
+	}
+	state.currentIndex--;
+	toggleCurrentPage(state.currentIndex);
+};
+
+// 分页器下一页
+const nextPage = () => {
+	if (state.currentIndex == state.pageCount - 1) {
+		state.endDisabled = true;
+		return false;
+	}
+	state.currentIndex++;
+	toggleCurrentPage(state.currentIndex);
+};
+
+// 设置limit
+const selectItem = item => {
+	state.defaultLimit = item.text;
+	let limit = parseInt(state.defaultLimit);
+	state.baseLimit = limit;
+	state.pageCount = Math.ceil(state.tableData.length / state.baseLimit);
+	state.currentIndex = 0;
+	toggleCurrentPage(0);
 };
 </script>
 
@@ -167,6 +302,63 @@ const rowClick = data => {
 			text-align: center;
 			border: 1px solid #e6e6e6;
 			border-collapse: collapse;
+		}
+	}
+
+	.div_pagation {
+		margin-top: 5px;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		.total {
+			color: #606266;
+			margin-right: 10px;
+			font-weight: 400;
+		}
+		button {
+			min-width: 30px;
+			height: 30px;
+			color: #606266;
+			background: #f4f4f5;
+			border: none;
+			padding: 0 4px;
+			margin: 10px;
+			border-radius: 2px;
+			cursor: pointer;
+		}
+		.btn-prev {
+			&:disabled {
+				color: #c0c4cc;
+				cursor: not-allowed;
+			}
+		}
+		.btn-next {
+			margin: 0;
+			&:disabled {
+				color: #c0c4cc;
+				cursor: not-allowed;
+			}
+		}
+		.pager {
+			display: flex;
+			.number {
+				list-style: none;
+				min-width: 30px;
+				height: 30px;
+				color: #606266;
+				background: #f4f4f5;
+				margin-right: 10px;
+				padding: 0 4px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				border-radius: 2px;
+				cursor: pointer;
+				&.active {
+					background: #409eff;
+					color: #fff;
+				}
+			}
 		}
 	}
 }

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-01-30 09:48:09
- * @LastEditTime: 2021-08-20 17:36:52
+ * @LastEditTime: 2021-08-30 11:52:36
  * @LastEditors: gz
  * @Description: In User Settings Edit
  * @FilePath: \gi-ui\src\views\comp\custom\selector.vue
@@ -15,7 +15,15 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-selector :value="state.value" :menuData="state.menuData" placeholder="请选择" @selectItem="selectItem"></gz-selector>
+				<gz-selector
+					:width="200"
+					:height="40"
+					:filtrateData="true"
+					:value="state.value"
+					:menuData="state.menuData"
+					placeholder="请选择"
+					@selectItem="selectItem"
+				></gz-selector>
 			</div>
 			<base-copy :code="state.code"></base-copy>
 		</div>
@@ -100,7 +108,7 @@ const state = reactive({
 	],
 });
 const selectItem = item => {
-	state.value = item;
+	state.value = item.text;
 };
 </script>
 
