@@ -40,16 +40,15 @@ import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 import copy from "@/libs/gz-ui/directives/copy.js";
 export default {
-  components: { baseCopy },
-  // directives: {
-  //   copy,
-  // },
-  setup() {
-    const gzModel = ref(null);
-    const state = reactive({
-      show: true,
-      code: `<template>
-  <gz-modal
+	components: { baseCopy },
+	// directives: {
+	//   copy,
+	// },
+	setup() {
+		const gzModel = ref(null);
+		const state = reactive({
+			show: true,
+			code: `<gz-modal
     :show="true"
     :width="400"
     :borderRadius="1"
@@ -62,20 +61,19 @@ export default {
     @closeModal="closeModal"
   >
   中间内容
-  </gz-modal>
-</template>`,
-    });
-    // 关闭 提交表单的数据用value接收
-    const closeModal = value => {
-      if (!value) {
-        gzModel.value.changeModel();
-      }
-    };
-    const openDialog = () => {
-      gzModel.value.openModal();
-    };
-    return { gzModel, ...toRefs(state), closeModal, openDialog };
-  },
+  </gz-modal>`,
+		});
+		// 关闭 提交表单的数据用value接收
+		const closeModal = value => {
+			if (!value) {
+				gzModel.value.changeModel();
+			}
+		};
+		const openDialog = () => {
+			gzModel.value.openModal();
+		};
+		return { gzModel, ...toRefs(state), closeModal, openDialog };
+	},
 };
 </script>
 

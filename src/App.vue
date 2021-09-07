@@ -7,7 +7,11 @@
  * @FilePath: \zimeigui-vite2-vue3\src\App.vue
 -->
 <template>
-  <router-view></router-view>
+	<router-view></router-view>
 </template>
 
-<script setup></script>
+<script setup>
+import { compInfo } from "@/libs/gz-ui/index.jsx";
+import { provide } from "vue";
+provide("compInfo", compInfo);
+</script>

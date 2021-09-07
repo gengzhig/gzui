@@ -30,14 +30,12 @@ import { onMounted } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 const state = reactive({
 	data: [],
-	code: `<template>
-    <gz-virtual-list
+	code: `<gz-virtual-list
       v-if="data.length > 0"
       :data="data"
       :height="100"
       :itemHeight="30"
-    ></gz-virtual-list>
-</template>`,
+    ></gz-virtual-list>`,
 });
 onMounted(() => {
 	let result = [];

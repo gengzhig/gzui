@@ -61,7 +61,7 @@ const state = reactive({
 			{
 				prop: "address",
 				label: "地址",
-				width: 250,
+				minWidth: 200,
 				fixed: false,
 				type: 1,
 			},
@@ -601,15 +601,13 @@ const state = reactive({
 			},
 		],
 	},
-	code: `<template>
-    <gz-tabs
+	code: `<gz-tabs
       :width="400"
       :height="200"
       :headerHeight="60"
       :tabsData="tabsData"
     >
-    </gz-tabs>
-</template>`,
+    </gz-tabs>`,
 });
 
 const rClick = data => {

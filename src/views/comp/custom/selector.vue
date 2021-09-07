@@ -36,14 +36,12 @@ import baseCopy from "@/components/baseFunction/Copy.vue";
 
 const state = reactive({
 	value: "",
-	code: `<template>
-  <gz-selector
+	code: `<gz-selector
     :value="value"
     placeholder="请选择"
     @selectItem="selectItem"
   >
-  </gz-selector>
-</template>`,
+  </gz-selector>`,
 	menuData: [
 		{
 			id: 1,

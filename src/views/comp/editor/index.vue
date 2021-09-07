@@ -10,10 +10,10 @@
 	<div class="layout">
 		<Navbar></Navbar>
 		<div class="container">
-			<div class="sidebar">组件列表</div>
-			<div class="appMain">
-                画布
-            </div>
+			<div class="sidebar">
+				<compList></compList>
+			</div>
+			<div class="appMain">画布</div>
 		</div>
 	</div>
 </template>
@@ -25,6 +25,7 @@ export default {
 </script>
 <script setup>
 import Navbar from "layouts/components/Navbar.vue";
+import compList from "views/comp/editor/compList.jsx";
 </script>
 
 <style lang="scss" scoped>
