@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-08-03 09:40:14
  * @LastEditors: gz
- * @LastEditTime: 2021-08-30 17:14:45
+ * @LastEditTime: 2021-09-07 15:18:24
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\table.vue
 -->
@@ -15,7 +15,12 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-table :config="state.config" @rClick="rClick"></gz-table>
+				<gz-table :config="state.config" @rClick="rClick">
+					<template #operateSlot>
+						<button class="gz-btn gz-small-btn gz-btn-confirm">授权</button>
+						<button class="gz-btn gz-small-btn gz-btn-confirm">激活</button>
+					</template>
+				</gz-table>
 			</div>
 			<base-copy :code="state.code"></base-copy>
 		</div>
@@ -42,44 +47,44 @@ const state = reactive({
 			{
 				prop: "index",
 				label: "序号",
-				minWidth:100,
+				minWidth: 100,
 				fixed: true,
-				type: 1,
+				type: 0,
 			},
 			{
 				prop: "name",
 				label: "名称",
 				minWidth: 200,
 				fixed: false,
-				type: 0,
+				type: 1,
 			},
 			{
 				prop: "address",
 				label: "地址",
-				minWidth: 200,
+				width: 250,
 				fixed: false,
-				type: 0,
+				type: 1,
 			},
 			{
 				prop: "phone",
 				label: "手机",
 				minWidth: 200,
 				fixed: false,
-				type: 0,
+				type: 1,
 			},
 			{
 				prop: "isbn",
 				label: "ISBN",
 				minWidth: 200,
 				fixed: false,
-				type: 0,
+				type: 1,
 			},
 			{
 				prop: "publish",
 				label: "出版社",
 				minWidth: 150,
 				fixed: false,
-				type: 0,
+				type: 1,
 			},
 			{
 				prop: "operate",

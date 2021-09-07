@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-08-03 09:35:42
  * @LastEditors: gz
- * @LastEditTime: 2021-08-30 17:27:40
+ * @LastEditTime: 2021-09-07 15:19:19
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Table\index.vue
 -->
@@ -49,18 +49,31 @@
 				</colgroup>
 				<tbody>
 					<tr v-for="(item, index) in state.currentData" :key="index" @click="rowClick(item)">
-						<td>{{ item.index }}</td>
-						<td>{{ item.name }}</td>
-						<td>{{ item.address }}</td>
-						<td>{{ item.phone }}</td>
-						<td>{{ item.isbn }}</td>
-						<td>{{ item.publish }}</td>
-						<td class="td-operate">
-							<template v-for="(bItem, bIndex) in item.operate" :key="bIndex">
-								<button v-if="bItem == 'edit'" class="gz-btn gz-small-btn gz-btn-confirm">编辑</button>
-								<button v-if="bItem == 'del'" class="gz-btn gz-small-btn gz-btn-cancel">删除</button>
-							</template>
-						</td>
+						<!-- 索引列 -->
+						<td class="index" v-if="config.columnData.findIndex(c => c.prop == 'index') >= 0">{{ item.index }}</td>
+						<template v-for="(kValue, kKey, kIndex) in item" :key="kKey">
+							<!-- 基础列 -->
+							<td
+								:title="kValue"
+								v-if="kKey != 'operate' && kKey != 'index'"
+								class="singleRow"
+								:style="{
+									width: config.columnData[kIndex + 1].width + 'px',
+									minWidth: config.columnData[kIndex + 1].minWidth + 'px',
+									maxWidth: config.columnData[kIndex + 1].width + 'px',
+								}"
+							>
+								{{ kValue }}
+							</td>
+							<!-- 操作列 -->
+							<td class="td-operate" v-if="config.columnData[kIndex].type === 2">
+								<template v-for="(bItem, bIndex) in item.operate" :key="bIndex">
+									<button v-if="bItem == 'edit'" class="gz-btn gz-small-btn gz-btn-confirm">编辑</button>
+									<button v-if="bItem == 'del'" class="gz-btn gz-small-btn gz-btn-cancel">删除</button>
+									<slot v-else name="operateSlot"></slot>
+								</template>
+							</td>
+						</template>
 					</tr>
 				</tbody>
 			</table>
@@ -294,6 +307,11 @@ const scrollBody = e => {
 							button {
 								margin: 0 5px;
 							}
+						}
+						&.singleRow {
+							white-space: nowrap;
+							text-overflow: ellipsis;
+							overflow: hidden;
 						}
 					}
 

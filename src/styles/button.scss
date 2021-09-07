@@ -13,18 +13,34 @@
 	padding: 12px 20px;
 	font-size: 14px;
 	border-radius: 4px;
+	// 取消 失败
+	&-cancel {
+		background: #ff4757;
+		color: #fff;
+	}
+	// 确定 提交
+	&-confirm {
+		color: #fff;
+		background-color: #2ed573;
+		border-color: #2ed573;
+	}
+	// 警告
+	&-warning {
+		color: #fff;
+		background-color: #ffa502;
+		border-color: #ffa502;
+	}
+	// 基础
+	&-info {
+		color: #fff;
+		background-color: #747d8c;
+		border-color: #747d8c;
+	}
 }
 .gz-small-btn {
 	min-height: 25px;
 	padding: 6px 20px;
 }
-// 取消
-.gz-btn-cancel {
-	background: #fff;
-}
-// 确定
-.gz-btn-confirm {
-	color: #fff;
-	background-color: #ff7c40;
-	border-color: #ff7c40;
-}
+
+
+

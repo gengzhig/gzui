@@ -79,7 +79,7 @@ export default {
   .header {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    background: #ff7c40;
+    background: #2ed573;
     .tab {
       display: flex;
       justify-content: center;

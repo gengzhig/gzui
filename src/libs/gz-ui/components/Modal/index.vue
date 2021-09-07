@@ -63,7 +63,7 @@ export default {
     },
     headerTitleBackground: {
       type: String,
-      default: "#ff7c40"
+      default: "#2ed573"
     },
     showBtnGroup: {
       type: Boolean,
