@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-07-29 16:33:23
  * @LastEditors: gz
- * @LastEditTime: 2021-09-09 16:29:09
+ * @LastEditTime: 2021-09-09 16:40:58
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Tabs\index.vue
 -->
@@ -70,12 +70,16 @@ const state = reactive({
 });
 onMounted(() => {
 	state.curIndex = state.slots.findIndex(s => s.props.name === props.activeName);
-	ctx.slots.default()[state.curIndex].el.classList.add("active");
+	if (ctx.slots.default() && ctx.slots.default()[state.curIndex].el) {
+		ctx.slots.default()[state.curIndex].el.classList.add("active");
+	}
 });
 const select = index => {
 	state.curIndex = index;
-	ctx.slots.default().map(s => s.el.classList.remove("active"));
-	ctx.slots.default()[state.curIndex].el.classList.add("active");
+	if (ctx.slots.default() && ctx.slots.default()[state.curIndex].el) {
+		ctx.slots.default().map(s => s.el.classList.remove("active"));
+		ctx.slots.default()[state.curIndex].el.classList.add("active");
+	}
 };
 </script>
 
