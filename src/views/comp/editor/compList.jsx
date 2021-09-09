@@ -10,17 +10,21 @@ export default defineComponent({
 		const blockStyle = computed(() => ({
 			top: `${props.block.top}px`,
 			left: `${props.block.left}px`,
+			width: `${props.block.width}px`,
+			height: `${props.block.height}px`,
 			zIndex: `${props.block.zIndex}`,
 		}));
 
 		const compInfo = inject("compInfo");
-		console.log(compInfo, "blockStyle");
-
+        
 		return () => {
 			const comp = compInfo.compMapList.get(props.block.key);
 			const renderComp = comp.render();
+			const clickComp=(e)=>{
+				console.log(comp);
+			}
 			return (
-				<div class="editor-block" style={blockStyle.value}>
+				<div class="editor-block" style={blockStyle.value} onClick={clickComp}>
 					{renderComp}
 				</div>
 			);

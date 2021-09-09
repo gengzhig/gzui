@@ -4,10 +4,12 @@
   "description": "耿智开发的一套基于vue3的前端组件库",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "test-e2e": "cypress open"
   },
   "dependencies": {
     "axios": "^0.21.1",
+    "cypress": "^8.3.1",
     "echarts": "^5.1.2",
     "element3": "^0.0.39",
     "vue": "^3.0.5",

@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-09-07 15:29:01
  * @LastEditors: gz
- * @LastEditTime: 2021-09-09 10:35:04
+ * @LastEditTime: 2021-09-09 11:54:29
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\editor\index.vue
 -->
@@ -31,7 +31,11 @@
 					<comp-list v-for="(item, index) in json.blocks" :key="index" :block="item"></comp-list>
 				</div>
 			</div>
-			<div class="operateMain" @click="change">操作区</div>
+			<div class="operateMain" @click="change">
+				<gz-tabs :width="400" :height="200" :headerHeight="60" :tabsData="state.tabsData">
+					
+				</gz-tabs>
+			</div>
 		</div>
 	</div>
 </template>
@@ -52,7 +56,13 @@ let currentComp = null;
 
 const json = ref(configJson);
 const canvasRef = ref(null);
-
+const state = reactive({
+	tabsData: [
+		{ name: "属性", content: "111" },
+		{ name: "数据", content: "222" },
+		{ name: "交互", content: "333" },
+	],
+});
 const compInfo = inject("compInfo");
 const containerStyle = computed(() => ({
 	width: `${json.value.container?.width}px`,

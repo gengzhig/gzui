@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-07-29 16:25:51
  * @LastEditors: gz
- * @LastEditTime: 2021-07-29 17:48:40
+ * @LastEditTime: 2021-09-09 15:03:01
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\tabs.vue
 -->
@@ -15,7 +15,11 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-tabs :width="400" :height="200" :headerHeight="60" :tabsData="tabsData"></gz-tabs>
+				<gz-tabs v-model:activeName="activeName" :width="400" :height="200" :headerHeight="60">
+					<div label="用户管理" name="first" class="tab-pane">111</div>
+					<div label="配置管理" name="second" class="tab-pane">222</div>
+					<div label="角色管理" name="third" class="tab-pane">333</div>
+				</gz-tabs>
 			</div>
 			<base-copy :code="code"></base-copy>
 		</div>
@@ -30,16 +34,11 @@ export default {
 	components: { baseCopy },
 	setup() {
 		const state = reactive({
-			tabsData: [
-				{ name: "1", content: "111" },
-				{ name: "2", content: "222" },
-				{ name: "3", content: "333" },
-			],
+			activeName: "second",
 			code: `<gz-tabs
       :width="400"
       :height="200"
       :headerHeight="60"
-      :tabsData="tabsData"
     >
     </gz-tabs>`,
 		});
@@ -49,3 +48,11 @@ export default {
 	},
 };
 </script>
+<style scoped lang="scss">
+.tab-pane {
+	display: none;
+	&.active {
+		display: block;
+	}
+}
+</style>

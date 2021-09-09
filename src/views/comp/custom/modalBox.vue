@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-08-11 09:36:48
  * @LastEditors: gz
- * @LastEditTime: 2021-08-26 16:20:12
+ * @LastEditTime: 2021-09-09 12:05:18
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\modalBox.vue
 -->
