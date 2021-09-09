@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-07-29 16:25:51
  * @LastEditors: gz
- * @LastEditTime: 2021-09-09 15:03:01
+ * @LastEditTime: 2021-09-09 16:20:36
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\tabs.vue
 -->
@@ -34,13 +34,12 @@ export default {
 	components: { baseCopy },
 	setup() {
 		const state = reactive({
-			activeName: "second",
-			code: `<gz-tabs
-      :width="400"
-      :height="200"
-      :headerHeight="60"
-    >
-    </gz-tabs>`,
+			activeName: "first",
+			code: `<gz-tabs v-model:activeName="activeName" :width="400" :height="200" :headerHeight="60">
+	<div label="用户管理" name="first" class="tab-pane">111</div>
+	<div label="配置管理" name="second" class="tab-pane">222</div>
+	<div label="角色管理" name="third" class="tab-pane">333</div>
+</gz-tabs>`,
 		});
 		return {
 			...toRefs(state),
@@ -49,10 +48,4 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.tab-pane {
-	display: none;
-	&.active {
-		display: block;
-	}
-}
 </style>

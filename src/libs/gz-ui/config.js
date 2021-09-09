@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-09-09 10:46:26
  * @LastEditors: gz
- * @LastEditTime: 2021-09-09 10:47:26
+ * @LastEditTime: 2021-09-09 16:22:29
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\config.js
  */
@@ -15,11 +15,7 @@ for (let i = 1; i <= 2000; i++) {
 }
 
 let config = {
-	tabsData: [
-		{ name: "1", content: "111" },
-		{ name: "2", content: "222" },
-		{ name: "3", content: "333" },
-	],
+	activeName: "first",
 	virtualData: virtualResult,
 	tableConfig: {
 		maxHeight: 500,

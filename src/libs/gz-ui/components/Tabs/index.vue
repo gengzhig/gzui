@@ -2,12 +2,12 @@
  * @Author: gz
  * @Date: 2021-07-29 16:33:23
  * @LastEditors: gz
- * @LastEditTime: 2021-09-09 14:24:59
+ * @LastEditTime: 2021-09-09 16:19:51
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Tabs\index.vue
 -->
 <template>
-	<div class="tag" :style="{ width: width + 'px', height: height + 'px' }">
+	<div class="comp-tag" :style="{ width: width + 'px', height: height + 'px' }">
 		<div class="header" :style="{ height: headerHeight + 'px' }">
 			<span
 				:class="['tab', index == state.curIndex ? 'active' : '']"
@@ -18,6 +18,7 @@
 				{{ item.props.label }}
 			</span>
 		</div>
+
 		<div class="content">
 			<slot></slot>
 		</div>
@@ -78,8 +79,8 @@ const select = index => {
 };
 </script>
 
-<style lang="scss" scoped>
-.tag {
+<style lang="scss">
+.comp-tag {
 	border: 1px solid #ccc;
 	.header {
 		display: grid;
@@ -93,6 +94,14 @@ const select = index => {
 			cursor: pointer;
 			&.active {
 				background: chartreuse;
+			}
+		}
+	}
+	.content {
+		.tab-pane {
+			display: none;
+			&.active {
+				display: block;
 			}
 		}
 	}

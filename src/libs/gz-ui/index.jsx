@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-07-26 09:45:53
  * @LastEditors: gz
- * @LastEditTime: 2021-09-09 10:48:13
+ * @LastEditTime: 2021-09-09 16:22:11
  * @Description: file content
  */
 
@@ -12,7 +12,7 @@ import gzFiveStar from "./components/FiveStar/index.vue";
 import gzVirtualList from "./components/virtualList/index.vue";
 import gzTabs from "./components/Tabs/index.vue";
 import gzTable from "./components/Table/index.vue";
-import config from './config.js';
+import config from "./config.js";
 
 let gzUI = {};
 gzUI.install = function (Vue) {
@@ -39,8 +39,6 @@ function compSign() {
 
 let compInfo = compSign();
 
-
-
 compInfo.register({
 	label: "五星好评",
 	preview: () => <gzFiveStar num={3} size={20} highColor="orange"></gzFiveStar>,
@@ -51,7 +49,20 @@ compInfo.register({
 compInfo.register({
 	label: "tabs标签页",
 	preview: () => <gz-tabs></gz-tabs>,
-	render: () => <gz-tabs width={400} height={200} headerHeight={60} tabsData={config.tabsData}></gz-tabs>,
+	render: () => (
+		<gz-tabs activeName={config.activeName} width={400} height={200} headerHeight={60}>
+			<div label="用户管理" name="first" class="tab-pane">
+				111
+			</div>
+			<div label="配置管理" name="second" class="tab-pane">
+				222
+			</div>
+			<div label="角色管理" name="third" class="tab-pane">
+				333
+			</div>
+		</gz-tabs>
+	),
+
 	key: "0002",
 });
 

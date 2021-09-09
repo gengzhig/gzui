@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-09-07 15:29:01
  * @LastEditors: gz
- * @LastEditTime: 2021-09-09 11:54:29
+ * @LastEditTime: 2021-09-09 16:09:05
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\editor\index.vue
 -->
@@ -32,8 +32,10 @@
 				</div>
 			</div>
 			<div class="operateMain" @click="change">
-				<gz-tabs :width="400" :height="200" :headerHeight="60" :tabsData="state.tabsData">
-					
+				<gz-tabs v-model:activeName="state.activeName" :width="400" :height="200" :headerHeight="60">
+					<div label="属性" name="first" class="tab-pane">111</div>
+					<div label="数据" name="second" class="tab-pane">222</div>
+					<div label="交互" name="third" class="tab-pane">333</div>
 				</gz-tabs>
 			</div>
 		</div>
@@ -57,11 +59,7 @@ let currentComp = null;
 const json = ref(configJson);
 const canvasRef = ref(null);
 const state = reactive({
-	tabsData: [
-		{ name: "属性", content: "111" },
-		{ name: "数据", content: "222" },
-		{ name: "交互", content: "333" },
-	],
+	activeName: "first",
 });
 const compInfo = inject("compInfo");
 const containerStyle = computed(() => ({
