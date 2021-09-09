@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-08-03 09:40:14
  * @LastEditors: gz
- * @LastEditTime: 2021-09-07 15:18:24
+ * @LastEditTime: 2021-09-09 10:07:21
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\table.vue
 -->
@@ -601,13 +601,7 @@ const state = reactive({
 			},
 		],
 	},
-	code: `<gz-tabs
-      :width="400"
-      :height="200"
-      :headerHeight="60"
-      :tabsData="tabsData"
-    >
-    </gz-tabs>`,
+	code: `<gz-table></gz-table>`,
 });
 
 const rClick = data => {

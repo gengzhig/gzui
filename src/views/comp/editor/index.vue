@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-09-07 15:29:01
  * @LastEditors: gz
- * @LastEditTime: 2021-09-08 16:06:57
+ * @LastEditTime: 2021-09-09 10:35:04
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\editor\index.vue
 -->
@@ -28,12 +28,10 @@
 			</div>
 			<div class="appMain">
 				<div class="canvas" ref="canvasRef" :style="containerStyle">
-					<!-- <div v-for="(item, index) in state.json.blocks" :key="index"> -->
-					<comp-list :json="state.json"></comp-list>
-					<!-- </div> -->
+					<comp-list v-for="(item, index) in json.blocks" :key="index" :block="item"></comp-list>
 				</div>
 			</div>
-			<div class="operateMain">操作区</div>
+			<div class="operateMain" @click="change">操作区</div>
 		</div>
 	</div>
 </template>
@@ -45,35 +43,20 @@ export default {
 };
 </script>
 <script setup>
-import { ref, inject, computed, reactive } from "vue";
+import { ref, inject, computed, reactive, toRef } from "vue";
 import Navbar from "layouts/components/Navbar.vue";
 import configJson from "./property.json";
 import compList from "./compList.jsx";
 
 let currentComp = null;
-const state = reactive({
-	json: {
-		container: {
-			height: 850,
-			width: 1250,
-		},
-		blocks: [
-			// {
-			// 	key: "0001",
-			// 	top: 0,
-			// 	left: 0,
-			// 	zIndex: 0,
-			// 	width: 0,
-			// 	height: 0,
-			// },
-		],
-	},
-});
+
+const json = ref(configJson);
 const canvasRef = ref(null);
+
 const compInfo = inject("compInfo");
 const containerStyle = computed(() => ({
-	width: `${state.json.container?.width}px`,
-	height: `${state.json.container?.height}px`,
+	width: `${json.value.container?.width}px`,
+	height: `${json.value.container?.height}px`,
 }));
 
 console.log(containerStyle.value);
@@ -104,14 +87,14 @@ const dragleave = e => {
 
 const drop = e => {
 	console.log(currentComp, "当前拖动组件");
-	state.json.blocks.push({
+	json.value.blocks.push({
 		key: currentComp.key,
 		top: e.offsetY,
 		left: e.offsetX,
 		zIndex: 1,
 	});
 
-	console.log(state.json.blocks);
+	console.log(json.value.blocks);
 	// 内部已渲染组件
 	currentComp = null;
 };

@@ -1,20 +1,29 @@
-import { defineComponent,defineProps, inject } from "vue";
-
-export default defineComponent(() => {
-	const props = defineProps({
-		json: {
+import { defineComponent, computed, inject, toRef } from "vue";
+import "./compList.css";
+export default defineComponent({
+	props: {
+		block: {
 			type: Object,
 		},
-	});
-	const compInfo = inject("compInfo");
-	console.log(props);
-	//   return () => (
-	//     <div>
-	//      {
-	// 		 json.blocks.map(c=>{
-	// 			return  <div>{ compInfo.compMapList["0001"].render() }</div>
-	// 		 })
-	// 	 }
-	//     </div>
-	//   )
+	},
+	setup(props, ctx) {
+		const blockStyle = computed(() => ({
+			top: `${props.block.top}px`,
+			left: `${props.block.left}px`,
+			zIndex: `${props.block.zIndex}`,
+		}));
+
+		const compInfo = inject("compInfo");
+		console.log(compInfo, "blockStyle");
+
+		return () => {
+			const comp = compInfo.compMapList.get(props.block.key);
+			const renderComp = comp.render();
+			return (
+				<div class="editor-block" style={blockStyle.value}>
+					{renderComp}
+				</div>
+			);
+		};
+	},
 });

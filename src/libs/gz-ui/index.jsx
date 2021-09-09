@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-07-26 09:45:53
  * @LastEditors: gz
- * @LastEditTime: 2021-09-08 16:20:02
+ * @LastEditTime: 2021-09-09 10:48:13
  * @Description: file content
  */
 
@@ -12,6 +12,7 @@ import gzFiveStar from "./components/FiveStar/index.vue";
 import gzVirtualList from "./components/virtualList/index.vue";
 import gzTabs from "./components/Tabs/index.vue";
 import gzTable from "./components/Table/index.vue";
+import config from './config.js';
 
 let gzUI = {};
 gzUI.install = function (Vue) {
@@ -25,18 +26,20 @@ gzUI.install = function (Vue) {
 
 function compSign() {
 	let compList = [];
-	let compMapList = {};
+	let compMapList = new Map();
 	return {
 		compList,
 		compMapList,
 		register(comp) {
 			compList.push(comp);
-			compMapList[comp.key] = comp;
+			compMapList.set(comp.key, comp);
 		},
 	};
 }
 
 let compInfo = compSign();
+
+
 
 compInfo.register({
 	label: "五星好评",
@@ -48,14 +51,14 @@ compInfo.register({
 compInfo.register({
 	label: "tabs标签页",
 	preview: () => <gz-tabs></gz-tabs>,
-	render: () => <gz-tabs></gz-tabs>,
+	render: () => <gz-tabs width={400} height={200} headerHeight={60} tabsData={config.tabsData}></gz-tabs>,
 	key: "0002",
 });
 
 compInfo.register({
 	label: "虚拟列表",
-	preview: () => <gz-virtual-list height={200} itemHeight={30}></gz-virtual-list>,
-	render: () => <gz-virtual-list height={200} itemHeight={30}></gz-virtual-list>,
+	preview: () => <gz-virtual-list width={300} height={200} itemHeight={30}></gz-virtual-list>,
+	render: () => <gz-virtual-list width={300} height={200} data={config.virtualData} itemHeight={30}></gz-virtual-list>,
 	key: "0003",
 });
 
@@ -103,9 +106,9 @@ compInfo.register({
 
 compInfo.register({
 	label: "表格",
-	preview: () => <gz-tabs></gz-tabs>,
-	render: () => <gz-tabs></gz-tabs>,
-	key: "0005",
+	preview: () => <gz-table></gz-table>,
+	render: () => <gz-table config={config.tableConfig}></gz-table>,
+	key: "0006",
 });
 
 export default { gzUI, compInfo };

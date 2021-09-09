@@ -1,5 +1,10 @@
 <template>
-	<div ref="visualContent" class="list-view" @scroll="handleScroll" :style="{ height: height + 'px' }">
+	<div
+		ref="visualContent"
+		class="list-view"
+		@scroll="handleScroll"
+		:style="{ height: height + 'px', width: width + 'px' }"
+	>
 		<div class="list-view-phantom" :style="{ height: contentHeight }"></div>
 		<div ref="realContent" class="list-view-content">
 			<div
@@ -28,6 +33,10 @@ const props = defineProps({
 	data: {
 		type: Array,
 		required: false,
+	},
+	width: {
+		type: Number,
+		default: 300,
 	},
 	height: {
 		type: Number,

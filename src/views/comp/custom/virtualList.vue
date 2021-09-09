@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-08-11 09:36:48
  * @LastEditors: gz
- * @LastEditTime: 2021-08-26 17:02:39
+ * @LastEditTime: 2021-09-09 10:44:39
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\virtualList.vue
 -->
@@ -17,7 +17,7 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-virtual-list :data="state.data" :height="200" :itemHeight="30"></gz-virtual-list>
+				<gz-virtual-list :data="state.data" :width="300" :height="200" :itemHeight="30"></gz-virtual-list>
 			</div>
 			<base-copy :code="state.code"></base-copy>
 		</div>

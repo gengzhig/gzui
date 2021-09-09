@@ -3,14 +3,5 @@
         "height": 850,
         "width": 1250
     },
-    "blocks": [
-        {
-            "key": "0001",
-            "top": 0,
-            "left": 0,
-            "zIndex": 0,
-            "width": 0,
-            "height": 0
-        }
-    ]
+    "blocks": []
 }
