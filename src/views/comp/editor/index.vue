@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-09-07 15:29:01
  * @LastEditors: gz
- * @LastEditTime: 2021-09-09 16:09:05
+ * @LastEditTime: 2021-09-09 16:32:39
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\editor\index.vue
 -->
@@ -27,6 +27,13 @@
 				</div>
 			</div>
 			<div class="appMain">
+				<div class="operateGroup">
+					<button class="gz-btn gz-btn-confirm">撤销</button>
+					<button class="gz-btn gz-btn-confirm">置顶</button>
+					<button class="gz-btn gz-btn-confirm">置底</button>
+					<button class="gz-btn gz-btn-confirm">上移</button>
+					<button class="gz-btn gz-btn-confirm">下移</button>
+				</div>
 				<div class="canvas" ref="canvasRef" :style="containerStyle">
 					<comp-list v-for="(item, index) in json.blocks" :key="index" :block="item"></comp-list>
 				</div>

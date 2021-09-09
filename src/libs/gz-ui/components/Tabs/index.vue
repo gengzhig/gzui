@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-07-29 16:33:23
  * @LastEditors: gz
- * @LastEditTime: 2021-09-09 16:19:51
+ * @LastEditTime: 2021-09-09 16:29:09
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Tabs\index.vue
 -->
@@ -98,7 +98,7 @@ const select = index => {
 		}
 	}
 	.content {
-		.tab-pane {
+		>>> .tab-pane {
 			display: none;
 			&.active {
 				display: block;
