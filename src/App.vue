@@ -1,17 +1,17 @@
 <!--
  * @Author: your name
  * @Date: 2021-01-30 09:48:09
- * @LastEditTime: 2021-01-30 10:10:10
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-09-08 11:54:38
+ * @LastEditors: gz
  * @Description: In User Settings Edit
- * @FilePath: \zimeigui-vite2-vue3\src\App.vue
+ * @FilePath: \gi-ui\src\App.vue
 -->
 <template>
 	<router-view></router-view>
 </template>
 
 <script setup>
-import { compInfo } from "@/libs/gz-ui/index.jsx";
+import ui from "@/libs/gz-ui/index.jsx";
 import { provide } from "vue";
-provide("compInfo", compInfo);
+provide("compInfo", ui.compInfo);
 </script>

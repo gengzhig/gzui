@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-07-26 09:45:53
  * @LastEditors: gz
- * @LastEditTime: 2021-08-03 09:35:28
+ * @LastEditTime: 2021-09-08 16:20:02
  * @Description: file content
  */
 
@@ -25,13 +25,13 @@ gzUI.install = function (Vue) {
 
 function compSign() {
 	let compList = [];
-	let compMapList = new Map();
+	let compMapList = {};
 	return {
 		compList,
 		compMapList,
 		register(comp) {
 			compList.push(comp);
-			compMapList.set(comp.key, comp);
+			compMapList[comp.key] = comp;
 		},
 	};
 }
@@ -45,50 +45,67 @@ compInfo.register({
 	key: "0001",
 });
 
-// compInfo.register({
-// 	label: "模态框",
-// 	preview: () => (
-// 		<gz-modal
-// 			show={true}
-// 			width={400}
-// 			borderRadius={1}
-// 			headerTitle="新增"
-// 			headerTitleColor="#fff"
-// 			headerTitleBackground="#2ed573"
-// 			showBtnGroup={true}
-// 			cancelText="取消"
-// 			confirmText="确定"
-// 		>
-// 			中间内容
-// 		</gz-modal>
-// 	),
-// 	render: () => (
-// 		<gz-modal
-// 			show={true}
-// 			width={400}
-// 			borderRadius={1}
-// 			headerTitle="新增"
-// 			headerTitleColor="#fff"
-// 			headerTitleBackground="#2ed573"
-// 			showBtnGroup={true}
-// 			cancelText="取消"
-// 			confirmText="确定"
-// 		>
-// 			中间内容
-// 		</gz-modal>
-// 	),
-// 	key: "0002",
-// });
+compInfo.register({
+	label: "tabs标签页",
+	preview: () => <gz-tabs></gz-tabs>,
+	render: () => <gz-tabs></gz-tabs>,
+	key: "0002",
+});
+
+compInfo.register({
+	label: "虚拟列表",
+	preview: () => <gz-virtual-list height={200} itemHeight={30}></gz-virtual-list>,
+	render: () => <gz-virtual-list height={200} itemHeight={30}></gz-virtual-list>,
+	key: "0003",
+});
+
+compInfo.register({
+	label: "模态框",
+	preview: () => (
+		<gz-modal
+			show={true}
+			width={400}
+			borderRadius={1}
+			headerTitle="新增"
+			headerTitleColor="#fff"
+			headerTitleBackground="#2ed573"
+			showBtnGroup={true}
+			cancelText="取消"
+			confirmText="确定"
+		>
+			中间内容
+		</gz-modal>
+	),
+	render: () => (
+		<gz-modal
+			show={true}
+			width={400}
+			borderRadius={1}
+			headerTitle="新增"
+			headerTitleColor="#fff"
+			headerTitleBackground="#2ed573"
+			showBtnGroup={true}
+			cancelText="取消"
+			confirmText="确定"
+		>
+			中间内容
+		</gz-modal>
+	),
+	key: "0004",
+});
 
 compInfo.register({
 	label: "下拉菜单",
 	preview: () => <gz-selector placeholder="请选择"></gz-selector>,
 	render: () => <gz-selector placeholder="请选择"></gz-selector>,
-	key: "0003",
+	key: "0005",
 });
 
-// for (const [key, value] of reg.compMapList) {
-// 	console.log(value);
-// }
-// export default { gzUI, reg };
-export { gzUI, compInfo };
+compInfo.register({
+	label: "表格",
+	preview: () => <gz-tabs></gz-tabs>,
+	render: () => <gz-tabs></gz-tabs>,
+	key: "0005",
+});
+
+export default { gzUI, compInfo };

@@ -27,7 +27,7 @@ import { computed, onMounted, reactive, ref, watch, defineProps } from "vue";
 const props = defineProps({
 	data: {
 		type: Array,
-		required: true,
+		required: false,
 	},
 	height: {
 		type: Number,

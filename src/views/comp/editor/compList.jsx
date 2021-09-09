@@ -1,31 +1,20 @@
-{
-	/* <template>
-	<div>{{ compInfo.compList[0].render() }}</div>
-</template>
+import { defineComponent,defineProps, inject } from "vue";
 
-<script setup>
-import { inject } from "vue";
-const compInfo = inject("compInfo");
-console.log(compInfo);
-</script>
-
-<style lang="scss" scoped>
-</style> */
-}
-import { defineComponent, inject } from "vue";
-export default defineComponent({
-	setup(props) {
-		const compInfo = inject("compInfo");
-		// const component = compInfo.compList[0];
-		// const renderComponent = component.render();
-		return () => {
-			return (
-				<div class="jsxx">
-					{compInfo.compList.map(c => {
-						return <div>{c.render()}</div>;
-					})}
-				</div>
-			);
-		};
-	},
+export default defineComponent(() => {
+	const props = defineProps({
+		json: {
+			type: Object,
+		},
+	});
+	const compInfo = inject("compInfo");
+	console.log(props);
+	//   return () => (
+	//     <div>
+	//      {
+	// 		 json.blocks.map(c=>{
+	// 			return  <div>{ compInfo.compMapList["0001"].render() }</div>
+	// 		 })
+	// 	 }
+	//     </div>
+	//   )
 });
