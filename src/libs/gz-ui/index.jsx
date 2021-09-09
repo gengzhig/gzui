@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-07-26 09:45:53
  * @LastEditors: gz
- * @LastEditTime: 2021-09-09 16:22:11
+ * @LastEditTime: 2021-09-09 16:49:51
  * @Description: file content
  */
 
@@ -12,6 +12,7 @@ import gzFiveStar from "./components/FiveStar/index.vue";
 import gzVirtualList from "./components/virtualList/index.vue";
 import gzTabs from "./components/Tabs/index.vue";
 import gzTable from "./components/Table/index.vue";
+import gzPagination from "./components/Pagination/index.vue";
 import config from "./config.js";
 
 let gzUI = {};
@@ -22,6 +23,7 @@ gzUI.install = function (Vue) {
 	Vue.component(gzVirtualList.name, gzVirtualList);
 	Vue.component(gzTabs.name, gzTabs);
 	Vue.component(gzTable.name, gzTable);
+	Vue.component(gzPagination.name, gzPagination);
 };
 
 function compSign() {
