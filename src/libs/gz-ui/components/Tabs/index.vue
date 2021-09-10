@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-07-29 16:33:23
  * @LastEditors: gz
- * @LastEditTime: 2021-09-10 12:06:17
+ * @LastEditTime: 2021-09-10 14:06:59
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Tabs\index.vue
 -->
@@ -33,16 +33,10 @@ export default {
 
 <script setup>
 import {
-	computed,
 	defineProps,
 	onMounted,
 	reactive,
-	toRefs,
-	ref,
-	nextTick,
-	watch,
-	getCurrentInstance,
-	callWithAsyncErrorHandling,
+	useSlots,
 } from "vue";
 const props = defineProps({
 	activeName: {
@@ -61,24 +55,23 @@ const props = defineProps({
 		default: 60,
 	},
 });
-const ctx = getCurrentInstance();
-
+const slots = useSlots();
 const state = reactive({
 	content: "",
 	curIndex: 0,
-	slots: ctx.slots.default().filter(t => t.type == "div"),
+	slots: slots.default().filter(t => t.type == "div"),
 });
 onMounted(() => {
 	state.curIndex = state.slots.findIndex(s => s.props.name === props.activeName);
-	if (ctx.slots.default() && ctx.slots.default()[state.curIndex].el) {
-		ctx.slots.default()[state.curIndex].el.classList.add("active");
+	if (slots.default() && slots.default()[state.curIndex].el) {
+		slots.default()[state.curIndex].el.classList.add("active");
 	}
 });
 const select = index => {
 	state.curIndex = index;
-	if (ctx.slots.default() && ctx.slots.default()[state.curIndex].el) {
-		ctx.slots.default().map(s => s.el.classList.remove("active"));
-		ctx.slots.default()[state.curIndex].el.classList.add("active");
+	if (slots.default() && slots.default()[state.curIndex].el) {
+		slots.default().map(s => s.el.classList.remove("active"));
+		slots.default()[state.curIndex].el.classList.add("active");
 	}
 };
 </script>

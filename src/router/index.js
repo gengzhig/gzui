@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-30 09:48:09
- * @LastEditTime: 2021-09-09 16:44:57
+ * @LastEditTime: 2021-09-10 13:43:44
  * @LastEditors: gz
  * @Description: In User Settings Edit
  * @FilePath: \gi-ui\src\router\index.js
@@ -59,6 +59,14 @@ const router = createRouter({
 						title: "虚拟列表",
 					},
 					component: () => import("views/comp/custom/virtualList.vue"),
+				},
+				{
+					path: "input",
+					name: "Input",
+					meta: {
+						title: "输入框",
+					},
+					component: () => import("views/comp/custom/input.vue"),
 				},
 				{
 					path: "selector",

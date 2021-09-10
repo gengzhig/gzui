@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-09-07 15:29:01
  * @LastEditors: gz
- * @LastEditTime: 2021-09-09 16:32:39
+ * @LastEditTime: 2021-09-10 13:26:11
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\editor\index.vue
 -->
@@ -39,10 +39,12 @@
 				</div>
 			</div>
 			<div class="operateMain" @click="change">
-				<gz-tabs v-model:activeName="state.activeName" :width="400" :height="200" :headerHeight="60">
-					<div label="属性" name="first" class="tab-pane">111</div>
-					<div label="数据" name="second" class="tab-pane">222</div>
-					<div label="交互" name="third" class="tab-pane">333</div>
+				<gz-tabs v-model:activeName="state.activeName" :width="400" :height="500" :headerHeight="60">
+					<div label="属性" name="first" class="tab-pane">
+						属性
+					</div>
+					<div label="数据" name="second" class="tab-pane">数据</div>
+					<div label="交互" name="third" class="tab-pane">交互</div>
 				</gz-tabs>
 			</div>
 		</div>

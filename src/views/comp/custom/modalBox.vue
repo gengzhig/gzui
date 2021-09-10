@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-08-11 09:36:48
  * @LastEditors: gz
- * @LastEditTime: 2021-09-09 12:05:18
+ * @LastEditTime: 2021-09-10 13:27:41
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\modalBox.vue
 -->
@@ -47,7 +47,7 @@ export default {
 	setup() {
 		const gzModel = ref(null);
 		const state = reactive({
-			show: true,
+			show: false,
 			code: `<gz-modal
     :show="true"
     :width="400"
