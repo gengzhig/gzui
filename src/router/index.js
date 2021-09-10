@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-30 09:48:09
- * @LastEditTime: 2021-09-10 13:43:44
+ * @LastEditTime: 2021-09-10 16:02:30
  * @LastEditors: gz
  * @Description: In User Settings Edit
  * @FilePath: \gi-ui\src\router\index.js
@@ -51,6 +51,14 @@ const router = createRouter({
 						title: "分页器",
 					},
 					component: () => import("views/comp/custom/pagination.vue"),
+				},
+				{
+					path: "tree",
+					name: "Tree",
+					meta: {
+						title: "树组件",
+					},
+					component: () => import("views/comp/custom/tree.vue"),
 				},
 				{
 					path: "virtualList",
