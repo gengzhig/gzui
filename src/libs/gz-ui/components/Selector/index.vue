@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-08-11 09:36:48
  * @LastEditors: gz
- * @LastEditTime: 2021-08-30 11:52:15
+ * @LastEditTime: 2021-09-10 10:06:13
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Selector\index.vue
 -->
@@ -25,7 +25,7 @@ import SelectInput from "./selectInput.vue";
 import SelectMenu from "./selectMenu.vue";
 
 import focus from "../../directives/focus";
-import { reactive, toRef, toRefs } from "vue";
+import { reactive, toRefs } from "vue";
 export default {
 	name: "gzSelector",
 	components: {

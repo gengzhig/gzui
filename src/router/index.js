@@ -45,8 +45,8 @@ const router = createRouter({
 					component: () => import("views/comp/custom/table.vue"),
 				},
 				{
-					path: "pagination ",
-					name: "Pagination ",
+					path: "pagination",
+					name: "Pagination",
 					meta: {
 						title: "分页器",
 					},

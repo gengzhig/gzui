@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-08-03 09:40:14
  * @LastEditors: gz
- * @LastEditTime: 2021-09-09 10:07:21
+ * @LastEditTime: 2021-09-10 11:49:49
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\table.vue
 -->
@@ -15,7 +15,7 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-table :config="state.config" @rClick="rClick">
+				<gz-table ref="tableRef" :config="state.config" @rClick="rClick">
 					<template #operateSlot>
 						<button class="gz-btn gz-small-btn gz-btn-confirm">授权</button>
 						<button class="gz-btn gz-small-btn gz-btn-confirm">激活</button>
@@ -33,10 +33,35 @@ export default {
 };
 </script>
 <script setup>
-import { reactive } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
+
+const tableRef = ref(null);
 const state = reactive({
 	config: {
+		defaultLimit: "10条/页",
+		defaultLimitData: [
+			{
+				id: 1,
+				value: "10",
+				text: "10条/页",
+			},
+			{
+				id: 2,
+				value: "20",
+				text: "20条/页",
+			},
+			{
+				id: 3,
+				value: "50",
+				text: "50条/页",
+			},
+			{
+				id: 4,
+				value: "100",
+				text: "100条/页",
+			},
+		],
 		maxHeight: 500,
 		headerStyle: {
 			color: "#fff",
@@ -601,12 +626,18 @@ const state = reactive({
 			},
 		],
 	},
-	code: `<gz-table></gz-table>`,
+	code: `<gz-table ref="tableRef" :config="state.config" @rClick="rClick">
+	<template #operateSlot>
+		<button class="gz-btn gz-small-btn gz-btn-confirm">授权</button>
+		<button class="gz-btn gz-small-btn gz-btn-confirm">激活</button>
+	</template>
+</gz-table>`,
 });
 
 const rClick = data => {
 	console.log(data);
 };
+
 </script>
 
 <style lang="scss" scoped></style>

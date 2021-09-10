@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-09-09 16:45:45
  * @LastEditors: gz
- * @LastEditTime: 2021-09-09 17:19:34
+ * @LastEditTime: 2021-09-10 10:43:02
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\pagination.vue
 -->
@@ -15,14 +15,13 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gzPagination
+				<gz-pagination
 					:total="state.total"
 					:defaultLimit="state.defaultLimit"
 					:defaultLimitData="state.defaultLimitData"
-					@prevPage="prevPage"
-					@nextPage="nextPage"
-					@toggleCurrentPage="toggleCurrentPage"
-				></gzPagination>
+					@handleCurrentChange="handleCurrentChange"
+					@handleSizeChange="handleSizeChange"
+				></gz-pagination>
 			</div>
 			<base-copy :code="state.code"></base-copy>
 		</div>
@@ -57,18 +56,21 @@ const state = reactive({
 			text: "100条/页",
 		},
 	],
-	code: `<gz-table></gz-table>`,
+	code: `<gz-pagination
+	:total="state.total"
+	:defaultLimit="state.defaultLimit"
+	:defaultLimitData="state.defaultLimitData"
+	@handleCurrentChange="handleCurrentChange"
+	@handleSizeChange="handleSizeChange"
+></gz-pagination>`,
 });
-const prevPage = val => {
-	console.log(val);
-};
-const nextPage = val => {
-	console.log(val);
+const handleCurrentChange = val => {
+	console.log(`当前页: ${val}`);
 };
 
-const toggleCurrentPage=val=>{
-    console.log(val);
-}
+const handleSizeChange = val => {
+	console.log(`每页 ${val}条`);
+};
 </script>
 
 <style lang="scss" scoped></style>

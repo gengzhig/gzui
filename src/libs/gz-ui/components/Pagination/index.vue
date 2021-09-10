@@ -1,28 +1,12 @@
-<!--
- * @Author: gz
- * @Date: 2021-09-09 16:48:33
- * @LastEditors: gz
- * @LastEditTime: 2021-09-09 17:32:09
- * @Description: file content
- * @FilePath: \gi-ui\src\libs\gz-ui\components\Pagination\index.vue
--->
-<!--
- * @Author: gz
- * @Date: 2021-08-03 09:35:42
- * @LastEditors: gz
- * @LastEditTime: 2021-09-07 15:19:19
- * @Description: file content
- * @FilePath: \gi-ui\src\libs\gz-ui\components\Table\index.vue
--->
 <template>
 	<!-- 分页器 -->
 	<div class="div_pagation">
-		<span class="total">共{{ total }}-444{{limitDesc}}-------条</span>
+		<span class="total">共{{ total }}条</span>
 		<gz-selector
 			:width="120"
 			:height="35"
 			:filtrateData="false"
-			:value="limitDesc"
+			:value="pager"
 			:menuData="defaultLimitData"
 			placeholder="请选择"
 			@selectItem="selectItem"
@@ -50,7 +34,8 @@ export default {
 </script>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref, toRefs } from "vue";
+
 const props = defineProps({
 	total: {
 		type: Number,
@@ -63,11 +48,10 @@ const props = defineProps({
 	},
 });
 
-let limitDesc = computed(() => props.defaultLimit);
+let pager = ref(props.defaultLimit);
 
-let emit = defineEmits(["rClick", "toggleCurrentPage", "prevPage", "nextPage"]);
+let emit = defineEmits(["rClick", "handleCurrentChange", "handleSizeChange"]);
 
-let headerRef = ref(null);
 let state = reactive({
 	pageCount: 0,
 	currentIndex: -1,
@@ -76,19 +60,20 @@ let state = reactive({
 	endIndex: 10,
 	prevDisabled: true,
 	endDisabled: false,
-	baseLimit: 10,
+	limit: 10,
 });
+
 onMounted(() => {
 	// 总条数 先按1页显示10条计算
-	state.pageCount = Math.ceil(props.total / state.baseLimit);
+	state.pageCount = Math.ceil(props.total / state.limit);
 	state.currentIndex = 0;
 });
 
 // 分页器数字切换
 const toggleCurrentPage = index => {
 	state.currentIndex = index;
-	state.firstIndex = index * state.baseLimit;
-	state.endIndex = (index + 1) * state.baseLimit;
+	state.firstIndex = index * state.limit;
+	state.endIndex = (index + 1) * state.limit;
 	if (state.currentIndex !== 0) {
 		state.prevDisabled = false;
 	} else {
@@ -100,7 +85,8 @@ const toggleCurrentPage = index => {
 	} else {
 		state.endDisabled = false;
 	}
-	emit("toggleCurrentPage", state.currentIndex);
+
+	emit("handleCurrentChange", state.currentIndex);
 };
 
 // 分页器上一页
@@ -112,7 +98,6 @@ const prevPage = () => {
 	}
 	state.currentIndex--;
 	toggleCurrentPage(state.currentIndex);
-	emit("prevPage", state.currentIndex);
 };
 
 // 分页器下一页
@@ -123,17 +108,27 @@ const nextPage = () => {
 	}
 	state.currentIndex++;
 	toggleCurrentPage(state.currentIndex);
-	emit("nextPage", state.currentIndex);
 };
 
 // 设置limit
 const selectItem = item => {
-	console.log(item);
-	limitDesc.value = item.text;
-	let limit = parseInt(limitDesc.value);
-	state.baseLimit = limit;
+	pager.value = item.text;
+	let limit = parseInt(pager.value);
+	state.limit = limit;
 	state.currentIndex = 0;
-	toggleCurrentPage(0);
+	state.pageCount = Math.ceil(props.total / state.limit);
+	if (state.currentIndex !== 0) {
+		state.prevDisabled = false;
+	} else {
+		state.prevDisabled = true;
+	}
+
+	if (state.currentIndex === state.pageCount - 1) {
+		state.endDisabled = true;
+	} else {
+		state.endDisabled = false;
+	}
+	emit("handleSizeChange", limit);
 };
 </script>
 
