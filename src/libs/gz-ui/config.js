@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-09-09 10:46:26
  * @LastEditors: gz
- * @LastEditTime: 2021-09-09 16:22:29
+ * @LastEditTime: 2021-09-10 12:10:21
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\config.js
  */
@@ -18,6 +18,29 @@ let config = {
 	activeName: "first",
 	virtualData: virtualResult,
 	tableConfig: {
+		defaultLimit: "10条/页",
+		defaultLimitData: [
+			{
+				id: 1,
+				value: "10",
+				text: "10条/页",
+			},
+			{
+				id: 2,
+				value: "20",
+				text: "20条/页",
+			},
+			{
+				id: 3,
+				value: "50",
+				text: "50条/页",
+			},
+			{
+				id: 4,
+				value: "100",
+				text: "100条/页",
+			},
+		],
 		maxHeight: 500,
 		headerStyle: {
 			color: "#fff",
@@ -123,6 +146,32 @@ let config = {
 				isbn: "234234234",
 				publish: "北师大",
 				operate: ["edit", "del"],
+			},
+		],
+	},
+	pagination: {
+		total: 51,
+		defaultLimit: "10条/页",
+		defaultLimitData: [
+			{
+				id: 1,
+				value: "10",
+				text: "10条/页",
+			},
+			{
+				id: 2,
+				value: "20",
+				text: "20条/页",
+			},
+			{
+				id: 3,
+				value: "50",
+				text: "50条/页",
+			},
+			{
+				id: 4,
+				value: "100",
+				text: "100条/页",
 			},
 		],
 	},

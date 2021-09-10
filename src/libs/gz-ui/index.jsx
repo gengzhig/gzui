@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-07-26 09:45:53
  * @LastEditors: gz
- * @LastEditTime: 2021-09-09 16:49:51
+ * @LastEditTime: 2021-09-10 12:09:54
  * @Description: file content
  */
 
@@ -120,8 +120,20 @@ compInfo.register({
 compInfo.register({
 	label: "表格",
 	preview: () => <gz-table></gz-table>,
-	render: () => <gz-table config={config.tableConfig}></gz-table>,
+	render: () => <gz-table ref="tableRef" config={config.tableConfig}></gz-table>,
 	key: "0006",
 });
 
+compInfo.register({
+	label: "分页器",
+	preview: () => <gz-pagination></gz-pagination>,
+	render: () => (
+		<gz-pagination
+			total={config.pagination.total}
+			defaultLimit={config.pagination.defaultLimit}
+			defaultLimitData={config.pagination.defaultLimitData}
+		></gz-pagination>
+	),
+	key: "0007",
+});
 export default { gzUI, compInfo };

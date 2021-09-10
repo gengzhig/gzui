@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-07-29 16:33:23
  * @LastEditors: gz
- * @LastEditTime: 2021-09-09 16:40:58
+ * @LastEditTime: 2021-09-10 12:06:17
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Tabs\index.vue
 -->
@@ -19,7 +19,7 @@
 			</span>
 		</div>
 
-		<div class="content">
+		<div class="tag-content">
 			<slot></slot>
 		</div>
 	</div>
@@ -101,8 +101,8 @@ const select = index => {
 			}
 		}
 	}
-	.content {
-		>>> .tab-pane {
+	.tag-content {
+		.tab-pane {
 			display: none;
 			&.active {
 				display: block;
