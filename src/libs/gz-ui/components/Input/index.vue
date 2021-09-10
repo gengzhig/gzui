@@ -1,7 +1,15 @@
 <template>
 	<!-- 基础、密码框 -->
 	<template v-if="inputType != 'textarea'">
-		<input :type="inputType" name="" id="" :disabled="disabled" :value="inputValue" :placeholder="placeholder" @input="input" />
+		<input
+			:type="inputType"
+			name=""
+			id=""
+			:disabled="disabled"
+			:value="inputValue"
+			:placeholder="placeholder"
+			@input="input"
+		/>
 	</template>
 	<!-- 文本域 -->
 	<template v-if="inputType == 'textarea'">
@@ -15,8 +23,8 @@ export default {
 };
 </script>
 <script setup>
-import { reactive, ref, defineProps,getCurrentInstance } from "vue";
-const {emit}=getCurrentInstance();
+import { reactive, ref, defineProps, getCurrentInstance } from "vue";
+const { emit } = getCurrentInstance();
 const props = defineProps({
 	inputValue: {
 		default: "",
