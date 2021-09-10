@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container {
+      height: 100vh;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    #left {
+      width: 300px;
+      border-right: 1px solid #ccc
+    }
+
+    #right {
+      width: 300px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div id="left"></div>
+    <div id="right">
+      <h1>简历</h1>
+      <p>
+        自我介绍
+      </p>
+    </div>
+  </div>
+  <style id="style">
+  </style>
+
+</body>
+<script>
+  let code = `body {
+      background-color: red;
+      perspective: 1000px;
+    }
+    
+    #right{
+      background-color: greenyellow;
+      transform: rotateY(10deg);
+    }`
+  let n = 0;
+  showStyle()
+  function showStyle() {
+    let timer = setInterval(() => {
+      left.innerHTML = code.substring(0, n);
+      style.innerHTML = code.substring(0, n);
+      if (n == code.length - 1) {
+        clearInterval(timer)
+      } else {
+        n++;
+      }
+    }, 100);
+  }
+
+</script>
+
+</html>

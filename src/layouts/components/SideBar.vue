@@ -109,5 +109,6 @@ export default {
 	left: 0;
 	z-index: 1;
 	margin-top: 60px;
+	overflow: auto;
 }
 </style>

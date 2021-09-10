@@ -9,9 +9,7 @@
 <template>
 	<div class="page-component">
 		<h1>Input 输入框</h1>
-		<p>
-			支持普通输入，密码可禁选，文本域。
-		</p>
+		<p>支持普通输入，密码可禁选，文本域。</p>
 		<h3>基础用法</h3>
 
 		<div class="meta">
@@ -46,9 +44,6 @@ const state = reactive({
     :placeholder="state.placeholder"
 ></gz-input>`,
 });
-
-
-
 </script>
 
 <style scoped lang="scss"></style>
