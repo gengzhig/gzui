@@ -8,7 +8,7 @@
 -->
 <template>
 	<div class="gz-tree">
-		<recusion-tree :data="data"></recusion-tree>
+		<recusion-tree ref="treeRef" :data="data"></recusion-tree>
 	</div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
 </script>
 
 <script setup>
-import { defineProps, onMounted, reactive, useSlots } from "vue";
+import { defineProps, onMounted, ref, useSlots } from "vue";
 import recusionTree from "./recusionTree.vue";
 
 const props = defineProps({
@@ -28,10 +28,11 @@ const props = defineProps({
 		default: () => [],
 	},
 });
-
+const treeRef = ref(null);
+onMounted(() => {
+	console.log(treeRef.value);
+});
 const slots = useSlots();
-const state = reactive({});
-onMounted(() => {});
 </script>
 
 <style lang="scss"></style>
