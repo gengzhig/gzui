@@ -89,6 +89,7 @@ const setIndex = dir => {
 
 const dotClickIndex = value => {
 	console.log(value);
+	state.currentIndex = value;
 };
 
 const mouseEnter = () => {

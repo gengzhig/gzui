@@ -1,9 +1,9 @@
 <template>
 	<div class="page-component">
 		<h1>轮播图</h1>
-		<p>直接地表达对应分数。</p>
+		<p>轮播展示图片。</p>
 		<h3>基础用法</h3>
-		<p>评分用来展示分数。</p>
+		<p>轮播展示图片。</p>
 		<div class="meta">
 			<div class="demo">
 				<gz-carousel
