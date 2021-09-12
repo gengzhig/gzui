@@ -41,9 +41,6 @@ import baseCopy from "@/components/baseFunction/Copy.vue";
 import copy from "@/libs/gz-ui/directives/copy.js";
 export default {
 	components: { baseCopy },
-	// directives: {
-	//   copy,
-	// },
 	setup() {
 		const gzModel = ref(null);
 		const state = reactive({

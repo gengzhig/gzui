@@ -15,6 +15,8 @@ import gzTable from "./components/Table/index.vue";
 import gzPagination from "./components/Pagination/index.vue";
 import gzInput from "./components/Input/index.vue";
 import gzTree from "./components/Tree/index.vue";
+import gzCarousel from "./components/Carousel/index.vue";
+import gzCarouselItem from "./components/Carousel/item.vue";
 import config from "./config.js";
 
 let gzUI = {};
@@ -28,6 +30,8 @@ gzUI.install = function (Vue) {
 	Vue.component(gzPagination.name, gzPagination);
 	Vue.component(gzInput.name, gzInput);
 	Vue.component(gzTree.name, gzTree);
+	Vue.component(gzCarousel.name, gzCarousel);
+	Vue.component(gzCarouselItem.name, gzCarouselItem);
 };
 
 function compSign() {
