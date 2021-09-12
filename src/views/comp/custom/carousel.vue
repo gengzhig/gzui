@@ -31,7 +31,18 @@ import copy from "@/libs/gz-ui/directives/copy.js";
 
 import cData from "@/libs/gz-ui/components/Carousel/data.js";
 const state = reactive({
-	code: `<gz-carousel></gz-carousel>`,
+	code: `<gz-carousel
+	dotBgColor="#333"
+	:autoplay="true"
+	:duration="2000"
+	:initial="0"
+	:hasDot="true"
+	:hasDirector="true"
+>
+	<gz-carousel-item v-for="(item, index) in cData" :key="index">
+		<img :src="item.src" />
+	</gz-carousel-item>
+</gz-carousel>`,
 });
 </script>
 
