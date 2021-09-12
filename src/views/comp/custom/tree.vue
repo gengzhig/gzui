@@ -15,7 +15,7 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-tree :data="state.data"></gz-tree>
+				<gz-tree ref="treeRef" :data="state.data"></gz-tree>
 			</div>
 			<base-copy :code="state.code"></base-copy>
 		</div>
@@ -23,8 +23,7 @@
 </template>
 
 <script setup>
-import { reactive, toRefs } from "vue";
-import { onMounted } from "vue";
+import { reactive, toRefs, ref } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 const state = reactive({
 	data: [
@@ -85,8 +84,6 @@ const state = reactive({
 		},
 	],
 	code: `<gz-tree :data="state.data"></gz-tree>`,
-});
-onMounted(() => {
 });
 </script>
 

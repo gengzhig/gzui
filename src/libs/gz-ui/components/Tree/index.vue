@@ -8,31 +8,38 @@
 -->
 <template>
 	<div class="gz-tree">
-		<recusion-tree ref="treeRef" :data="data"></recusion-tree>
+		<recusion-tree :data="data" @nodeClick="nodeClick"></recusion-tree>
 	</div>
 </template>
 
 <script>
+// import bus from "./bus.js";
 export default {
 	name: "gzTree",
 };
 </script>
 
 <script setup>
-import { defineProps, onMounted, ref, useSlots } from "vue";
+import { defineProps, onMounted, onUpdated, ref, useSlots } from "vue";
 import recusionTree from "./recusionTree.vue";
 
+onUpdated(() => {
+	// new bus().$on("11111", val => {
+	// 	console.log(val);
+	// });
+});
 const props = defineProps({
 	data: {
 		type: Array,
 		default: () => [],
 	},
 });
-const treeRef = ref(null);
-onMounted(() => {
-	console.log(treeRef.value);
-});
 const slots = useSlots();
+
+const nodeClick = val => {
+	console.log(123);
+	console.log(val);
+};
 </script>
 
 <style lang="scss"></style>

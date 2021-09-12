@@ -24,6 +24,7 @@ export default {
 };
 </script>
 <script setup>
+// import bus from "./bus.js";
 import { onMounted, reactive, useSlots } from "vue";
 const props = defineProps({
 	data: {
@@ -31,13 +32,16 @@ const props = defineProps({
 		default: () => [],
 	},
 });
+const emit = defineEmits(["nodeClick"]);
 const handleNodeClick = (item, e) => {
 	e.target.classList.toggle("expanded");
-	console.log(item);
+	console.warn("暂时未实现eventBus递归组件发值出来", item);
+	// emit("nodeClick", item);
+	// new bus().$emit("11111", item);
 };
-defineExpose({
-	handleNodeClick,
-});
+// defineExpose({
+// 	handleNodeClick,
+// });
 // 查找所有兄弟元素
 const findSiblings = tag => {
 	let parentEl = tag.parentNode;
