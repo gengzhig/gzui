@@ -88,7 +88,6 @@ const setIndex = dir => {
 };
 
 const dotClickIndex = value => {
-	console.log(value);
 	state.currentIndex = value;
 };
 
@@ -115,7 +114,7 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 .carousel {
-	width: 500px;
+	width: 100%;
 	height: 300px;
 	.inner {
 		width: 100%;

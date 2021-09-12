@@ -7,9 +7,9 @@
 		<div class="meta">
 			<div class="demo">
 				<gz-carousel
+					dotBgColor="#333"
 					:autoplay="true"
 					:duration="2000"
-					dotBgColor="#333"
 					:initial="0"
 					:hasDot="true"
 					:hasDirector="true"
@@ -30,7 +30,6 @@ import baseCopy from "@/components/baseFunction/Copy.vue";
 import copy from "@/libs/gz-ui/directives/copy.js";
 
 import cData from "@/libs/gz-ui/components/Carousel/data.js";
-console.log(cData);
 const state = reactive({
 	code: `<gz-carousel></gz-carousel>`,
 });
