@@ -2,13 +2,13 @@
  * @Author: gz
  * @Date: 2021-08-03 09:35:42
  * @LastEditors: gz
- * @LastEditTime: 2021-09-13 12:09:58
+ * @LastEditTime: 2021-09-13 17:57:44
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Table\index.vue
 -->
 <template>
 	<div class="gz-table" style="">
-		<div  class="div_thead" style="padding-right: 17px; overflow: auto" ref="headerRef" @scroll="scrollHeader">
+		<div class="div_thead" style="padding-right: 17px; overflow: auto" ref="headerRef" @scroll="scrollHeader">
 			<table border="" class="div-table" cellspacing="" cellpadding="">
 				<colgroup>
 					<col
@@ -48,33 +48,36 @@
 					/>
 				</colgroup>
 				<tbody>
-					<tr v-for="(item, index) in state.currentData" :key="index" @click="rowClick(item)">
-						<!-- 索引列 -->
-						<td class="index" v-if="config.columnData.findIndex(c => c.prop == 'index') >= 0">{{ item.index }}</td>
-						<template v-for="(kValue, kKey, kIndex) in item" :key="kKey">
-							<!-- 基础列 -->
-							<td
-								:title="kValue"
-								v-if="kKey != 'operate' && kKey != 'index'"
-								class="singleRow"
-								:style="{
-									width: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].width + 'px',
-									minWidth: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].minWidth + 'px',
-									maxWidth: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].width + 'px',
-								}"
-							>
-								{{ kValue }}
-							</td>
-							<!-- 操作列 -->
-							<td class="td-operate" v-if="config.columnData[kIndex] && config.columnData[kIndex].type === 2">
-								<template v-for="(bItem, bIndex) in item.operate" :key="bIndex">
-									<button v-if="bItem == 'edit'" class="gz-btn gz-small-btn gz-btn-confirm">编辑</button>
-									<button v-if="bItem == 'del'" class="gz-btn gz-small-btn gz-btn-cancel">删除</button>
-									<slot v-else name="operateSlot"></slot>
-								</template>
-							</td>
-						</template>
-					</tr>
+					<template v-if="state.currentData && state.currentData.length > 0">
+						<tr v-for="(item, index) in state.currentData" :key="index" @click="rowClick(item)">
+							<!-- 索引列 -->
+							<td class="index" v-if="config.columnData.findIndex(c => c.prop == 'index') >= 0">{{ item.index }}</td>
+							<template v-for="(kValue, kKey, kIndex) in item" :key="kKey">
+								<!-- 基础列 -->
+								<td
+									:title="kValue"
+									v-if="kKey != 'operate' && kKey != 'index'"
+									class="singleRow"
+									:style="{
+										width: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].width + 'px',
+										minWidth: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].minWidth + 'px',
+										maxWidth: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].width + 'px',
+									}"
+								>
+									{{ kValue }}
+								</td>
+								<!-- 操作列 -->
+								<td class="td-operate" v-if="config.columnData[kIndex] && config.columnData[kIndex].type === 2">
+									<template v-for="(bItem, bIndex) in item.operate" :key="bIndex">
+										<button v-if="bItem == 'edit'" class="gz-btn gz-small-btn gz-btn-confirm">编辑</button>
+										<button v-if="bItem == 'del'" class="gz-btn gz-small-btn gz-btn-cancel">删除</button>
+										<slot v-else name="operateSlot"></slot>
+									</template>
+								</td>
+							</template>
+						</tr>
+					</template>
+					<h5 class="noData"  v-else>暂无数据</h5>
 				</tbody>
 			</table>
 		</div>
@@ -239,6 +242,8 @@ const handleSizeChange = val => {
 						background-color: #f5f7fa;
 					}
 				}
+				.noData{}
+				
 			}
 		}
 	}

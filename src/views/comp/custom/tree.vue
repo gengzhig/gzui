@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-09-10 16:03:26
  * @LastEditors: gz
- * @LastEditTime: 2021-09-10 16:11:27
+ * @LastEditTime: 2021-09-13 17:52:40
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\tree.vue
 -->
@@ -15,9 +15,9 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-tree ref="treeRef" :data="state.data"></gz-tree>
+				<gz-tree :data="state.data"></gz-tree>
 			</div>
-			<base-copy :code="state.code"></base-copy>
+			<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
 		</div>
 	</div>
 </template>
@@ -84,6 +84,72 @@ const state = reactive({
 		},
 	],
 	code: `<gz-tree :data="state.data"></gz-tree>`,
+	attributesBrief: {
+		columnData: [
+			{
+				prop: "param",
+				label: "参数",
+				width: 150,
+				fixed: false,
+				type: 1,
+			},
+			{
+				prop: "explain",
+				label: "说明",
+				width: 150,
+				fixed: false,
+				type: 1,
+			},
+			{
+				prop: "type",
+				label: "类型",
+				width: 150,
+				fixed: false,
+				type: 1,
+			},
+			{
+				prop: "optional",
+				label: "可选值",
+				width: 150,
+				fixed: false,
+				type: 1,
+			},
+			{
+				prop: "default",
+				label: "默认值",
+				width: 150,
+				fixed: false,
+				type: 1,
+			},
+		],
+		tableData: [],
+	},
+	eventsBrief: {
+		columnData: [
+			{
+				prop: "methodName",
+				label: "方法名",
+				width: 150,
+				fixed: false,
+				type: 1,
+			},
+			{
+				prop: "explain",
+				label: "说明",
+				width: 150,
+				fixed: false,
+				type: 1,
+			},
+			{
+				prop: "param",
+				label: "参数",
+				width: 150,
+				fixed: false,
+				type: 1,
+			},
+		],
+		tableData: [],
+	},
 });
 </script>
 

@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-09-13 09:27:36
  * @LastEditors: gz
- * @LastEditTime: 2021-09-13 17:40:15
+ * @LastEditTime: 2021-09-13 17:50:34
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\carousel.vue
 -->
@@ -29,11 +29,7 @@
 					</gz-carousel-item>
 				</gz-carousel>
 			</div>
-			<base-copy
-				:code="state.code"
-				:attributeBrief="state.attributesBrief"
-				:eventBrief="state.eventsBrief"
-			></base-copy>
+			<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
 		</div>
 	</div>
 </template>
