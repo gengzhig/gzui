@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-08-03 09:40:14
  * @LastEditors: gz
- * @LastEditTime: 2021-09-10 11:49:49
+ * @LastEditTime: 2021-09-13 10:20:17
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\table.vue
 -->
@@ -15,7 +15,7 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-table ref="tableRef" :config="state.config" @rClick="rClick">
+				<gz-table :config="state.config" @rClick="rClick">
 					<template #operateSlot>
 						<button class="gz-btn gz-small-btn gz-btn-confirm">授权</button>
 						<button class="gz-btn gz-small-btn gz-btn-confirm">激活</button>
@@ -36,7 +36,6 @@ export default {
 import { onMounted, reactive, ref } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 
-const tableRef = ref(null);
 const state = reactive({
 	config: {
 		defaultLimit: "10条/页",
@@ -626,7 +625,7 @@ const state = reactive({
 			},
 		],
 	},
-	code: `<gz-table ref="tableRef" :config="state.config" @rClick="rClick">
+	code: `<gz-table :config="state.config" @rClick="rClick">
 	<template #operateSlot>
 		<button class="gz-btn gz-small-btn gz-btn-confirm">授权</button>
 		<button class="gz-btn gz-small-btn gz-btn-confirm">激活</button>
@@ -637,7 +636,6 @@ const state = reactive({
 const rClick = data => {
 	console.log(data);
 };
-
 </script>
 
 <style lang="scss" scoped></style>

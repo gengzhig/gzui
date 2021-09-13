@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-08-11 09:36:48
  * @LastEditors: gz
- * @LastEditTime: 2021-09-10 13:27:41
+ * @LastEditTime: 2021-09-13 09:31:07
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\modalBox.vue
 -->
@@ -38,7 +38,6 @@
 <script>
 import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
-import copy from "@/libs/gz-ui/directives/copy.js";
 export default {
 	components: { baseCopy },
 	setup() {

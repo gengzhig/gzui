@@ -8,8 +8,8 @@
 				:dotBgColor="dotBgColor"
 				@dotClickIndex="dotClickIndex"
 			></car-dots>
-			<car-director dir="prev" @dirClick="dirClick"></car-director>
-			<car-director dir="next" @dirClick="dirClick"></car-director>
+			<car-director dir="prev" :hasDirector="hasDirector" @dirClick="dirClick"></car-director>
+			<car-director dir="next" :hasDirector="hasDirector" @dirClick="dirClick"></car-director>
 			<slot></slot>
 		</div>
 	</div>
@@ -46,7 +46,11 @@ const props = defineProps({
 	},
 	dotBgColor: {
 		type: String,
-		default: "#ff5000",
+		default: "#333",
+	},
+	imgFit: {
+		type: String,
+		default: "contain",
 	},
 });
 let t = null;
@@ -55,6 +59,7 @@ const state = reactive({
 	currentIndex: props.initial,
 	itemLen: 0,
 });
+const emits = defineEmits(["dotClickIndex"]);
 onMounted(() => {
 	state.itemLen = instance.slots.default()[0].children.length;
 	autoplay();
@@ -89,6 +94,7 @@ const setIndex = dir => {
 
 const dotClickIndex = value => {
 	state.currentIndex = value;
+	emits("dotClickIndex", value);
 };
 
 const mouseEnter = () => {

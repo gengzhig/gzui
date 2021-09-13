@@ -2,13 +2,13 @@
  * @Author: gz
  * @Date: 2021-08-03 09:35:42
  * @LastEditors: gz
- * @LastEditTime: 2021-09-10 11:50:42
+ * @LastEditTime: 2021-09-13 12:09:58
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Table\index.vue
 -->
 <template>
 	<div class="gz-table" style="">
-		<div class="div_thead" style="padding-right: 17px; overflow: auto" ref="headerRef" @scroll="scrollHeader">
+		<div  class="div_thead" style="padding-right: 17px; overflow: auto" ref="headerRef" @scroll="scrollHeader">
 			<table border="" class="div-table" cellspacing="" cellpadding="">
 				<colgroup>
 					<col
@@ -22,7 +22,7 @@
 						:style="{
 							height: '48px',
 							lineHeight: '48px',
-							color: config.headerStyle.color,
+							color: config.headerStyle && config.headerStyle.color,
 							backgroundColor: 'rgb(255, 124, 64)',
 						}"
 					>
@@ -58,15 +58,15 @@
 								v-if="kKey != 'operate' && kKey != 'index'"
 								class="singleRow"
 								:style="{
-									width: config.columnData[kIndex + 1].width + 'px',
-									minWidth: config.columnData[kIndex + 1].minWidth + 'px',
-									maxWidth: config.columnData[kIndex + 1].width + 'px',
+									width: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].width + 'px',
+									minWidth: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].minWidth + 'px',
+									maxWidth: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].width + 'px',
 								}"
 							>
 								{{ kValue }}
 							</td>
 							<!-- 操作列 -->
-							<td class="td-operate" v-if="config.columnData[kIndex].type === 2">
+							<td class="td-operate" v-if="config.columnData[kIndex] && config.columnData[kIndex].type === 2">
 								<template v-for="(bItem, bIndex) in item.operate" :key="bIndex">
 									<button v-if="bItem == 'edit'" class="gz-btn gz-small-btn gz-btn-confirm">编辑</button>
 									<button v-if="bItem == 'del'" class="gz-btn gz-small-btn gz-btn-cancel">删除</button>
@@ -98,10 +98,9 @@
 				</tfoot>
 			</table>
 		</div>
-
 		<!-- 分页器 -->
 		<gz-pagination
-			v-if="config.tableData.length > 0"
+			v-if="config.pagination && config.tableData.length > 0"
 			:total="config.tableData.length"
 			:defaultLimit="config.defaultLimit"
 			:defaultLimitData="config.defaultLimitData"
@@ -138,10 +137,12 @@ let state = reactive({
 	baseLimit: 10,
 });
 onMounted(() => {
-	state.tableData = JSON.parse(JSON.stringify(props.config.tableData));
-	state.tableData.map((s, i) => {
-		s.index = i + 1;
-	});
+	state.tableData = JSON.parse(JSON.stringify(props.config.tableData || []));
+	if (state.tableData.length > 0) {
+		state.tableData.map((s, i) => {
+			s.index = i + 1;
+		});
+	}
 	// 总条数 先按1页显示10条计算
 	state.currentData = state.tableData.slice(state.firstIndex, state.endIndex);
 	setTimeout(() => {
@@ -175,7 +176,6 @@ const selectItem = item => {
 const scrollBody = e => {
 	console.log(e.target.scrollLeft);
 };
-
 
 const handleCurrentChange = val => {
 	console.log(`当前页: ${val}`);

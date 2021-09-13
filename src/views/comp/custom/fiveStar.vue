@@ -1,3 +1,11 @@
+<!--
+ * @Author: gz
+ * @Date: 2021-09-13 09:27:36
+ * @LastEditors: gz
+ * @LastEditTime: 2021-09-13 09:30:57
+ * @Description: file content
+ * @FilePath: \gi-ui\src\views\comp\custom\fiveStar.vue
+-->
 <template>
 	<div class="page-component">
 		<h1>评分组件</h1>
@@ -16,7 +24,6 @@
 <script setup>
 import { reactive, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
-import copy from "@/libs/gz-ui/directives/copy.js";
 const state = reactive({
 	num: 1,
 	code: `<gz-five-star :num="num" :size="20" highColor="orange" @change="change"> </gz-five-star>`,
