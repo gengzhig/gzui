@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-09-13 09:27:36
  * @LastEditors: gz
- * @LastEditTime: 2021-09-13 17:50:34
+ * @LastEditTime: 2021-09-14 09:40:51
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\carousel.vue
 -->
@@ -53,43 +53,6 @@ const state = reactive({
 	</gz-carousel-item>
 </gz-carousel>`,
 	attributesBrief: {
-		columnData: [
-			{
-				prop: "param",
-				label: "参数",
-				width: 150,
-				fixed: false,
-				type: 1,
-			},
-			{
-				prop: "explain",
-				label: "说明",
-				width: 150,
-				fixed: false,
-				type: 1,
-			},
-			{
-				prop: "type",
-				label: "类型",
-				width: 150,
-				fixed: false,
-				type: 1,
-			},
-			{
-				prop: "optional",
-				label: "可选值",
-				width: 150,
-				fixed: false,
-				type: 1,
-			},
-			{
-				prop: "default",
-				label: "默认值",
-				width: 150,
-				fixed: false,
-				type: 1,
-			},
-		],
 		tableData: [
 			{
 				param: "dotBgColor",
@@ -143,29 +106,6 @@ const state = reactive({
 		],
 	},
 	eventsBrief: {
-		columnData: [
-			{
-				prop: "methodName",
-				label: "方法名",
-				width: 150,
-				fixed: false,
-				type: 1,
-			},
-			{
-				prop: "explain",
-				label: "说明",
-				width: 150,
-				fixed: false,
-				type: 1,
-			},
-			{
-				prop: "param",
-				label: "参数",
-				width: 150,
-				fixed: false,
-				type: 1,
-			},
-		],
 		tableData: [
 			{
 				methodName: "dotClickIndex",

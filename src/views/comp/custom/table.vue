@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-08-03 09:40:14
  * @LastEditors: gz
- * @LastEditTime: 2021-09-13 10:20:17
+ * @LastEditTime: 2021-09-14 17:24:19
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\table.vue
 -->
@@ -15,14 +15,22 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-table :config="state.config" @rClick="rClick">
+				<gz-table
+					:headerColor="state.headerColor"
+					:headerbgColor="state.headerbgColor"
+					:headerBorderColor="state.headerBorderColor"
+					:pagination="state.pagination"
+					:maxHeight="state.maxHeight"
+					:config="state.config"
+					@rClick="rowClick"
+				>
 					<template #operateSlot>
 						<button class="gz-btn gz-small-btn gz-btn-confirm">授权</button>
 						<button class="gz-btn gz-small-btn gz-btn-confirm">激活</button>
 					</template>
 				</gz-table>
 			</div>
-			<base-copy :code="state.code"></base-copy>
+			<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
 		</div>
 	</div>
 </template>
@@ -37,6 +45,11 @@ import { onMounted, reactive, ref } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 
 const state = reactive({
+	headerColor: "#FFF",
+	headerbgColor: "rgb(255, 124, 64)",
+	headerBorderColor: "",
+	pagination: true,
+	maxHeight: 300,
 	config: {
 		defaultLimit: "10条/页",
 		defaultLimitData: [
@@ -61,11 +74,6 @@ const state = reactive({
 				text: "100条/页",
 			},
 		],
-		maxHeight: 500,
-		headerStyle: {
-			color: "#fff",
-		},
-		pagination: true,
 		// type:0 一般列 1：索引列 2：扩展列
 		columnData: [
 			{
@@ -625,15 +633,63 @@ const state = reactive({
 			},
 		],
 	},
-	code: `<gz-table :config="state.config" @rClick="rClick">
+	code: `<gz-table :config="state.config" @rClick="rowClick">
 	<template #operateSlot>
 		<button class="gz-btn gz-small-btn gz-btn-confirm">授权</button>
 		<button class="gz-btn gz-small-btn gz-btn-confirm">激活</button>
 	</template>
 </gz-table>`,
+	attributesBrief: {
+		tableData: [
+			{
+				param: "headerColor",
+				explain: "表格表头文字颜色",
+				type: "String",
+				optional: "---",
+				default: "#FFF",
+			},
+			{
+				param: "headerbgColor",
+				explain: "表格表头背景色",
+				type: "String",
+				optional: "---",
+				default: "rgb(255, 124, 64)",
+			},
+			{
+				param: "headerBorderColor",
+				explain: "表格表头边框颜色",
+				type: "String",
+				optional: "---",
+				default: "#e6e6e6",
+			},
+			{
+				param: "maxHeight",
+				explain: "表格最大显示高度",
+				type: "Number",
+				optional: "---",
+				default: "---",
+			},
+			{
+				param: "pagination",
+				explain: "开启分页",
+				type: "Boolean",
+				optional: "true/false",
+				default: "true",
+			},
+		],
+	},
+	eventsBrief: {
+		tableData: [
+			{
+				methodName: "rowClick",
+				explain: "表格行点击回调函数",
+				param: "共一个参数，为当前行数据。",
+			},
+		],
+	},
 });
 
-const rClick = data => {
+const rowClick = data => {
 	console.log(data);
 };
 </script>

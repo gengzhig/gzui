@@ -1,8 +1,9 @@
 <template>
 	<!-- 分页器 -->
 	<div class="div_pagation">
-		<span class="total">共{{ total }}条</span>
+		<span class="total" v-if="showTotal">共{{ total }}条</span>
 		<gz-selector
+			v-if="showLimit"
 			:width="120"
 			:height="35"
 			:filtrateData="false"
@@ -37,6 +38,14 @@ export default {
 import { computed, onMounted, reactive, ref, toRefs } from "vue";
 
 const props = defineProps({
+	showTotal: {
+		type: Boolean,
+		default: true,
+	},
+	showLimit: {
+		type: Boolean,
+		default: true,
+	},
 	total: {
 		type: Number,
 	},
@@ -44,11 +53,11 @@ const props = defineProps({
 		type: Array,
 	},
 	defaultLimit: {
-		type: String,
+		type: Number,
 	},
 });
 
-let pager = ref(props.defaultLimit);
+let pager = ref(props.defaultLimit + "条/页");
 
 let emit = defineEmits(["rClick", "handleCurrentChange", "handleSizeChange"]);
 
@@ -134,9 +143,7 @@ const selectItem = item => {
 
 <style lang="scss" scoped>
 .div_pagation {
-	margin-top: 5px;
 	display: flex;
-	justify-content: flex-end;
 	align-items: center;
 	.total {
 		color: #606266;

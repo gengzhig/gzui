@@ -2,14 +2,22 @@
  * @Author: gz
  * @Date: 2021-08-03 09:35:42
  * @LastEditors: gz
- * @LastEditTime: 2021-09-13 17:57:44
+ * @LastEditTime: 2021-09-14 17:12:47
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Table\index.vue
 -->
 <template>
 	<div class="gz-table" style="">
 		<div class="div_thead" style="padding-right: 17px; overflow: auto" ref="headerRef" @scroll="scrollHeader">
-			<table border="" class="div-table" cellspacing="" cellpadding="">
+			<table
+				border=""
+				class="div-table"
+				cellspacing=""
+				cellpadding=""
+				:style="{
+					borderColor: headerBorderColor,
+				}"
+			>
 				<colgroup>
 					<col
 						:style="{ width: item.width + 'px', minWidth: item.minWidth + 'px' }"
@@ -22,8 +30,8 @@
 						:style="{
 							height: '48px',
 							lineHeight: '48px',
-							color: config.headerStyle && config.headerStyle.color,
-							backgroundColor: 'rgb(255, 124, 64)',
+							color: headerColor,
+							backgroundColor: headerbgColor,
 						}"
 					>
 						<th style="" v-for="(item, index) in config.columnData" :key="index">{{ item.label }}</th>
@@ -37,10 +45,10 @@
 			ref="tableBodyRef"
 			class="div_tbody"
 			@scroll="scrollBody"
-			:style="{ maxHeight: config.maxHeight + 'px', overflow: 'auto' }"
+			:style="{ maxHeight: maxHeight + 'px', overflow: 'auto' }"
 		>
 			<table border="" cellspacing="" cellpadding="" class="div-table">
-				<colgroup>
+				<colgroup v-if="state.currentData && state.currentData.length > 0">
 					<col
 						:style="{ width: item.width + 'px', minWidth: item.minWidth + 'px' }"
 						v-for="(item, index) in config.columnData"
@@ -77,7 +85,7 @@
 							</template>
 						</tr>
 					</template>
-					<h5 class="noData"  v-else>暂无数据</h5>
+					<div class="noData" v-else>暂无数据</div>
 				</tbody>
 			</table>
 		</div>
@@ -103,7 +111,7 @@
 		</div>
 		<!-- 分页器 -->
 		<gz-pagination
-			v-if="config.pagination && config.tableData.length > 0"
+			v-if="pagination && config.tableData.length > 0"
 			:total="config.tableData.length"
 			:defaultLimit="config.defaultLimit"
 			:defaultLimitData="config.defaultLimitData"
@@ -124,6 +132,26 @@ import { onMounted, reactive, ref } from "vue";
 const props = defineProps({
 	config: {
 		type: Object,
+	},
+	headerColor: {
+		type: String,
+		default: "#fff",
+	},
+	headerbgColor: {
+		type: String,
+		default: "rgb(255, 124, 64)",
+	},
+	headerBorderColor: {
+		type: String,
+		default: "#e6e6e6",
+	},
+	pagination: {
+		type: Boolean,
+		default: true,
+	},
+	maxHeight: {
+		type: Number,
+		default: "300",
 	},
 });
 
@@ -208,7 +236,6 @@ const handleSizeChange = val => {
 	}
 	.div_tbody {
 		width: 100%;
-		// height: 500px;
 		.div-table {
 			width: 100%;
 			text-align: center;
@@ -242,8 +269,11 @@ const handleSizeChange = val => {
 						background-color: #f5f7fa;
 					}
 				}
-				.noData{}
-				
+				.noData {
+					margin: 10px 0;
+					font-weight: bold;
+					font-size: 1.4em;
+				}
 			}
 		}
 	}
