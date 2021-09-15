@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-09-10 16:13:05
  * @LastEditors: gz
- * @LastEditTime: 2021-09-10 16:59:22
+ * @LastEditTime: 2021-09-15 11:08:05
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Tree\recusionTree.vue
 -->
@@ -13,7 +13,7 @@
 			{{ item.label }}
 		</div>
 		<template v-if="item.children && item.children.length > 0">
-			<recusion-tree :data="item.children"></recusion-tree>
+			<recusion-tree :data="item.children" @nodeClick="nodeClick"></recusion-tree>
 		</template>
 	</div>
 </template>
@@ -24,7 +24,6 @@ export default {
 };
 </script>
 <script setup>
-// import bus from "./bus.js";
 import { onMounted, reactive, useSlots } from "vue";
 const props = defineProps({
 	data: {
@@ -32,16 +31,14 @@ const props = defineProps({
 		default: () => [],
 	},
 });
-const emit = defineEmits(["nodeClick"]);
+const emit = defineEmits(["nodeClick", "subNodeClick"]);
 const handleNodeClick = (item, e) => {
 	e.target.classList.toggle("expanded");
-	console.warn("暂时未实现eventBus递归组件发值出来", item);
-	// emit("nodeClick", item);
-	// new bus().$emit("11111", item);
+	emit("nodeClick", item);
 };
-// defineExpose({
-// 	handleNodeClick,
-// });
+const nodeClick = val => {
+	emit("nodeClick", val);
+};
 // 查找所有兄弟元素
 const findSiblings = tag => {
 	let parentEl = tag.parentNode;

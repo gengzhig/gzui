@@ -1,3 +1,11 @@
+<!--
+ * @Author: gz
+ * @Date: 2021-09-13 09:27:36
+ * @LastEditors: gz
+ * @LastEditTime: 2021-09-15 09:12:08
+ * @Description: file content
+ * @FilePath: \gi-ui\src\libs\gz-ui\components\Input\index.vue
+-->
 <template>
 	<!-- 基础、密码框 -->
 	<template v-if="inputType != 'textarea'">
@@ -23,7 +31,7 @@ export default {
 };
 </script>
 <script setup>
-import { reactive, ref, defineProps, getCurrentInstance } from "vue";
+import { reactive, ref, getCurrentInstance } from "vue";
 const { emit } = getCurrentInstance();
 const props = defineProps({
 	inputValue: {

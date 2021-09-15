@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-08-03 09:40:14
  * @LastEditors: gz
- * @LastEditTime: 2021-09-14 17:24:19
+ * @LastEditTime: 2021-09-14 17:51:45
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\table.vue
 -->
@@ -633,7 +633,15 @@ const state = reactive({
 			},
 		],
 	},
-	code: `<gz-table :config="state.config" @rClick="rowClick">
+	code: `<gz-table
+	:headerColor="state.headerColor"
+	:headerbgColor="state.headerbgColor"
+	:headerBorderColor="state.headerBorderColor"
+	:pagination="state.pagination"
+	:maxHeight="state.maxHeight"
+	:config="state.config"
+	@rClick="rowClick"
+>
 	<template #operateSlot>
 		<button class="gz-btn gz-small-btn gz-btn-confirm">授权</button>
 		<button class="gz-btn gz-small-btn gz-btn-confirm">激活</button>

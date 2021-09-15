@@ -1,3 +1,11 @@
+<!--
+ * @Author: gz
+ * @Date: 2021-09-13 09:27:36
+ * @LastEditors: gz
+ * @LastEditTime: 2021-09-15 09:13:01
+ * @Description: file content
+ * @FilePath: \gi-ui\src\libs\gz-ui\components\Carousel\dots.vue
+-->
 <template>
 	<div class="dot-wrapper" v-if="hasDot">
 		<div class="dot-item" v-for="item in itemLen" :key="item">
@@ -16,7 +24,6 @@ export default {
 };
 </script>
 <script setup>
-import { defineEmits } from "vue";
 const emit = defineEmits(["dotClickIndex"]);
 const props = defineProps({
 	itemLen: Number,

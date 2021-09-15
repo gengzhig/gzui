@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-09-10 16:04:30
  * @LastEditors: gz
- * @LastEditTime: 2021-09-10 16:13:48
+ * @LastEditTime: 2021-09-15 11:07:47
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Tree\index.vue
 -->
@@ -20,14 +20,11 @@ export default {
 </script>
 
 <script setup>
-import { defineProps, onMounted, onUpdated, ref, useSlots } from "vue";
+import { onMounted, onUpdated, ref, useSlots } from "vue";
 import recusionTree from "./recusionTree.vue";
 
-onUpdated(() => {
-	// new bus().$on("11111", val => {
-	// 	console.log(val);
-	// });
-});
+onUpdated(() => {});
+const emit = defineEmits(["nodeClick"]);
 const props = defineProps({
 	data: {
 		type: Array,
@@ -37,8 +34,7 @@ const props = defineProps({
 const slots = useSlots();
 
 const nodeClick = val => {
-	console.log(123);
-	console.log(val);
+	emit("nodeClick", val);
 };
 </script>
 

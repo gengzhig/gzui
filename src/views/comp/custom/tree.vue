@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-09-10 16:03:26
  * @LastEditors: gz
- * @LastEditTime: 2021-09-14 12:06:07
+ * @LastEditTime: 2021-09-15 10:53:11
  * @Description: file content
  * @FilePath: \gi-ui\src\views\comp\custom\tree.vue
 -->
@@ -15,7 +15,7 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-tree :data="state.data"></gz-tree>
+				<gz-tree :data="state.data"  @nodeClick="nodeClick"></gz-tree>
 			</div>
 			<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
 		</div>
@@ -91,6 +91,11 @@ const state = reactive({
 		tableData: [],
 	},
 });
+
+const nodeClick = val => {
+	console.log(val,"最终接收到的值");
+};
+
 </script>
 
 <style lang="scss" scoped></style>

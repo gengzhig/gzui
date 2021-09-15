@@ -1,9 +1,17 @@
+<!--
+ * @Author: gz
+ * @Date: 2021-08-11 09:36:48
+ * @LastEditors: gz
+ * @LastEditTime: 2021-09-15 09:11:53
+ * @Description: file content
+ * @FilePath: \gi-ui\src\components\baseChart\index.vue
+-->
 <template>
   <div class="container" ref="container"></div>
 </template>
 
 <script setup>
-import { ref, toRefs, defineProps, onMounted, watch } from "vue";
+import { ref, toRefs, onMounted, watch } from "vue";
 import * as echarts from "echarts";
 const props = defineProps({
   options: {

@@ -2,7 +2,7 @@
  * @Author: gz
  * @Date: 2021-07-29 16:33:23
  * @LastEditors: gz
- * @LastEditTime: 2021-09-10 14:06:59
+ * @LastEditTime: 2021-09-15 09:12:11
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Tabs\index.vue
 -->
@@ -33,7 +33,6 @@ export default {
 
 <script setup>
 import {
-	defineProps,
 	onMounted,
 	reactive,
 	useSlots,
