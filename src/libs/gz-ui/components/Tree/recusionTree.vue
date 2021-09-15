@@ -7,6 +7,8 @@
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Tree\recusionTree.vue
 -->
 <template>
+	<h1>{{ allExpose }}</h1>
+
 	<div class="gz-tree-list" v-for="(item, index) in data" :key="index">
 		<div class="gz-tree-item" @click="e => handleNodeClick(item, e)">
 			<img src="@/assets/icon/arrow.png" v-if="item.children && item.children.length > 0" alt="" />
@@ -24,7 +26,7 @@ export default {
 };
 </script>
 <script setup>
-import { onMounted, reactive, useSlots } from "vue";
+import { onMounted, reactive, useSlots, ref } from "vue";
 const props = defineProps({
 	data: {
 		type: Array,
@@ -32,6 +34,8 @@ const props = defineProps({
 	},
 });
 const emit = defineEmits(["nodeClick", "subNodeClick"]);
+
+const allExpose = ref("block");
 const handleNodeClick = (item, e) => {
 	e.target.classList.toggle("expanded");
 	emit("nodeClick", item);
@@ -51,6 +55,20 @@ const findSiblings = tag => {
 	}
 	return siblings;
 };
+
+// 展开与收缩
+const isExpose = () => {
+	// if (allExpose.value == "none") {
+	// 	allExpose.value = "block";
+	// }
+	// if (allExpose.value == "block") {
+	allExpose.value = "none";
+	// }
+};
+
+defineExpose({
+	isExpose,
+});
 </script>
 
 <style lang="scss" scoped>
@@ -70,7 +88,7 @@ const findSiblings = tag => {
 		background: #f5f7fa;
 	}
 	& ~ .gz-tree-list {
-		display: none;
+		display: v-bind(allExpose);
 	}
 	&.expanded {
 		img {
