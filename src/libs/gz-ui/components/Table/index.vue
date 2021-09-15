@@ -34,7 +34,9 @@
 							backgroundColor: headerbgColor,
 						}"
 					>
-						<th style="" v-for="(item, index) in config.columnData" :key="index">{{ item.label }}</th>
+						<th style="" v-for="(item, index) in config.columnData" :key="index" @click="cellClick(item.label)">
+							{{ item.label }}
+						</th>
 					</tr>
 				</thead>
 			</table>
@@ -59,7 +61,13 @@
 					<template v-if="state.currentData && state.currentData.length > 0">
 						<tr v-for="(item, index) in state.currentData" :key="index" @click="rowClick(item)">
 							<!-- 索引列 -->
-							<td class="index" v-if="config.columnData.findIndex(c => c.prop == 'index') >= 0">{{ item.index }}</td>
+							<td
+								class="index"
+								v-if="config.columnData.findIndex(c => c.prop == 'index') >= 0"
+								@click="cellClick(item.index)"
+							>
+								{{ item.index }}
+							</td>
 							<template v-for="(kValue, kKey, kIndex) in item" :key="kKey">
 								<!-- 基础列 -->
 								<td
@@ -71,6 +79,7 @@
 										minWidth: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].minWidth + 'px',
 										maxWidth: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].width + 'px',
 									}"
+									@click="cellClick(kValue)"
 								>
 									{{ kValue }}
 								</td>
@@ -155,7 +164,7 @@ const props = defineProps({
 	},
 });
 
-let emit = defineEmits(["rClick"]);
+let emit = defineEmits(["rowClick", "cellClick"]);
 
 let tableBodyRef = ref(null);
 let headerRef = ref(null);
@@ -183,9 +192,11 @@ onMounted(() => {
 
 // 行点击
 const rowClick = data => {
-	emit("rClick", data);
+	emit("rowClick", data);
 };
-
+const cellClick = data => {
+	emit("cellClick", data);
+};
 // 分页器数字切换
 const toggleCurrentPage = index => {
 	state.loading = true;

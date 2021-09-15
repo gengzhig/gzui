@@ -22,7 +22,8 @@
 					:pagination="state.pagination"
 					:maxHeight="state.maxHeight"
 					:config="state.config"
-					@rClick="rowClick"
+					@rowClick="rowClick"
+					@cellClick="cellClick"
 				>
 					<template #operateSlot>
 						<button class="gz-btn gz-small-btn gz-btn-confirm">授权</button>
@@ -51,7 +52,7 @@ const state = reactive({
 	pagination: true,
 	maxHeight: 300,
 	config: {
-		defaultLimit: "10条/页",
+		defaultLimit: 10,
 		defaultLimitData: [
 			{
 				id: 1,
@@ -693,11 +694,19 @@ const state = reactive({
 				explain: "表格行点击回调函数",
 				param: "共一个参数，为当前行数据。",
 			},
+			{
+				methodName: "cellClick",
+				explain: "表格单元格点击回调函数",
+				param: "共一个参数，为当前单元格数据。",
+			},
 		],
 	},
 });
 
 const rowClick = data => {
+	console.log(data);
+};
+const cellClick = data => {
 	console.log(data);
 };
 </script>
