@@ -8,7 +8,7 @@
 -->
 <template>
 	<div class="nav-bar">
-		<h3 class="title" @click="goHome">gzUI组件库133444</h3>
+		<h3 class="title" @click="goHome">gzUI组件库</h3>
 		<el-avatar icon="el-icon-user-solid"></el-avatar>
 	</div>
 </template>
@@ -16,7 +16,7 @@
 <script setup>
 import { useRouter } from "vue-router";
 const router = useRouter();
-const goHome = (e) => {
+const goHome = e => {
 	router.push("/home");
 };
 </script>
@@ -39,7 +39,7 @@ const goHome = (e) => {
 	align-items: center;
 	.title {
 		letter-spacing: 0.2em;
-    cursor: pointer;
+		cursor: pointer;
 	}
 }
 </style>

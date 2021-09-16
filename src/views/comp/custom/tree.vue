@@ -15,7 +15,7 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-tree :data="state.data"  @nodeClick="nodeClick"></gz-tree>
+				<gz-tree :data="state.data" @nodeClick="nodeClick"></gz-tree>
 			</div>
 			<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
 		</div>
@@ -88,14 +88,19 @@ const state = reactive({
 		tableData: [],
 	},
 	eventsBrief: {
-		tableData: [],
+		tableData: [
+			{
+				methodName: "nodeClick",
+				explain: "树组件获取当前点击节点内容",
+				param: "共一个参数，为当前点击节点内容。",
+			},
+		],
 	},
 });
 
 const nodeClick = val => {
-	console.log(val,"最终接收到的值");
+	console.log(val, "最终接收到的值");
 };
-
 </script>
 
 <style lang="scss" scoped></style>

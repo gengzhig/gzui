@@ -15,7 +15,6 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-tree ref="gTree" :data="state.data"></gz-tree>
 				<gz-table
 					:headerColor="state.headerColor"
 					:headerbgColor="state.headerbgColor"
@@ -47,63 +46,6 @@ import { onMounted, reactive, ref } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 const gTree = ref(null);
 const state = reactive({
-	data: [
-		{
-			label: "一级 1",
-			children: [
-				{
-					label: "二级 1-1",
-					children: [
-						{
-							label: "三级 1-1-1",
-						},
-					],
-				},
-			],
-		},
-		{
-			label: "一级 2",
-			children: [
-				{
-					label: "二级 2-1",
-					children: [
-						{
-							label: "三级 2-1-1",
-						},
-					],
-				},
-				{
-					label: "二级 2-2",
-					children: [
-						{
-							label: "三级 2-2-1",
-						},
-					],
-				},
-			],
-		},
-		{
-			label: "一级 3",
-			children: [
-				{
-					label: "二级 3-1",
-					children: [
-						{
-							label: "三级 3-1-1",
-						},
-					],
-				},
-				{
-					label: "二级 3-2",
-					children: [
-						{
-							label: "三级 3-2-1",
-						},
-					],
-				},
-			],
-		},
-	],
 	headerColor: "#FFF",
 	headerbgColor: "rgb(255, 124, 64)",
 	headerBorderColor: "",
@@ -140,6 +82,7 @@ const state = reactive({
 				label: "序号",
 				minWidth: 100,
 				fixed: true,
+				align: "center",
 				type: 0,
 			},
 			{
@@ -147,6 +90,7 @@ const state = reactive({
 				label: "名称",
 				minWidth: 200,
 				fixed: false,
+				align: "center",
 				type: 1,
 			},
 			{
@@ -154,6 +98,7 @@ const state = reactive({
 				label: "地址",
 				minWidth: 200,
 				fixed: false,
+				align: "center",
 				type: 1,
 			},
 			{
@@ -161,6 +106,7 @@ const state = reactive({
 				label: "手机",
 				minWidth: 200,
 				fixed: false,
+				align: "center",
 				type: 1,
 			},
 			{
@@ -168,6 +114,7 @@ const state = reactive({
 				label: "ISBN",
 				minWidth: 200,
 				fixed: false,
+				align: "center",
 				type: 1,
 			},
 			{
@@ -175,7 +122,8 @@ const state = reactive({
 				label: "出版社",
 				minWidth: 150,
 				fixed: false,
-				type: 1,
+				align: "center",
+				type: "img",
 			},
 			{
 				prop: "operate",
@@ -699,7 +647,8 @@ const state = reactive({
 	:pagination="state.pagination"
 	:maxHeight="state.maxHeight"
 	:config="state.config"
-	@rClick="rowClick"
+	@rowClick="rowClick"
+	@cellClick="cellClick"
 >
 	<template #operateSlot>
 		<button class="gz-btn gz-small-btn gz-btn-confirm">授权</button>
@@ -763,7 +712,6 @@ const state = reactive({
 
 const rowClick = data => {
 	console.log(data);
-	gTree.value.recuTree.isExpose();
 };
 const cellClick = data => {
 	console.log(data);

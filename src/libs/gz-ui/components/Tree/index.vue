@@ -8,7 +8,7 @@
 -->
 <template>
 	<div class="gz-tree">
-		<recusion-tree ref="recuTree" :data="data" @nodeClick="nodeClick"></recusion-tree>
+		<recusion-tree :data="data" @nodeClick="nodeClick"></recusion-tree>
 	</div>
 </template>
 
@@ -30,13 +30,9 @@ const props = defineProps({
 	},
 });
 const slots = useSlots();
-const recuTree = ref(null);
 const nodeClick = val => {
-	console.log(val);
 	emit("nodeClick", val);
 };
-
-defineExpose({ nodeClick, a: 1, recuTree });
 </script>
 
 <style lang="scss"></style>

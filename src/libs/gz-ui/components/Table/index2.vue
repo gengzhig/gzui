@@ -59,13 +59,19 @@
 				</colgroup>
 				<tbody>
 					<template v-if="state.currentData && state.currentData.length > 0">
-						<tr v-for="(item, index) in state.columnData" :key="index" @click="rowClick(item)">
+						<tr v-for="(item, index) in state.currentData" :key="index" @click="rowClick(item)">
 							<!-- 索引列 -->
-							<td class="index" v-if="item.prop == 'index'" @click="cellClick(item.index)">11</td>
+							<td
+								class="index"
+								v-if="config.columnData.findIndex(c => c.prop == 'index') >= 0"
+								@click="cellClick(item.index)"
+							>
+								{{ item.index }}
+							</td>
 
 							<template v-for="(kValue, kKey, kIndex) in item" :key="kKey">
 								<!-- 基础列 -->
-								<!-- <td
+								<td
 									:title="kValue"
 									v-if="kKey != 'operate' && kKey != 'index'"
 									class="singleRow"
@@ -77,9 +83,9 @@
 									@click="cellClick(kValue)"
 								>
 									{{ kValue }}
-								</td> -->
+								</td>
 								<!-- 操作列 -->
-								<td class="td-operate" v-if="item.prop == 'operate'">
+								<td class="td-operate" v-if="config.columnData[kIndex] && config.columnData[kIndex].type === 2">
 									<template v-for="(bItem, bIndex) in item.operate" :key="bIndex">
 										<button v-if="bItem == 'edit'" class="gz-btn gz-small-btn gz-btn-confirm">编辑</button>
 										<button v-if="bItem == 'del'" class="gz-btn gz-small-btn gz-btn-cancel">删除</button>

@@ -11,7 +11,7 @@ import gzModal from "./components/Modal/index.vue";
 import gzFiveStar from "./components/FiveStar/index.vue";
 import gzVirtualList from "./components/virtualList/index.vue";
 import gzTabs from "./components/Tabs/index.vue";
-import gzTable from "./components/Table/index.vue";
+import gzTable from "./components/Table/index2.vue";
 import gzPagination from "./components/Pagination/index.vue";
 import gzInput from "./components/Input/index.vue";
 import gzTree from "./components/Tree/index.vue";
