@@ -1,6 +1,6 @@
 {
   "name": "gengzhiui",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "description": "耿智开发的一套基于vue3的前端组件库",
   "scripts": {
     "dev": "vite",
