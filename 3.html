@@ -45,6 +45,8 @@
 </head>
 
 <body>
+    <button id="qp">全屏</button>
+    <button id="sx">刷新</button>
     <div class="container">
         <div class="line">
             <div class="label">姓名</div>
@@ -60,5 +62,25 @@
         </div>
     </div>
 </body>
+<script>
+    qp.addEventListener("click", function () {
+
+        if (document.fullscreenElement) {
+            document.exitFullscreen()
+            qp.innerHTML = "全屏";
+        } else {
+            qp.innerHTML = "退出全屏";
+            document.documentElement.requestFullscreen()
+        }
+        setTimeout(() => {
+            window.location.reload()
+        }, 1000)
+    })
+
+    sx.addEventListener("click", function () {
+        // window.location.reload()
+        window.location.replace(window.location.href)
+    })
+</script>
 
 </html>
