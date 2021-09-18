@@ -59,15 +59,42 @@
 				</colgroup>
 				<tbody>
 					<template v-if="state.currentData && state.currentData.length > 0">
-						<tr v-for="(item, index) in state.columnData" :key="index" @click="rowClick(item)">
+						<tr v-for="(item, index) in state.currentData" :key="index" @click="rowClick(item)">
 							<!-- 索引列 -->
-							<td class="index" v-if="item.prop == 'index'" @click="cellClick(item.index)">11</td>
+							<td
+								class="index"
+								v-if="config.columnData.findIndex(c => c.prop == 'index') >= 0"
+								:style="{ 'text-align': tableIndexColumnAlign }"
+								@click="cellClick(item.index)"
+							>
+								{{ item.index }}
+							</td>
 
 							<template v-for="(kValue, kKey, kIndex) in item" :key="kKey">
 								<!-- 基础列 -->
+								<!-- {{ config.columnData.findIndex(c => c.type == "slot") - 1 }} -->
 								<!-- <td
 									:title="kValue"
-									v-if="kKey != 'operate' && kKey != 'index'"
+									v-if="kKey != 'operate' && kKey != 'index' && config.columnData.findIndex(c => c.type == 'slot')"
+									class="singleRow"
+									:style="{
+										width: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].width + 'px',
+										minWidth: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].minWidth + 'px',
+										maxWidth: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].width + 'px',
+									}"
+									@click="cellClick(kValue)"
+								>
+									{{ kValue }}
+								</td> -->
+								{{ config.columnData.filter(c => c.type == "slot")[1] }}
+								<!-- 插槽列 -->
+								<!-- <td
+									:title="kValue"
+									v-if="
+										kKey != 'operate' &&
+										kKey != 'index' &&
+										kIndex == config.columnData.findIndex(c => c.type == 'slot') - 1
+									"
 									class="singleRow"
 									:style="{
 										width: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].width + 'px',
@@ -79,7 +106,7 @@
 									{{ kValue }}
 								</td> -->
 								<!-- 操作列 -->
-								<td class="td-operate" v-if="item.prop == 'operate'">
+								<td class="td-operate" v-if="kKey == 'operate'">
 									<template v-for="(bItem, bIndex) in item.operate" :key="bIndex">
 										<button v-if="bItem == 'edit'" class="gz-btn gz-small-btn gz-btn-confirm">编辑</button>
 										<button v-if="bItem == 'del'" class="gz-btn gz-small-btn gz-btn-cancel">删除</button>
@@ -132,7 +159,7 @@ export default {
 </script>
 
 <script setup>
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, computed } from "vue";
 const props = defineProps({
 	config: {
 		type: Object,
@@ -172,12 +199,21 @@ let state = reactive({
 	endIndex: 10,
 	baseLimit: 10,
 });
+
+const tableIndexColumnAlign = computed(
+	() => props.config.columnData.filter(c => c.prop == "index")[0].align || "center"
+);
 onMounted(() => {
 	state.tableData = JSON.parse(JSON.stringify(props.config.tableData || []));
 	state.columnData = JSON.parse(JSON.stringify(props.config.columnData || []));
 	if (state.tableData.length > 0) {
 		state.tableData.map((s, i) => {
 			s.index = i + 1;
+			// state.columnData.map(c=>{
+			// 	if (c.prop==) {
+
+			// 	}
+			// })
 		});
 	}
 	// 总条数 先按1页显示10条计算
@@ -213,7 +249,7 @@ const selectItem = item => {
 };
 
 const scrollBody = e => {
-	console.log(e.target.scrollLeft);
+	// console.log(e.target.scrollLeft);
 };
 
 const handleCurrentChange = val => {
@@ -254,7 +290,6 @@ const handleSizeChange = val => {
 					td {
 						color: #606266;
 						height: 48px;
-						text-align: center;
 						&.td-operate {
 							button {
 								margin: 0 5px;

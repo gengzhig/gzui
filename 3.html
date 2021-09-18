@@ -45,6 +45,16 @@
 </head>
 
 <body>
+    <button id="qp">全屏</button>
+    <button id="tcqp">退出全屏</button>
+    <button id="sxin">刷新</button>
+
+    <h1>1234567890</h1>
+    <h2>1234567890</h2>
+    <h3>1234567890</h3>
+    <h4>1234567890</h4>
+    <h5>1234567890</h5>
+    <h6>1234567890</h6>
     <div class="container">
         <div class="line">
             <div class="label">姓名</div>
@@ -59,6 +69,155 @@
             <div class="content">大范甘迪个大概的风格</div>
         </div>
     </div>
+    <div class="footer">
+        <h1>家庭住址</h1>
+        <h1>家庭住址</h1>
 </body>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    function overspreadContainer(canvasData, parentData) {
+        let originalW = canvasData.width;
+        let originalH = canvasData.height;
+
+        let winW = parentData.width;
+        let winH = parentData.height;
+        let wincfg = {
+            scale: {
+                x: 1,
+                y: 1
+            },
+            original: {
+                x: 0,
+                y: 0
+            },
+            translate: {
+                x: 0,
+                y: 0
+            }
+        };
+
+        let a = winW / originalW, b = winH / originalH;
+        if (a >= b) {
+            var xx = (winW - originalW * b) / 2 / b;
+            wincfg = {
+                scale: {
+                    x: a,
+                    y: b
+                },
+                original: {
+                    x: (winW - b * originalW) / (2 * winW),
+                    y: 0
+                },
+                translate: {
+                    x: xx,
+                    y: 0
+                }
+            }
+        } else {
+            var yy = (winH - originalH * a) / 2 / a;
+            wincfg = {
+                scale: {
+                    x: a,
+                    y: b
+                },
+                original: {
+                    x: 0,
+                    y: (winH - a * originalH) / (2 * winH)
+                },
+                translate: {
+                    x: 0,
+                    y: yy,
+                }
+            }
+        }
+
+        let scaleCfg = {
+            scale: wincfg.scale,
+            translateX: wincfg.translate.x,
+            translateY: wincfg.translate.y
+        }
+        return scaleCfg;
+    };
+    function launchFullScreen(element) {
+        // let cavasSize = {
+        //     width: document.body.offsetWidth,
+        //     height: document.body.offsetHeight
+        // };
+        // let contentSize = {
+        //     width: window.innerWidth,
+        //     height: window.innerHeight
+        // }
+        // let canvasScale = overspreadContainer(cavasSize, contentSize);
+        // $('body').css({
+        //     transform: `scale(${canvasScale.scale.x},${canvasScale.scale.y})`
+        // })
+        if (element.requestFullscreen) {
+            element.requestFullscreen();
+        } else if (element.mozRequestFullScreen) {
+            element.mozRequestFullScreen();
+        } else if (element.webkitRequestFullscreen) {
+            element.webkitRequestFullscreen();
+        } else if (element.msRequestFullscreen) {
+            element.msRequestFullscreen();
+        }
+    }
+
+    qp.addEventListener("click", function () {
+        launchFullScreen(document.documentElement); // 整个网页
+    });
+
+
+
+    function exit() {
+        var el = document,
+            cfs = el.cancelFullScreen || el.webkitCancelFullScreen || el.mozCancelFullScreen || el.exitFullScreen,
+            wscript;
+
+        if (typeof cfs != "undefined" && cfs) {
+            cfs.call(el);
+            return;
+        }
+
+        if (typeof window.ActiveXObject != "undefined") {
+            wscript = new ActiveXObject("WScript.Shell");
+            if (wscript != null) {
+                wscript.SendKeys("{F11}");
+            }
+        }
+    }
+
+    // 退出全屏模式!
+    tcqp.addEventListener("click", function () {
+        exit();
+    })
+
+    sxin.addEventListener("click", function (e) {
+        // e.preventDefault();
+        // window.location.reload();
+        // launchFullScreen(document.documentElement); // 整个网页
+    })
+
+    // // 启动全屏!
+    // launchFullScreen(document.documentElement); // 整个网页
+
+
+    // launchFullScreen(document.getElementById("videoElement")); // 某个页面元素
+    // const launchFullscreen = (element) => {
+    //     if (element.requestFullscreen) {
+    //         element.requestFullscreen();
+    //     } else if (element.mozRequestFullScreen) {
+    //         element.mozRequestFullScreen();
+    //     } else if (element.webkitRequestFullscreen) {
+    //         element.webkitRequestFullscreen();
+    //     } else if (element.msRequestFullscreen) {
+    //         element.msRequestFullscreen();
+    //     }
+    // }
+    // qp.addEventListener("click", function () {
+    //     // console.log(launchFullscreen);
+    //     launchFullScreen(document.documentElement); // 整个网页
+    // })
+
+</script>
 
 </html>
