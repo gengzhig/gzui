@@ -61,21 +61,13 @@
 					<template v-if="state.currentData && state.currentData.length > 0">
 						<tr v-for="(item, index) in state.currentData" :key="index" @click="rowClick(item)">
 							<!-- 索引列 -->
-							<td
-								class="index"
-								v-if="config.columnData.findIndex(c => c.prop == 'index') >= 0"
-								:style="{ 'text-align': tableIndexColumnAlign }"
-								@click="cellClick(item.index)"
-							>
-								{{ item.index }}
-							</td>
+							<td v-if="item.index">{{ item.index }}</td>
 
+							<!-- 基础列 -->
 							<template v-for="(kValue, kKey, kIndex) in item" :key="kKey">
-								<!-- 基础列 -->
-								<!-- {{ config.columnData.findIndex(c => c.type == "slot") - 1 }} -->
-								<!-- <td
+								<td
 									:title="kValue"
-									v-if="kKey != 'operate' && kKey != 'index' && config.columnData.findIndex(c => c.type == 'slot')"
+									v-if="kKey != 'operate' && kKey != 'index'"
 									class="singleRow"
 									:style="{
 										width: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].width + 'px',
@@ -85,35 +77,16 @@
 									@click="cellClick(kValue)"
 								>
 									{{ kValue }}
-								</td> -->
-								{{ config.columnData.filter(c => c.type == "slot")[1] }}
-								<!-- 插槽列 -->
-								<!-- <td
-									:title="kValue"
-									v-if="
-										kKey != 'operate' &&
-										kKey != 'index' &&
-										kIndex == config.columnData.findIndex(c => c.type == 'slot') - 1
-									"
-									class="singleRow"
-									:style="{
-										width: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].width + 'px',
-										minWidth: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].minWidth + 'px',
-										maxWidth: config.columnData[kIndex + 1] && config.columnData[kIndex + 1].width + 'px',
-									}"
-									@click="cellClick(kValue)"
-								>
-									{{ kValue }}
-								</td> -->
-								<!-- 操作列 -->
-								<td class="td-operate" v-if="kKey == 'operate'">
-									<template v-for="(bItem, bIndex) in item.operate" :key="bIndex">
-										<button v-if="bItem == 'edit'" class="gz-btn gz-small-btn gz-btn-confirm">编辑</button>
-										<button v-if="bItem == 'del'" class="gz-btn gz-small-btn gz-btn-cancel">删除</button>
-										<slot v-else name="operateSlot"></slot>
-									</template>
 								</td>
 							</template>
+							<!-- 操作列 -->
+							<td class="td-operate" v-if="item.operate">
+								<template v-for="(bItem, bIndex) in item.operate" :key="bIndex">
+									<button v-if="bItem == 'edit'" class="gz-btn gz-small-btn gz-btn-confirm">编辑</button>
+									<button v-if="bItem == 'del'" class="gz-btn gz-small-btn gz-btn-cancel">删除</button>
+									<slot v-else name="operateSlot"></slot>
+								</template>
+							</td>
 						</tr>
 					</template>
 					<div class="noData" v-else>暂无数据</div>

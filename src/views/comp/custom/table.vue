@@ -104,20 +104,21 @@ const state = reactive({
 				minWidth: 200,
 				fixed: false,
 				type: 1,
+				template: "selectPhone",
 			},
 			{
 				prop: "isbn",
 				label: "ISBN",
 				minWidth: 200,
 				fixed: false,
-				type: "slot",
+				type: 1,
 			},
 			{
 				prop: "publish",
 				label: "出版社",
 				minWidth: 150,
 				fixed: false,
-				type: "slot",
+				type: 1,
 			},
 			{
 				prop: "operate",
@@ -130,10 +131,10 @@ const state = reactive({
 		tableData: [
 			{
 				name: "web",
-				address: "北京大学",
-				phone: 1234234234,
-				isbn: "234234234",
-				publish: "北师大111",
+				address: "陕西宝鸡",
+				phone: 18829290520,
+				isbn: "123456789",
+				publish: "北师大",
 				operate: ["edit", "del"],
 			},
 			{
