@@ -67,148 +67,37 @@
 </body>
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-    function overspreadContainer(canvasData, parentData) {
-        let originalW = canvasData.width;
-        let originalH = canvasData.height;
 
-        let winW = parentData.width;
-        let winH = parentData.height;
-        let wincfg = {
-            scale: {
-                x: 1,
-                y: 1
-            },
-            original: {
-                x: 0,
-                y: 0
-            },
-            translate: {
-                x: 0,
-                y: 0
+    const keyboardEvent = () => {
+        const keyCodes = {
+            90: "z",
+            89: "y"
+        }
+        const onkeydown = (e) => {
+            const { ctrlKey, keyCode } = e;
+            let keyString = [];
+            if (ctrlKey) keyString.push("ctrl")
+            keyString.push(keyCodes[keyCode]);
+            keyString = keyString.join("+");
+            if (keyString === "ctrl+z") {
+                console.log("撤销")
             }
-        };
-
-        let a = winW / originalW, b = winH / originalH;
-        if (a >= b) {
-            var xx = (winW - originalW * b) / 2 / b;
-            wincfg = {
-                scale: {
-                    x: a,
-                    y: b
-                },
-                original: {
-                    x: (winW - b * originalW) / (2 * winW),
-                    y: 0
-                },
-                translate: {
-                    x: xx,
-                    y: 0
-                }
-            }
-        } else {
-            var yy = (winH - originalH * a) / 2 / a;
-            wincfg = {
-                scale: {
-                    x: a,
-                    y: b
-                },
-                original: {
-                    x: 0,
-                    y: (winH - a * originalH) / (2 * winH)
-                },
-                translate: {
-                    x: 0,
-                    y: yy,
-                }
+            else if (keyString === "ctrl+y") {
+                console.log("重做")
+            } else {
+                console.log("一般操作")
             }
         }
-
-        let scaleCfg = {
-            scale: wincfg.scale,
-            translateX: wincfg.translate.x,
-            translateY: wincfg.translate.y
+        const init = () => {
+            window.addEventListener("keydown", onkeydown)
+            return () => {
+                window.removeEventListener("keydown", onkeydown)
+            }
         }
-        return scaleCfg;
-    };
-    function launchFullScreen(element) {
-        // let cavasSize = {
-        //     width: document.body.offsetWidth,
-        //     height: document.body.offsetHeight
-        // };
-        // let contentSize = {
-        //     width: window.innerWidth,
-        //     height: window.innerHeight
-        // }
-        // let canvasScale = overspreadContainer(cavasSize, contentSize);
-        // $('body').css({
-        //     transform: `scale(${canvasScale.scale.x},${canvasScale.scale.y})`
-        // })
-        if (element.requestFullscreen) {
-            element.requestFullscreen();
-        } else if (element.mozRequestFullScreen) {
-            element.mozRequestFullScreen();
-        } else if (element.webkitRequestFullscreen) {
-            element.webkitRequestFullscreen();
-        } else if (element.msRequestFullscreen) {
-            element.msRequestFullscreen();
-        }
+        return init
     }
 
-    qp.addEventListener("click", function () {
-        launchFullScreen(document.documentElement); // 整个网页
-    });
-
-
-
-    function exit() {
-        var el = document,
-            cfs = el.cancelFullScreen || el.webkitCancelFullScreen || el.mozCancelFullScreen || el.exitFullScreen,
-            wscript;
-
-        if (typeof cfs != "undefined" && cfs) {
-            cfs.call(el);
-            return;
-        }
-
-        if (typeof window.ActiveXObject != "undefined") {
-            wscript = new ActiveXObject("WScript.Shell");
-            if (wscript != null) {
-                wscript.SendKeys("{F11}");
-            }
-        }
-    }
-
-    // 退出全屏模式!
-    tcqp.addEventListener("click", function () {
-        exit();
-    })
-
-    sxin.addEventListener("click", function (e) {
-        // e.preventDefault();
-        // window.location.reload();
-        // launchFullScreen(document.documentElement); // 整个网页
-    })
-
-    // // 启动全屏!
-    // launchFullScreen(document.documentElement); // 整个网页
-
-
-    // launchFullScreen(document.getElementById("videoElement")); // 某个页面元素
-    // const launchFullscreen = (element) => {
-    //     if (element.requestFullscreen) {
-    //         element.requestFullscreen();
-    //     } else if (element.mozRequestFullScreen) {
-    //         element.mozRequestFullScreen();
-    //     } else if (element.webkitRequestFullscreen) {
-    //         element.webkitRequestFullscreen();
-    //     } else if (element.msRequestFullscreen) {
-    //         element.msRequestFullscreen();
-    //     }
-    // }
-    // qp.addEventListener("click", function () {
-    //     // console.log(launchFullscreen);
-    //     launchFullScreen(document.documentElement); // 整个网页
-    // })
+    window.addEventListener("keydown", keyboardEvent())
 
 </script>
 
