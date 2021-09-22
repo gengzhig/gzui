@@ -15,19 +15,12 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-table
-					:headerColor="state.headerColor"
-					:headerbgColor="state.headerbgColor"
-					:headerBorderColor="state.headerBorderColor"
-					:pagination="state.pagination"
-					:maxHeight="state.maxHeight"
-					:config="state.config"
-					@rowClick="rowClick"
-					@cellClick="cellClick"
-				>
-					<template #operateSlot>
-						<button class="gz-btn gz-small-btn gz-btn-confirm">授权</button>
-						<button class="gz-btn gz-small-btn gz-btn-confirm">激活</button>
+				<gz-table :config="state.config">
+					<template #ggg="scope">
+						<el-button size="mini" @click="handleEdit(scope)">编辑</el-button>
+					</template>
+					<template #aaa="scope">
+						<el-button size="mini" @click="handleEdit(scope)">aaa</el-button>
 					</template>
 				</gz-table>
 			</div>
@@ -52,6 +45,20 @@ const state = reactive({
 	pagination: true,
 	maxHeight: 300,
 	config: {
+		style: {
+			stripe: true,
+			border: true,
+			height: 500,
+			index: true,
+			radio: true,
+			checkBox: true,
+			// maxHeight: 400,
+		},
+		defaultSort: {
+			prop: "phone",
+			order: "descending",
+			// ascending 表示升序，descending 表示降序，null 表示还原为原始顺序
+		},
 		defaultLimit: 10,
 		defaultLimitData: [
 			{
@@ -78,59 +85,56 @@ const state = reactive({
 		// type:0 一般列 1：索引列 2：扩展列
 		columnData: [
 			{
-				prop: "index",
-				label: "序号",
-				minWidth: 100,
-				fixed: true,
-				type: 0,
-			},
-			{
 				prop: "name",
 				label: "名称",
 				minWidth: 200,
-				fixed: false,
-				type: 1,
+				tooltip: true,
+				fixed: "left",
+				slotName: "ggg",
+				formatter: (row, column) => {
+					return row.name;
+				},
 			},
 			{
 				prop: "address",
 				label: "地址",
 				minWidth: 200,
-				fixed: false,
-				type: 1,
+				tooltip: true,
+				fixed: "left",
+				slotName: "aaa",
 			},
 			{
 				prop: "phone",
 				label: "手机",
 				minWidth: 200,
-				fixed: false,
-				type: 1,
+				tooltip: true,
+				sort: true,
 				template: "selectPhone",
 			},
 			{
 				prop: "isbn",
 				label: "ISBN",
 				minWidth: 200,
-				fixed: false,
-				type: 1,
+				tooltip: true,
+				sort: true,
 			},
 			{
 				prop: "publish",
 				label: "出版社",
 				minWidth: 150,
-				fixed: false,
-				type: 1,
+				tooltip: true,
+				sort: true,
 			},
 			{
 				prop: "operate",
 				label: "操作",
 				minWidth: 300,
-				fixed: true,
-				type: 2,
+				fixed: "right",
 			},
 		],
 		tableData: [
 			{
-				name: "web",
+				name: "webwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebweb",
 				address: "陕西宝鸡",
 				phone: 18829290520,
 				isbn: "123456789",
@@ -139,126 +143,6 @@ const state = reactive({
 			},
 			{
 				name: "map",
-				address: "北京大学",
-				phone: 1234234234,
-				isbn: "234234234",
-				publish: "北师大",
-				operate: ["edit", "del"],
-			},
-			{
-				name: "set",
-				address: "北京大学",
-				phone: 1234234234,
-				isbn: "234234234",
-				publish: "北师大",
-				operate: ["edit", "del"],
-			},
-			{
-				name: "html",
-				address: "北京大学",
-				phone: 1234234234,
-				isbn: "234234234",
-				publish: "北师大",
-				operate: ["edit"],
-			},
-			{
-				name: "css",
-				address: "北京大学",
-				phone: 1234234234,
-				isbn: "234234234",
-				publish: "北师大",
-				operate: ["edit", "del"],
-			},
-			{
-				name: "js",
-				address: "北京大学",
-				phone: 1234234234,
-				isbn: "234234234",
-				publish: "北师大",
-				operate: ["edit", "del"],
-			},
-			{
-				name: "node",
-				address: "北京大学",
-				phone: 1234234234,
-				isbn: "234234234",
-				publish: "北师大",
-				operate: ["edit", "del"],
-			},
-			{
-				name: "web",
-				address: "北京大学",
-				phone: 1234234234,
-				isbn: "234234234",
-				publish: "北师大",
-				operate: ["edit", "del"],
-			},
-			{
-				name: "map",
-				address: "北京大学",
-				phone: 1234234234,
-				isbn: "234234234",
-				publish: "北师大",
-				operate: ["edit", "del"],
-			},
-			{
-				name: "set",
-				address: "北京大学",
-				phone: 1234234234,
-				isbn: "234234234",
-				publish: "北师大",
-				operate: ["edit", "del"],
-			},
-			{
-				name: "html",
-				address: "北京大学",
-				phone: 1234234234,
-				isbn: "234234234",
-				publish: "北师大",
-				operate: ["edit"],
-			},
-			{
-				name: "css",
-				address: "北京大学",
-				phone: 1234234234,
-				isbn: "234234234",
-				publish: "北师大",
-				operate: ["edit", "del"],
-			},
-			{
-				name: "js",
-				address: "北京大学",
-				phone: 1234234234,
-				isbn: "234234234",
-				publish: "北师大",
-				operate: ["edit", "del"],
-			},
-			{
-				name: "node",
-				address: "北京大学",
-				phone: 1234234234,
-				isbn: "234234234",
-				publish: "北师大",
-				operate: ["edit", "del"],
-			},
-			{
-				name: "web",
-				address: "北京大学",
-				phone: 1234234234,
-				isbn: "234234234",
-				publish: "北师大",
-				operate: ["edit", "del"],
-			},
-			{
-				name: "map",
-				address: "北京大学",
-				phone: 1234234234,
-				isbn: "234234234",
-				publish: "北师大",
-				operate: ["edit", "del"],
-			},
-			{
-				name: "set",
 				address: "北京大学",
 				phone: 1234234234,
 				isbn: "234234234",
@@ -342,6 +226,11 @@ const rowClick = data => {
 };
 const cellClick = data => {
 	console.log(data);
+};
+
+//
+const handleEdit = row => {
+	console.log(row);
 };
 </script>
 
