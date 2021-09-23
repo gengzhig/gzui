@@ -31,8 +31,6 @@ const state = reactive({
 		style: {
 			stripe: true,
 			border: true,
-			height: 500,
-			index: true,
 		},
 		// type:0 一般列 1：索引列 2：扩展列
 		columnData: [

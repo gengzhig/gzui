@@ -44,7 +44,6 @@ const props = defineProps({
 		default: false,
 	},
 });
-console.log(props.disabled);
 const butttonSizeClass = computed(() => {
 	let buttonClass = "gz-button-";
 	switch (props.size) {

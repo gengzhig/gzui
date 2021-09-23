@@ -55,14 +55,58 @@
 					<gz-button type="text" disabled>Text Button</gz-button>
 				</el-row>
 			</div>
-			<base-copy :code="state.code"></base-copy>
+			<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
 		</div>
 	</div>
 </template>
 <script setup>
 import { reactive, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
-const state = reactive({});
+const state = reactive({
+	code: `<gz-button type="primary" plain>Primary</gz-button>`,
+	attributesBrief: {
+		tableData: [
+			{
+				param: "type",
+				explain: "按钮类型",
+				type: "String",
+				optional: "primary/success/info/warning/danger/text",
+				default: "default",
+			},
+			{
+				param: "disabled",
+				explain: "是否禁用",
+				type: "Boolean",
+				optional: "true/false",
+				default: "false",
+			},
+			{
+				param: "plain",
+				explain: "是否朴素",
+				type: "Boolean",
+				optional: "true/false",
+				default: "false",
+			},
+			{
+				param: "round",
+				explain: "是否带圆角",
+				type: "Boolean",
+				optional: "true/false",
+				default: "false",
+			},
+			{
+				param: "size",
+				explain: "按钮大小",
+				type: "String",
+				optional: "medium/small/mini",
+				default: "default",
+			},
+		],
+	},
+	eventsBrief: {
+		tableData: [],
+	},
+});
 </script>
 
 <style lang="scss" scoped>

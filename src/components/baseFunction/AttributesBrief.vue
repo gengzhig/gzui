@@ -31,11 +31,6 @@ const state = reactive({
 		style: {
 			stripe: true,
 			border: true,
-			height: 500,
-			maxHeight: 600,
-			index: true,
-			radio: true,
-			checkBox: true,
 		},
 		// type:0 一般列 1：索引列 2：扩展列
 		columnData: [
@@ -57,7 +52,7 @@ const state = reactive({
 			{
 				prop: "optional",
 				label: "可选值",
-				width: 200,
+				minWidth: 200,
 			},
 			{
 				prop: "default",
