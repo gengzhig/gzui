@@ -35,32 +35,31 @@ const props = defineProps({
 	},
 });
 const state = reactive({
-	headerColor: "#333",
-	headerbgColor: "",
-	headerBorderColor: "#e6e6e600",
-	pagination: false,
-	maxHeight: 300,
 	config: {
+		style: {
+			stripe: true,
+			border: true,
+			height: 500,
+			index: true,
+		},
 		// type:0 一般列 1：索引列 2：扩展列
 		columnData: [
 			{
 				prop: "methodName",
 				label: "方法名",
-				width: 150,
+				width: 200,
 				fixed: false,
 				type: 1,
 			},
 			{
 				prop: "explain",
 				label: "说明",
-				width: 150,
 				fixed: false,
 				type: 1,
 			},
 			{
 				prop: "param",
 				label: "参数",
-				width: 150,
 				fixed: false,
 				type: 1,
 			},

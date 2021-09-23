@@ -15,12 +15,14 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-table :config="state.config">
-					<template #ggg="scope">
-						<el-button size="mini" @click="handleEdit(scope)">编辑</el-button>
-					</template>
-					<template #aaa="scope">
-						<el-button size="mini" @click="handleEdit(scope)">aaa</el-button>
+				<gz-table
+					:config="state.config"
+					@handleCurrentChange="handleCurrentChange"
+					@handleSelectionChange="handleSelectionChange"
+					@cellClick="cellClick"
+				>
+					<template #operate="{ row }">
+						<el-button size="mini" @click="handleEdit(row.row)">编辑</el-button>
 					</template>
 				</gz-table>
 			</div>
@@ -37,13 +39,7 @@ export default {
 <script setup>
 import { onMounted, reactive, ref } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
-const gTree = ref(null);
 const state = reactive({
-	headerColor: "#FFF",
-	headerbgColor: "rgb(255, 124, 64)",
-	headerBorderColor: "",
-	pagination: true,
-	maxHeight: 300,
 	config: {
 		style: {
 			stripe: true,
@@ -52,45 +48,17 @@ const state = reactive({
 			index: true,
 			radio: true,
 			checkBox: true,
-			// maxHeight: 400,
 		},
 		defaultSort: {
 			prop: "phone",
-			order: "descending",
-			// ascending 表示升序，descending 表示降序，null 表示还原为原始顺序
+			order: "descending", // ascending 表示升序，descending 表示降序，null 表示还原为原始顺序
 		},
-		defaultLimit: 10,
-		defaultLimitData: [
-			{
-				id: 1,
-				value: "10",
-				text: "10条/页",
-			},
-			{
-				id: 2,
-				value: "20",
-				text: "20条/页",
-			},
-			{
-				id: 3,
-				value: "50",
-				text: "50条/页",
-			},
-			{
-				id: 4,
-				value: "100",
-				text: "100条/页",
-			},
-		],
-		// type:0 一般列 1：索引列 2：扩展列
 		columnData: [
 			{
 				prop: "name",
 				label: "名称",
 				minWidth: 200,
 				tooltip: true,
-				fixed: "left",
-				slotName: "ggg",
 				formatter: (row, column) => {
 					return row.name;
 				},
@@ -98,15 +66,13 @@ const state = reactive({
 			{
 				prop: "address",
 				label: "地址",
-				minWidth: 200,
+				width: 200,
 				tooltip: true,
-				fixed: "left",
-				slotName: "aaa",
 			},
 			{
 				prop: "phone",
 				label: "手机",
-				minWidth: 200,
+				width: 200,
 				tooltip: true,
 				sort: true,
 				template: "selectPhone",
@@ -114,21 +80,22 @@ const state = reactive({
 			{
 				prop: "isbn",
 				label: "ISBN",
-				minWidth: 200,
+				width: 200,
 				tooltip: true,
 				sort: true,
 			},
 			{
 				prop: "publish",
 				label: "出版社",
-				minWidth: 150,
+				width: 150,
 				tooltip: true,
 				sort: true,
 			},
 			{
 				prop: "operate",
 				label: "操作",
-				minWidth: 300,
+				width: 300,
+				slotName: "operate",
 				fixed: "right",
 			},
 		],
@@ -152,85 +119,90 @@ const state = reactive({
 		],
 	},
 	code: `<gz-table
-	:headerColor="state.headerColor"
-	:headerbgColor="state.headerbgColor"
-	:headerBorderColor="state.headerBorderColor"
-	:pagination="state.pagination"
-	:maxHeight="state.maxHeight"
 	:config="state.config"
-	@rowClick="rowClick"
+	@handleCurrentChange="handleCurrentChange"
+	@handleSelectionChange="handleSelectionChange"
 	@cellClick="cellClick"
 >
-	<template #operateSlot>
-		<button class="gz-btn gz-small-btn gz-btn-confirm">授权</button>
-		<button class="gz-btn gz-small-btn gz-btn-confirm">激活</button>
+	<template #operate="{ row }">
+		<el-button size="mini" @click="handleEdit(row.row)">编辑</el-button>
 	</template>
 </gz-table>`,
 	attributesBrief: {
 		tableData: [
 			{
-				param: "headerColor",
-				explain: "表格表头文字颜色",
-				type: "String",
+				param: "stripe",
+				explain: "是否为斑马纹",
+				type: "Boolean",
 				optional: "---",
-				default: "#FFF",
+				default: "",
 			},
 			{
-				param: "headerbgColor",
-				explain: "表格表头背景色",
-				type: "String",
+				param: "border",
+				explain: "是否带有纵向边框",
+				type: "Boolean",
 				optional: "---",
-				default: "rgb(255, 124, 64)",
+				default: "",
 			},
 			{
-				param: "headerBorderColor",
-				explain: "表格表头边框颜色",
-				type: "String",
-				optional: "---",
-				default: "#e6e6e6",
-			},
-			{
-				param: "maxHeight",
-				explain: "表格最大显示高度",
+				param: "height",
+				explain: "Table 的高度",
 				type: "Number",
 				optional: "---",
-				default: "---",
+				default: "",
 			},
 			{
-				param: "pagination",
-				explain: "开启分页",
+				param: "index",
+				explain: "是否带有表格序号",
 				type: "Boolean",
-				optional: "true/false",
-				default: "true",
+				optional: "---",
+				default: "",
+			},
+			{
+				param: "radio",
+				explain: "是否开启点击当前行回调",
+				type: "Boolean",
+				optional: "---",
+				default: "",
+			},
+			{
+				param: "checkBox",
+				explain: "是否开启复选框",
+				type: "Boolean",
+				optional: "---",
+				default: "",
 			},
 		],
 	},
 	eventsBrief: {
 		tableData: [
 			{
-				methodName: "rowClick",
+				methodName: "handleCurrentChange",
 				explain: "表格行点击回调函数",
-				param: "共一个参数，为当前行数据。",
+				param: "共两个参数，为currentRow, oldCurrentRow,。",
 			},
 			{
 				methodName: "cellClick",
 				explain: "表格单元格点击回调函数",
-				param: "共一个参数，为当前单元格数据。",
+				param: "共四个参数，row, column, cell, event。",
+			},
+			{
+				methodName: "handleSelectionChange",
+				explain: "当选择项发生变化时会触发该事件",
+				param: "共一个参数，为selection。",
 			},
 		],
 	},
 });
 
-const rowClick = data => {
-	console.log(data);
+const handleCurrentChange = (currentRow, oldCurrentRow) => {
+	console.log(currentRow, oldCurrentRow, "当前行数据");
 };
-const cellClick = data => {
-	console.log(data);
+const cellClick = (row, column, cell, event) => {
+	console.log(cell, "单元格点击");
 };
-
-//
-const handleEdit = row => {
-	console.log(row);
+const handleSelectionChange = selection => {
+	console.log(selection, "当前页勾选数据");
 };
 </script>
 
