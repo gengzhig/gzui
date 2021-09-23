@@ -99,16 +99,10 @@ const state = reactive({
 			},
 			{
 				param: "defaultLimitData",
-				explain: "分页器每页最大条数list",
+				explain: "分页器每页配置",
 				type: "Array",
 				optional: "---",
-				default: [
-					{
-						id: 1,
-						value: "10",
-						text: "10条/页",
-					},
-				],
+				default: "[{id: 1,value: '10',text: '10条/页'}]",
 			},
 		],
 	},

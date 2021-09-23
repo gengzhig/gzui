@@ -9,15 +9,7 @@
 <template>
 	<div class="description">属性介绍</div>
 	<div class="highlight code">
-		<gz-table
-			:headerColor="state.headerColor"
-			:headerbgColor="state.headerbgColor"
-			:headerBorderColor="state.headerBorderColor"
-			:pagination="state.pagination"
-			:maxHeight="state.maxHeight"
-			:config="state.config"
-		>
-		</gz-table>
+		<gz-table :config="state.config"> </gz-table>
 	</div>
 </template>
 
@@ -40,7 +32,10 @@ const state = reactive({
 			stripe: true,
 			border: true,
 			height: 500,
+			maxHeight: 600,
 			index: true,
+			radio: true,
+			checkBox: true,
 		},
 		// type:0 一般列 1：索引列 2：扩展列
 		columnData: [
@@ -48,35 +43,26 @@ const state = reactive({
 				prop: "param",
 				label: "参数",
 				width: 200,
-				fixed: false,
-				type: 1,
 			},
 			{
 				prop: "explain",
 				label: "说明",
-				fixed: false,
-				type: 1,
+				minWidth: 200,
 			},
 			{
 				prop: "type",
 				label: "类型",
 				width: 200,
-				fixed: false,
-				type: 1,
 			},
 			{
 				prop: "optional",
 				label: "可选值",
 				width: 200,
-				fixed: false,
-				type: 1,
 			},
 			{
 				prop: "default",
 				label: "默认值",
 				width: 200,
-				fixed: false,
-				type: 1,
 			},
 		],
 		tableData: props.aBrief.tableData,

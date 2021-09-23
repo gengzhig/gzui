@@ -31,7 +31,6 @@ export default {
 </script>
 
 <script setup>
-
 import attributesBrief from "@/components/baseFunction/AttributesBrief.vue";
 import eventsBrief from "@/components/baseFunction/EventsBrief.vue";
 

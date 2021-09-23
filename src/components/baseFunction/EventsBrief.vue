@@ -9,15 +9,7 @@
 <template>
 	<div class="description">事件介绍</div>
 	<div class="highlight code">
-		<gz-table
-			:headerColor="state.headerColor"
-			:headerbgColor="state.headerbgColor"
-			:headerBorderColor="state.headerBorderColor"
-			:pagination="state.pagination"
-			:maxHeight="state.maxHeight"
-			:config="state.config"
-		>
-		</gz-table>
+		<gz-table :config="state.config"> </gz-table>
 	</div>
 </template>
 
@@ -49,19 +41,16 @@ const state = reactive({
 				label: "方法名",
 				width: 200,
 				fixed: false,
-				type: 1,
 			},
 			{
 				prop: "explain",
 				label: "说明",
 				fixed: false,
-				type: 1,
 			},
 			{
 				prop: "param",
 				label: "参数",
 				fixed: false,
-				type: 1,
 			},
 		],
 		tableData: props.eBrief.tableData,

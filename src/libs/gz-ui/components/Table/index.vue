@@ -23,7 +23,7 @@
 				<el-table-column
 					v-if="item.slotName"
 					:width="item.width"
-					:min-width="item.minWidth"
+					:min-width="item?.minWidth"
 					:prop="item.prop"
 					:label="item.label"
 					:fixed="item.fixed"
@@ -37,7 +37,7 @@
 					v-else
 					align="center"
 					:width="item.width"
-					:min-width="item.minWidth"
+					:min-width="item?.minWidth"
 					:fixed="item.fixed"
 					:prop="item.prop"
 					:label="item.label"
