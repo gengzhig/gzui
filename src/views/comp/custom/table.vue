@@ -22,7 +22,7 @@
 					@cellClick="cellClick"
 				>
 					<template #operate="{ row }">
-						<el-button size="mini" @click="handleEdit(row.row)">编辑</el-button>
+						<gz-button @click="handleEdit(row.row)">编辑</gz-button>
 					</template>
 				</gz-table>
 			</div>
@@ -31,11 +31,6 @@
 	</div>
 </template>
 
-<script>
-export default {
-	components: { baseCopy },
-};
-</script>
 <script setup>
 import { onMounted, reactive, ref } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";

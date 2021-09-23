@@ -28,11 +28,11 @@
 			</div>
 			<div class="appMain">
 				<div class="operateGroup">
-					<button class="gz-btn gz-btn-confirm">撤销</button>
-					<button class="gz-btn gz-btn-confirm">置顶</button>
-					<button class="gz-btn gz-btn-confirm">置底</button>
-					<button class="gz-btn gz-btn-confirm">上移</button>
-					<button class="gz-btn gz-btn-confirm">下移</button>
+					<gz-button type="primary">撤销</gz-button>
+					<gz-button type="primary">置顶</gz-button>
+					<gz-button type="primary">置底</gz-button>
+					<gz-button type="primary">上移</gz-button>
+					<gz-button type="primary">下移</gz-button>
 				</div>
 				<div class="canvas" ref="canvasRef" :style="containerStyle">
 					<comp-list v-for="(item, index) in json.blocks" :key="index" :block="item"></comp-list>
@@ -40,9 +40,7 @@
 			</div>
 			<div class="operateMain" @click="change">
 				<gz-tabs v-model:activeName="state.activeName" :width="400" :height="500" :headerHeight="60">
-					<div label="属性" name="first" class="tab-pane">
-						属性
-					</div>
+					<div label="属性" name="first" class="tab-pane">属性</div>
 					<div label="数据" name="second" class="tab-pane">数据</div>
 					<div label="交互" name="third" class="tab-pane">交互</div>
 				</gz-tabs>

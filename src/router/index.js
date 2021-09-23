@@ -29,6 +29,14 @@ const router = createRouter({
 					component: () => import("views/comp/home.vue"),
 				},
 				{
+					path: "button",
+					name: "Button",
+					meta: {
+						title: "按钮",
+					},
+					component: () => import("views/comp/custom/button.vue"),
+				},
+				{
 					path: "tabs",
 					name: "Tabs",
 					meta: {
@@ -99,14 +107,6 @@ const router = createRouter({
 						title: "轮播图",
 					},
 					component: () => import("views/comp/custom/carousel.vue"),
-				},
-				{
-					path: "magnifyingGlass",
-					name: "MagnifyingGlass",
-					meta: {
-						title: "放大镜",
-					},
-					component: () => import("views/comp/custom/magnifyingGlass.vue"),
 				},
 				{
 					path: "fiveStar",

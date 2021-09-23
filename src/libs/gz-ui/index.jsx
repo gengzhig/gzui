@@ -6,6 +6,7 @@
  * @Description: file content
  */
 
+import gzButton from "./components/Button/index.vue";
 import gzSelector from "./components/Selector/index.vue";
 import gzModal from "./components/Modal/index.vue";
 import gzFiveStar from "./components/FiveStar/index.vue";
@@ -32,6 +33,7 @@ gzUI.install = function (Vue) {
 	Vue.component(gzTree.name, gzTree);
 	Vue.component(gzCarousel.name, gzCarousel);
 	Vue.component(gzCarouselItem.name, gzCarouselItem);
+	Vue.component(gzButton.name, gzButton);
 };
 
 function compSign() {

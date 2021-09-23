@@ -14,7 +14,7 @@
 		<p>弹出一个对话框，适合需要定制性更大的场景。</p>
 		<div class="meta">
 			<div class="demo">
-				<button class="gz-btn gz-btn-confirm" @click="openDialog">新增</button>
+				<gz-button type="primary" @click="openDialog">新增</gz-button>
 				<gz-modal
 					ref="gzModel"
 					:show="show"
