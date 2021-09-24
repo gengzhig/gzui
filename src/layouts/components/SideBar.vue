@@ -11,7 +11,7 @@
 		<el-row class="tac">
 			<el-col :span="24">
 				<el-menu
-					:default-active="defaultActiveIndex"
+					:default-active="state.defaultActiveIndex"
 					class="el-menu-vertical-demo"
 					@open="handleOpen"
 					@close="handleClose"
@@ -21,9 +21,9 @@
 					text-color="#fff"
 					active-text-color="#ffd04b"
 				>
-					<el-menu-item
+					<!-- <el-menu-item
 						:index="index + 1 + ''"
-						v-for="(item, index) in compMenus"
+						v-for="(item, index) in state.compMenus"
 						:key="index"
 						@click="menuClick(item)"
 					>
@@ -31,71 +31,74 @@
 						<template v-slot:title>
 							<span>{{ item.name }}</span>
 						</template>
-					</el-menu-item>
+					</el-menu-item> -->
+					<sub-sideBar v-if="state.compMenus.length > 0" :menuData="state.compMenus"></sub-sideBar>
 				</el-menu>
 			</el-col>
 		</el-row>
 	</div>
 </template>
 
-<script>
+<script setup>
 import { ref, reactive, toRefs, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
-export default {
-	setup() {
-		const router = useRouter();
-		let state = reactive({
-			compMenus: [],
-			defaultActiveIndex: "1",
-		});
-		let defaultOpeneds = ref(["1"]);
-		onMounted(() => {
-			let routerMenu = vm.$route.matched[0].children.map(item => {
-				return {
-					name: item.meta.title,
-					path: item.path,
-				};
-			});
-			vm.$store.commit("saveRouterMenu", routerMenu);
-			state.compMenus = routerMenu;
+import SubSideBar from "./SubSideBar.vue";
 
-			let findIndex = vm.$store.state.routerMenu.findIndex(item => {
-				return vm.$route.path.includes(item.path);
-			});
-			state.defaultActiveIndex = findIndex + 1 + "";
-		});
-		watch(
-			() => {
-				return vm.$route;
-			},
-			value => {
-				// 默认菜单高亮
-				let findIndex = vm.$store.state.routerMenu.findIndex(item => {
-					return value.path.includes(item.path);
-				});
-				state.defaultActiveIndex = findIndex + 1 + "";
-			}
-		);
-		const menuClick = item => {
-			router.push(item.path);
-		};
-		const handleOpen = (key, keyPath) => {
-			console.log(key, keyPath);
-		};
-		const handleClose = (key, keyPath) => {
-			console.log(key, keyPath);
-		};
-		const handleSelect = (key, keyPath) => {};
+const router = useRouter();
+let state = reactive({
+	compMenus: [],
+	defaultActiveIndex: "1",
+});
+let defaultOpeneds = ref(["1"]);
+onMounted(() => {
+	let routerMenu = vm.$route.matched[0].children.map(item => {
 		return {
-			...toRefs(state),
-			defaultOpeneds,
-			handleOpen,
-			handleClose,
-			handleSelect,
-			menuClick,
+			name: item.meta.title,
+			path: item.path,
+			children: formatterTree(item.children),
 		};
+	});
+	function formatterTree(data) {
+		let result = [];
+		if (!data || data.length == 0) {
+			return [];
+		} else {
+			result = data.map(d => {
+				return { name: d.meta.title, path: d.path };
+			});
+		}
+		return result;
+	}
+	vm.$store.commit("saveRouterMenu", routerMenu);
+	state.compMenus = routerMenu;
+
+	let findIndex = vm.$store.state.routerMenu.findIndex(item => {
+		return vm.$route.path.includes(item.path);
+	});
+	state.defaultActiveIndex = findIndex + 1 + "";
+});
+watch(
+	() => {
+		return vm.$route;
 	},
+	value => {
+		// 默认菜单高亮
+		let findIndex = vm.$store.state.routerMenu.findIndex(item => {
+			return value.path.includes(item.path);
+		});
+		state.defaultActiveIndex = findIndex + 1 + "";
+	}
+);
+const menuClick = item => {
+	router.push(item.path);
 };
+const handleOpen = (key, keyPath) => {
+	console.log(key, keyPath);
+};
+const handleClose = (key, keyPath) => {
+	console.log(key, keyPath);
+};
+const handleSelect = (key, keyPath) => {};
 </script>
 
 <style lang="scss" scoped>
