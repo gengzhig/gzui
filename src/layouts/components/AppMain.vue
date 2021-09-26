@@ -9,7 +9,7 @@
 <template>
 	<div class="app-main">
 		<el-breadcrumb separator-class="el-icon-arrow-right">
-			<el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+			<!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
 			<el-breadcrumb-item :to="{ path: item.path }" v-for="(item, index) in routerList" :key="index">{{
 				item.meta.title
 			}}</el-breadcrumb-item>
@@ -28,19 +28,16 @@ export default {
 			routerList: [],
 		});
 		const route = useRoute();
+
 		onMounted(() => {
-			route.matched.splice(0, 1);
 			state.routerList = route.matched;
 		});
 		watch(
 			() => {
 				return route.path;
 			},
-			value => {
-				let result = route.matched[0].children.filter(item => {
-					return "/" + item.path == value;
-				})[0];
-				state.routerList = [result];
+			(oldValue, newValue) => {
+				state.routerList = route.matched;
 			}
 		);
 		return {

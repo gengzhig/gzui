@@ -21,17 +21,6 @@
 					text-color="#fff"
 					active-text-color="#ffd04b"
 				>
-					<!-- <el-menu-item
-						:index="index + 1 + ''"
-						v-for="(item, index) in state.compMenus"
-						:key="index"
-						@click="menuClick(item)"
-					>
-						<i class="el-icon-menu"></i>
-						<template v-slot:title>
-							<span>{{ item.name }}</span>
-						</template>
-					</el-menu-item> -->
 					<sub-sideBar v-if="state.compMenus.length > 0" :menuData="state.compMenus"></sub-sideBar>
 				</el-menu>
 			</el-col>
@@ -47,7 +36,7 @@ import SubSideBar from "./SubSideBar.vue";
 const router = useRouter();
 let state = reactive({
 	compMenus: [],
-	defaultActiveIndex: "1",
+	defaultActiveIndex: "设计原则",
 });
 let defaultOpeneds = ref(["1"]);
 onMounted(() => {
@@ -55,18 +44,20 @@ onMounted(() => {
 		return {
 			name: item.meta.title,
 			path: item.path,
-			children: formatterTree(item.children),
+			icon: "el-icon-" + item.meta.icon,
+			children: formatterTree(item.children, item.path),
 		};
 	});
-	function formatterTree(data) {
+	function formatterTree(data, sPath) {
 		let result = [];
 		if (!data || data.length == 0) {
 			return [];
 		} else {
 			result = data.map(d => {
-				return { name: d.meta.title, path: d.path };
+				return { name: d.meta.title, icon: "el-icon-" + d.meta.icon, path: sPath + "/" + d.path };
 			});
 		}
+
 		return result;
 	}
 	vm.$store.commit("saveRouterMenu", routerMenu);

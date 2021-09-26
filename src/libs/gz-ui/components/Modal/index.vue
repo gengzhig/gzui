@@ -162,7 +162,7 @@ export default {
 			padding: 10px 20px;
 			display: flex;
 			justify-content: flex-end;
-			.gz-btn:first-child {
+			.gz-button:first-child {
 				margin-right: 10px;
 			}
 		}

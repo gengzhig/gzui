@@ -18,6 +18,7 @@ import gzInput from "./components/Input/index.vue";
 import gzTree from "./components/Tree/index.vue";
 import gzCarousel from "./components/Carousel/index.vue";
 import gzCarouselItem from "./components/Carousel/item.vue";
+import gzEllipsis from "./components/Ellipsis/index.vue";
 import config from "./config.js";
 
 let gzUI = {};
@@ -34,6 +35,7 @@ gzUI.install = function (Vue) {
 	Vue.component(gzCarousel.name, gzCarousel);
 	Vue.component(gzCarouselItem.name, gzCarouselItem);
 	Vue.component(gzButton.name, gzButton);
+	Vue.component(gzEllipsis.name, gzEllipsis);
 };
 
 function compSign() {

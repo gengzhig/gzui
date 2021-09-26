@@ -21,26 +21,29 @@ const router = createRouter({
 			redirect: "/home",
 			children: [
 				{
-					path: "home",
+					path: "/home",
 					name: "Home",
 					meta: {
 						title: "设计原则",
+						icon: "eleme",
 					},
 					component: () => import("views/comp/home.vue"),
 				},
 				{
-					path: "general",
-					name: "General",
+					path: "/general",
 					redirect: "/general/button",
+					component: Layout,
 					meta: {
 						title: "通用组件",
+						icon: "setting",
 					},
 					children: [
 						{
-							path: "/button",
+							path: "button",
 							name: "Button",
 							meta: {
 								title: "按钮",
+								icon: "s-tools",
 							},
 							component: () => import("views/comp/custom/button.vue"),
 						},
@@ -49,16 +52,28 @@ const router = createRouter({
 							name: "Carousel",
 							meta: {
 								title: "轮播图",
+								icon: "s-platform",
 							},
 							component: () => import("views/comp/custom/carousel.vue"),
+						},
+						{
+							path: "ellipsis",
+							name: "Ellipsis",
+							meta: {
+								title: "文本省略",
+								icon: "s-platform",
+							},
+							component: () => import("views/comp/custom/ellipsis.vue"),
 						},
 					],
 				},
 				{
-					path: "dataEntry",
-					name: "DataEntry",
+					path: "/dataEntry",
+					component: Layout,
+					redirect: "/dataEntry/input",
 					meta: {
 						title: "数据录入组件",
+						icon: "download",
 					},
 					children: [
 						{
@@ -66,6 +81,7 @@ const router = createRouter({
 							name: "Input",
 							meta: {
 								title: "输入框",
+								icon: "s-order",
 							},
 							component: () => import("views/comp/custom/input.vue"),
 						},
@@ -74,6 +90,7 @@ const router = createRouter({
 							name: "Selector",
 							meta: {
 								title: "下拉菜单",
+								icon: "s-document",
 							},
 							component: () => import("views/comp/custom/selector.vue"),
 						},
@@ -82,16 +99,20 @@ const router = createRouter({
 							name: "FiveStar",
 							meta: {
 								title: "五星好评",
+								icon: "magic-stick",
 							},
 							component: () => import("views/comp/custom/fiveStar.vue"),
 						},
 					],
 				},
 				{
-					path: "dataPresentation",
+					path: "/dataPresentation",
 					name: "DataPresentation",
+					redirect: "/dataPresentation/virtualList",
+					component: Layout,
 					meta: {
 						title: "数据展示组件",
+						icon: "mobile",
 					},
 					children: [
 						{
@@ -99,6 +120,7 @@ const router = createRouter({
 							name: "VirtualList",
 							meta: {
 								title: "虚拟列表",
+								icon: "document-copy",
 							},
 							component: () => import("views/comp/custom/virtualList.vue"),
 						},
@@ -107,6 +129,7 @@ const router = createRouter({
 							name: "Table",
 							meta: {
 								title: "Table表格",
+								icon: "tabke-lamp",
 							},
 							component: () => import("views/comp/custom/table.vue"),
 						},
@@ -115,6 +138,7 @@ const router = createRouter({
 							name: "Tree",
 							meta: {
 								title: "树组件",
+								icon: "film",
 							},
 							component: () => import("views/comp/custom/tree.vue"),
 						},
@@ -123,16 +147,20 @@ const router = createRouter({
 							name: "Chart",
 							meta: {
 								title: "图表",
+								icon: "attract",
 							},
 							component: () => import("views/comp/chart/Base.vue"),
 						},
 					],
 				},
 				{
-					path: "nav",
+					path: "/nav",
 					name: "Nav",
+					component: Layout,
+					redirect: "/nav/pagination",
 					meta: {
 						title: "导航组件",
+						icon: "attract",
 					},
 					children: [
 						{
@@ -140,6 +168,7 @@ const router = createRouter({
 							name: "Pagination",
 							meta: {
 								title: "分页器",
+								icon: "attract",
 							},
 							component: () => import("views/comp/custom/pagination.vue"),
 						},
@@ -148,6 +177,7 @@ const router = createRouter({
 							name: "Tabs",
 							meta: {
 								title: "Tabs标签页",
+								icon: "attract",
 							},
 							component: () => import("views/comp/custom/tabs.vue"),
 						},
@@ -156,16 +186,20 @@ const router = createRouter({
 							name: "MultiMenu",
 							meta: {
 								title: "多级菜单",
+								icon: "attract",
 							},
 							component: () => import("views/comp/custom/multiMenu.vue"),
 						},
 					],
 				},
 				{
-					path: "feedBack",
+					path: "/feedBack",
 					name: "FeedBack",
+					redirect: "/feedBack/modalBox",
+					component: Layout,
 					meta: {
 						title: "反馈组件",
+						icon: "attract",
 					},
 					children: [
 						{
@@ -173,6 +207,7 @@ const router = createRouter({
 							name: "ModalBox",
 							meta: {
 								title: "模态框",
+								icon: "attract",
 							},
 							component: () => import("views/comp/custom/modalBox.vue"),
 						},
