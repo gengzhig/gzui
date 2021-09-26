@@ -27,7 +27,9 @@
 import { reactive, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 const state = reactive({
-	code: ``,
+	code: `<gz-ellipsis :width="300" :line="3" triggerClick>
+请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
+</gz-ellipsis>`,
 	attributesBrief: {
 		tableData: [
 			{
