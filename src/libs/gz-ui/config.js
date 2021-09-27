@@ -6,6 +6,7 @@
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\config.js
  */
+import cData from "@/libs/gz-ui/components/Carousel/data.js";
 let virtualResult = [];
 for (let i = 1; i <= 2000; i++) {
 	virtualResult.push({
@@ -15,6 +16,9 @@ for (let i = 1; i <= 2000; i++) {
 }
 
 let config = {
+	carousel: {
+		cData: cData,
+	},
 	activeName: "first",
 	virtualData: virtualResult,
 	tableConfig: {

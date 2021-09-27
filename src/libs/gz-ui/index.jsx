@@ -157,4 +157,35 @@ compInfo.register({
 	render: () => <gz-button type="primary">按钮</gz-button>,
 	key: "0008",
 });
+
+compInfo.register({
+	label: "轮播图",
+	preview: () => (
+		<gz-carousel
+			dotBgColor="#333"
+			imgFit="cover"
+			autoplay={true}
+			duration={2000}
+			initial={0}
+			hasDot={true}
+			hasDirector={true}
+		>
+			<gz-carousel-item v-for="(item, index) in config.carousel.cData" key={index}>
+				<img src={item.src} />
+			</gz-carousel-item>
+		</gz-carousel>
+	),
+	render: () => (
+		<gz-carousel
+			dotBgColor="#333"
+			imgFit="cover"
+			autoplay={true}
+			duration={2000}
+			initial={0}
+			hasDot={true}
+			hasDirector={true}
+		></gz-carousel>
+	),
+	key: "0009",
+});
 export default { gzUI, compInfo };
