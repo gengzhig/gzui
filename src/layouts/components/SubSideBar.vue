@@ -2,16 +2,16 @@
 	<template v-for="(item, index) in menuData" :key="index">
 		<!-- 只有一级菜单 -->
 		<el-menu-item :index="item.name" v-if="!item.children || item.children.length == 0" @click="menuClick(item)">
-			<i :class="item.icon"></i>
+			<i v-if="!store.state.isMobile" :class="item.icon"></i>
 			<span>{{ item.name }}</span>
 		</el-menu-item>
 		<el-submenu v-else :index="item.name">
 			<template #title>
-				<i :class="item.icon"></i>
+				<i v-if="!store.state.isMobile" :class="item.icon"></i>
 				<span>{{ item.name }}</span>
 			</template>
 			<el-menu-item :index="cItem.name" v-for="cItem in item.children" @click="menuClick(cItem)">
-				<i :class="item.icon"></i>
+				<i v-if="!store.state.isMobile" :class="item.icon"></i>
 				<span>{{ cItem.name }}</span>
 			</el-menu-item>
 		</el-submenu>
@@ -39,6 +39,7 @@ const emit = defineEmits();
 const state = reactive({});
 const contentHeight = computed(() => {});
 const store = useStore();
+
 const route = useRoute();
 const slots = useSlots();
 const router = useRouter();
@@ -50,4 +51,16 @@ const menuClick = item => {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style lang="scss">
+.mobile .el-menu-item {
+	padding-left: 5px !important;
+	padding: 0 5px;
+}
+.mobile .el-submenu__title {
+	padding: 0 5px;
+	padding-left: 5px !important;
+}
+.mobile .el-submenu__icon-arrow {
+	right: 5px;
+}
+</style>

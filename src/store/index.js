@@ -11,13 +11,22 @@ import { Store } from "vuex";
 import { createStore } from "vuex";
 
 export default createStore({
-  state: {
-    routerMenu: localStorage.getItem("routerMenu") ? JSON.parse(localStorage.getItem("routerMenu")) : []
-  },
-  mutations: {
-    saveRouterMenu(state, payload) {
-      state.routerMenu = payload
-      localStorage.setItem("routerMenu", JSON.stringify(payload));
-    }
-  }
+	state: {
+		isMobile: false,
+		routerMenu: localStorage.getItem("routerMenu") ? JSON.parse(localStorage.getItem("routerMenu")) : [],
+	},
+	mutations: {
+		saveRouterMenu(state, payload) {
+			state.routerMenu = payload;
+			localStorage.setItem("routerMenu", JSON.stringify(payload));
+		},
+		toggleDevice(state, payload) {
+			state.isMobile = payload;
+		},
+	},
+	actions: {
+		changeDevice({ commit }, payload) {
+			commit("toggleDevice", payload);
+		},
+	},
 });

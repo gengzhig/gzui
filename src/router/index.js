@@ -34,7 +34,7 @@ const router = createRouter({
 					redirect: "/general/button",
 					component: Layout,
 					meta: {
-						title: "通用组件",
+						title: "通用",
 						icon: "setting",
 					},
 					children: [
@@ -72,7 +72,7 @@ const router = createRouter({
 					component: Layout,
 					redirect: "/dataEntry/input",
 					meta: {
-						title: "数据录入组件",
+						title: "数据录入",
 						icon: "download",
 					},
 					children: [
@@ -111,7 +111,7 @@ const router = createRouter({
 					redirect: "/dataPresentation/virtualList",
 					component: Layout,
 					meta: {
-						title: "数据展示组件",
+						title: "数据展示",
 						icon: "mobile",
 					},
 					children: [
@@ -159,7 +159,7 @@ const router = createRouter({
 					component: Layout,
 					redirect: "/nav/pagination",
 					meta: {
-						title: "导航组件",
+						title: "导航",
 						icon: "attract",
 					},
 					children: [
@@ -198,7 +198,7 @@ const router = createRouter({
 					redirect: "/feedBack/modalBox",
 					component: Layout,
 					meta: {
-						title: "反馈组件",
+						title: "反馈",
 						icon: "attract",
 					},
 					children: [

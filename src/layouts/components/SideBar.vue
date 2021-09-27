@@ -7,7 +7,7 @@
  * @FilePath: \gi-ui\src\layouts\components\SideBar.vue
 -->
 <template>
-	<div class="side-bar">
+	<div class="side-bar" :class="[state.isMobile ? 'mobile' : '']">
 		<el-row class="tac">
 			<el-col :span="24">
 				<el-menu
@@ -29,17 +29,32 @@
 </template>
 
 <script setup>
-import { ref, reactive, toRefs, onMounted, watch } from "vue";
+import { ref, reactive, toRefs, onBeforeMount, onBeforeUnmount, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import SubSideBar from "./SubSideBar.vue";
-
+const WIDTH = 375;
 const router = useRouter();
+const store = useStore();
 let state = reactive({
+	isMobile: false,
 	compMenus: [],
 	defaultActiveIndex: "设计原则",
 });
 let defaultOpeneds = ref(["1"]);
+// 挂载前
+onBeforeMount(() => {
+	window.addEventListener("resize", resizeHandler);
+});
+
+// 卸载前
+onBeforeUnmount(() => {
+	window.removeEventListener("resize", resizeHandler);
+});
+
 onMounted(() => {
+	state.isMobile = checkMobile();
+
 	let routerMenu = vm.$route.matched[0].children.map(item => {
 		return {
 			name: item.meta.title,
@@ -68,6 +83,7 @@ onMounted(() => {
 	});
 	state.defaultActiveIndex = findIndex + 1 + "";
 });
+
 watch(
 	() => {
 		return vm.$route;
@@ -80,16 +96,30 @@ watch(
 		state.defaultActiveIndex = findIndex + 1 + "";
 	}
 );
+
 const menuClick = item => {
 	router.push(item.path);
 };
+
 const handleOpen = (key, keyPath) => {
 	console.log(key, keyPath);
 };
+
 const handleClose = (key, keyPath) => {
 	console.log(key, keyPath);
 };
+
 const handleSelect = (key, keyPath) => {};
+
+const checkMobile = () => {
+	const { body } = document;
+	const rect = body.getBoundingClientRect();
+	store.dispatch("changeDevice", rect.width - 1 < WIDTH);
+	return rect.width - 1 < WIDTH;
+};
+const resizeHandler = () => {
+	state.isMobile = checkMobile();
+};
 </script>
 
 <style lang="scss" scoped>
@@ -104,5 +134,8 @@ const handleSelect = (key, keyPath) => {};
 	z-index: 1;
 	margin-top: 60px;
 	overflow: auto;
+	&.mobile {
+		width: 90px;
+	}
 }
 </style>

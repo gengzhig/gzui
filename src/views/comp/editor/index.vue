@@ -19,6 +19,7 @@
 						:key="index"
 						draggable="true"
 						@dragstart="e => dragstart(e, item)"
+						@dragend="e => dragend(e)"
 					>
 						<span class="compTitle">
 							{{ item.label }}
@@ -74,8 +75,6 @@ const containerStyle = computed(() => ({
 	height: `${json.value.container?.height}px`,
 }));
 
-console.log(containerStyle.value);
-
 const dragstart = (e, comp) => {
 	// dragenter 进入元素中，标识改为移动标识
 	// dragover 在目标元素经过，阻止默认行为，否则无法触发drop
@@ -101,17 +100,29 @@ const dragleave = e => {
 };
 
 const drop = e => {
-	console.log(currentComp, "当前拖动组件");
-	json.value.blocks.push({
-		key: currentComp.key,
-		top: e.offsetY,
-		left: e.offsetX,
-		zIndex: 1,
-	});
-
-	console.log(json.value.blocks);
-	// 内部已渲染组件
+	let blocks = json.value.blocks; // 画布内已存在组件
+	json.value = {
+		...json.value,
+		blocks: [
+			...blocks,
+			{
+				key: currentComp.key,
+				top: e.offsetY,
+				left: e.offsetX,
+				zIndex: 1,
+				alignCenter: true, // 松手时居中
+			},
+		],
+	};
+	console.log(json.value.blocks, " 画布内已存在组件");
 	currentComp = null;
+};
+
+const dragend = e => {
+	// canvasRef.value.removeListener("dragenter", dragenter);
+	// canvasRef.value.removeListener("dragover", dragover);
+	// canvasRef.value.removeListener("dragleave", dragleave);
+	// canvasRef.value.removeListener("drop", drop);
 };
 </script>
 
@@ -163,6 +174,7 @@ const drop = e => {
 				border: 1px solid rgb(124, 100, 100);
 				height: 100%;
 				position: relative;
+				overflow: auto;
 			}
 		}
 		.operateMain {

@@ -1,4 +1,4 @@
-import { defineComponent, computed, inject, toRef } from "vue";
+import { defineComponent, computed, inject, ref, toRef, onMounted } from "vue";
 import "./compList.css";
 export default defineComponent({
 	props: {
@@ -16,16 +16,33 @@ export default defineComponent({
 		}));
 
 		const compInfo = inject("compInfo");
-        
+		const blockRef = ref(null);
+		onMounted(() => {
+			let { offsetWidth, offsetHeight } = blockRef.value;
+			console.log(offsetWidth.value, "blockRef");
+			console.log(offsetHeight.value, "blockRef");
+		});
 		return () => {
 			const comp = compInfo.compMapList.get(props.block.key);
 			const renderComp = comp.render();
-			const clickComp=(e)=>{
-				console.log(comp);
-			}
+			let compFocus = comp.focus;
+			const blockMouseDown = (e, comp) => {
+				if (!compFocus) {
+					compFocus = true;
+				} else {
+					compFocus = false;
+				}
+				console.log(compFocus);
+			};
 			return (
-				<div class="editor-block" style={blockStyle.value} onClick={clickComp}>
+				<div
+					class={["editor-block", compFocus ? "editor-block-focus" : ""].join(" ")}
+					style={blockStyle.value}
+					onMousedown={e => blockMouseDown(e, comp)}
+					ref={blockRef}
+				>
 					{renderComp}
+					<div class="assistDom"></div>
 				</div>
 			);
 		};

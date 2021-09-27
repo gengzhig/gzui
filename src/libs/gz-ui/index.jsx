@@ -132,7 +132,7 @@ compInfo.register({
 compInfo.register({
 	label: "表格",
 	preview: () => <gz-table></gz-table>,
-	render: () => <gz-table ref="tableRef" config={config.tableConfig}></gz-table>,
+	render: () => <gz-table config={config.tableConfig}></gz-table>,
 	key: "0006",
 });
 
@@ -141,11 +141,20 @@ compInfo.register({
 	preview: () => <gz-pagination></gz-pagination>,
 	render: () => (
 		<gz-pagination
+			showTotal={true}
+			showLimit={true}
 			total={config.pagination.total}
 			defaultLimit={config.pagination.defaultLimit}
 			defaultLimitData={config.pagination.defaultLimitData}
 		></gz-pagination>
 	),
 	key: "0007",
+});
+
+compInfo.register({
+	label: "按钮",
+	preview: () => <gz-button type="primary">按钮</gz-button>,
+	render: () => <gz-button type="primary">按钮</gz-button>,
+	key: "0008",
 });
 export default { gzUI, compInfo };
