@@ -57,6 +57,7 @@ compInfo.register({
 	label: "五星好评",
 	preview: () => <gzFiveStar num={3} size={20} highColor="orange"></gzFiveStar>,
 	render: () => <gzFiveStar num={3} size={20} highColor="orange"></gzFiveStar>,
+	// render: "gzFiveStar",
 	key: "0001",
 });
 

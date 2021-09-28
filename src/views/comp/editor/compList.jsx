@@ -19,8 +19,6 @@ export default defineComponent({
 		const blockRef = ref(null);
 		onMounted(() => {
 			let { offsetWidth, offsetHeight } = blockRef.value;
-			console.log(offsetWidth.value, "blockRef");
-			console.log(offsetHeight.value, "blockRef");
 		});
 		return () => {
 			const comp = compInfo.compMapList.get(props.block.key);

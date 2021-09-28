@@ -7,7 +7,7 @@
  * @FilePath: \gi-ui\src\views\comp\editor\index.vue
 -->
 <template>
-	<div class="layout">
+	<div class="layouts">
 		<Navbar></Navbar>
 		<div class="container">
 			<div class="sidebar">
@@ -29,7 +29,7 @@
 			</div>
 			<div class="appMain">
 				<div class="operateGroup">
-					<gz-button type="primary">撤销</gz-button>
+					<gz-button type="primary" @click="revocation">撤销</gz-button>
 					<gz-button type="primary">置顶</gz-button>
 					<gz-button type="primary">置底</gz-button>
 					<gz-button type="primary">上移</gz-button>
@@ -60,7 +60,7 @@ export default {
 import { ref, inject, computed, reactive, toRef } from "vue";
 import Navbar from "layouts/components/Navbar.vue";
 import configJson from "./property.json";
-import compList from "./compList.jsx";
+import compList from "./compList.vue";
 
 let currentComp = null;
 
@@ -124,10 +124,48 @@ const dragend = e => {
 	// canvasRef.value.removeListener("dragleave", dragleave);
 	// canvasRef.value.removeListener("drop", drop);
 };
+
+// 撤销
+const revocation = () => {
+	json.value.blocks.pop();
+	console.log(json.value.blocks, " 画布内已存在组件");
+};
+
+// ctrl快捷键操作
+const keyboardEvent = () => {
+	const keyCodes = {
+		90: "z",
+		89: "y",
+	};
+	const onkeydown = e => {
+		const { ctrlKey, keyCode } = e;
+		let keyString = [];
+		if (ctrlKey) keyString.push("ctrl");
+		keyString.push(keyCodes[keyCode]);
+		keyString = keyString.join("+");
+		if (keyString === "ctrl+z") {
+			console.log("撤销快捷键");
+			revocation();
+		} else if (keyString === "ctrl+y") {
+			console.log("重做");
+		} else {
+			console.log("一般操作");
+		}
+	};
+	const init = () => {
+		window.addEventListener("keydown", onkeydown);
+		return () => {
+			window.removeEventListener("keydown", onkeydown);
+		};
+	};
+	return init;
+};
+
+window.addEventListener("keydown", keyboardEvent());
 </script>
 
 <style lang="scss" scoped>
-.layout {
+.layouts {
 	height: 100vh;
 	.container {
 		.sidebar {
@@ -170,6 +208,11 @@ const dragend = e => {
 			box-sizing: border-box;
 			padding: 90px 415px 30px 230px;
 			overflow: auto;
+			.operateGroup {
+				button {
+					margin-right: 5px;
+				}
+			}
 			.canvas {
 				border: 1px solid rgb(124, 100, 100);
 				height: 100%;
