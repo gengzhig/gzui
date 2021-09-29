@@ -1,12 +1,14 @@
 <template>
 	<div
-		:class="['editor-block', state.compFocus ? 'editor-block-focus' : '']"
+		draggable="true"
+		:class="['editor-block', state.comp.focus ? 'editor-block-focus' : '']"
 		:style="blockStyle"
-		@mousedown="e => blockMouseDown(e, comp)"
+		@mousedown="e => blockMouseDown(e, state.comp)"
+		@mouseup="e => blockMouseUp(e, state.comp)"
 		ref="blockRef"
 	>
-		<component :is="comp.render()"></component>
-		<div class="assistDom" @contextmenu.prevent.native="openMenu($event, comp)"></div>
+		<component :is="state.comp.render()"></component>
+		<div class="assistDom" @contextmenu.prevent.native="openMenu($event, state.comp)"></div>
 	</div>
 
 	<div v-if="state.visible" class="rightMenu" :style="{ left: state.left + 'px', top: state.top + 'px' }">
@@ -18,6 +20,7 @@
 			<li>下对齐</li>
 		</ul>
 	</div>
+	<Grid></Grid>
 </template>
 
 <script>
@@ -25,8 +28,11 @@ export default {
 	name: "compList",
 };
 </script>
+
 <script setup>
 import { computed, inject, ref, onMounted, reactive, watch } from "vue";
+
+import Grid from "./grid.vue";
 const props = defineProps({
 	block: {
 		type: Object,
@@ -34,13 +40,15 @@ const props = defineProps({
 });
 const compInfo = inject("compInfo");
 const comp = compInfo.compMapList.get(props.block.key);
+const blockRef = ref(null);
 const state = reactive({
-	compFocus: comp.focus,
 	rightClickItem: null,
 	top: null,
 	left: null,
 	visible: false,
+	comp: comp,
 });
+
 const blockStyle = computed(() => ({
 	top: `${props.block.top}px`,
 	left: `${props.block.left}px`,
@@ -48,10 +56,11 @@ const blockStyle = computed(() => ({
 	height: `${props.block.height}px`,
 	zIndex: `${props.block.zIndex}`,
 }));
-const blockRef = ref(null);
+
 onMounted(() => {
 	let { offsetWidth, offsetHeight } = blockRef.value;
 });
+
 watch(
 	() => state.visible,
 	value => {
@@ -62,15 +71,20 @@ watch(
 		}
 	}
 );
+
 const blockMouseDown = (e, comp) => {
-	console.log(comp);
-	if (!state.compFocus) {
-		state.compFocus = true;
+	if (!state.comp.focus) {
+		state.comp.focus = true;
 	} else {
-		state.compFocus = false;
+		state.comp.focus = false;
 	}
+	console.log(state.comp);
 };
 
+const blockMouseUp = (e, comp) => {
+	console.log(state.comp);
+	console.log(e);
+};
 // 打开右键菜单
 const openMenu = (e, comp) => {
 	state.rightClickItem = comp;
@@ -79,7 +93,6 @@ const openMenu = (e, comp) => {
 	state.top = y - 90;
 	state.left = x - 200;
 	state.visible = true;
-	console.log(state);
 };
 
 // 关闭右键菜单
