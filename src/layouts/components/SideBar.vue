@@ -30,11 +30,12 @@
 
 <script setup>
 import { ref, reactive, toRefs, onBeforeMount, onBeforeUnmount, onMounted, watch } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 import SubSideBar from "./SubSideBar.vue";
 const WIDTH = 375;
 const router = useRouter();
+const route = useRoute();
 const store = useStore();
 let state = reactive({
 	isMobile: false,
@@ -55,7 +56,7 @@ onBeforeUnmount(() => {
 onMounted(() => {
 	state.isMobile = checkMobile();
 
-	let routerMenu = vm.$route.matched[0].children.map(item => {
+	let routerMenu = route.matched[0].children.map(item => {
 		return {
 			name: item.meta.title,
 			path: item.path,
@@ -75,11 +76,11 @@ onMounted(() => {
 
 		return result;
 	}
-	vm.$store.commit("saveRouterMenu", routerMenu);
+	store.commit("saveRouterMenu", routerMenu);
 	state.compMenus = routerMenu;
 
-	let findIndex = vm.$store.state.routerMenu.findIndex(item => {
-		return vm.$route.path.includes(item.path);
+	let findIndex = store.state.routerMenu.findIndex(item => {
+		return route.path.includes(item.path);
 	});
 	state.defaultActiveIndex = findIndex + 1 + "";
 });
@@ -90,7 +91,7 @@ watch(
 	},
 	value => {
 		// 默认菜单高亮
-		let findIndex = vm.$store.state.routerMenu.findIndex(item => {
+		let findIndex = store.state.routerMenu.findIndex(item => {
 			return value.path.includes(item.path);
 		});
 		state.defaultActiveIndex = findIndex + 1 + "";
