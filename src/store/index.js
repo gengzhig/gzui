@@ -14,6 +14,13 @@ export default createStore({
 	state: {
 		isMobile: false,
 		routerMenu: localStorage.getItem("routerMenu") ? JSON.parse(localStorage.getItem("routerMenu")) : [],
+		currentComp: {
+			width: 0,
+			height: 0,
+			left: 0,
+			top: 0,
+			zIndex: 0,
+		},
 	},
 	mutations: {
 		saveRouterMenu(state, payload) {
@@ -22,6 +29,10 @@ export default createStore({
 		},
 		toggleDevice(state, payload) {
 			state.isMobile = payload;
+		},
+		setCurrentComp(state, payload) {
+			state.currentComp = payload;
+			console.log(state.currentComp);
 		},
 	},
 	actions: {

@@ -1,6 +1,7 @@
 <template>
-	<div class="gz-table">
+	<div class="gz-table" :style="{ width: config?.style?.width + 'px', height: config?.style?.height + 'px' }">
 		<el-table
+			:style="{ width: config?.style?.width }"
 			:max-height="config?.style?.maxHeight"
 			:height="config?.style?.height"
 			:data="config?.tableData"
@@ -11,7 +12,6 @@
 			@current-change="handleCurrentChange"
 			@cell-click="cellClick"
 			@selection-change="handleSelectionChange"
-			style="width: 100%"
 		>
 			<!-- 复选框列 -->
 			<el-table-column v-if="config?.style?.checkBox" type="selection" width="55" align="center"> </el-table-column>

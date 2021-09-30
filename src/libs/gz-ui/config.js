@@ -25,7 +25,8 @@ let config = {
 		style: {
 			stripe: true,
 			border: true,
-			height: 300,
+			height: 250,
+			width: 800,
 			index: false,
 			radio: false,
 			checkBox: false,
@@ -45,12 +46,6 @@ let config = {
 				},
 			},
 			{
-				prop: "address",
-				label: "地址",
-				width: 200,
-				tooltip: true,
-			},
-			{
 				prop: "phone",
 				label: "手机",
 				width: 200,
@@ -68,25 +63,29 @@ let config = {
 			{
 				prop: "publish",
 				label: "出版社",
-				width: 150,
+				width: 200,
 				tooltip: true,
 				sort: true,
 			},
 		],
 		tableData: [
 			{
-				name: "webwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebwebweb",
-				address: "陕西宝鸡",
+				name: "webwebwebwe",
 				phone: 18829290520,
 				isbn: "123456789",
 				publish: "北师大",
 			},
 			{
 				name: "map",
-				address: "北京大学",
 				phone: 1234234234,
 				isbn: "234234234",
-				publish: "北师大",
+				publish: "陕西西安",
+			},
+			{
+				name: "map",
+				phone: 133512345,
+				isbn: "23423434sdfs4",
+				publish: "山西太原",
 			},
 		],
 	},

@@ -21,9 +21,12 @@
 						@dragstart="e => dragstart(e, item)"
 						@dragend="e => dragend(e)"
 					>
-						<span class="compTitle">
+						<span class="sub-compTitle">
 							{{ item.label }}
 						</span>
+						<div class="compTitle">
+							{{ item.subLabel }}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -37,13 +40,23 @@
 				</div>
 				<div class="canvas" ref="canvasRef" :style="containerStyle">
 					<comp-list v-for="(item, index) in json.blocks" :key="index" :block="item"></comp-list>
+					<Grid></Grid>
 				</div>
 			</div>
 			<div class="operateMain" @click="change">
 				<gz-tabs v-model:activeName="state.activeName" :width="400" :height="500" :headerHeight="60">
-					<div label="属性" name="first" class="tab-pane">属性</div>
-					<div label="数据" name="second" class="tab-pane">数据</div>
-					<div label="交互" name="third" class="tab-pane">交互</div>
+					<div label="属性" name="first" class="tab-pane">
+						<!-- <AttrList v-if="Object.keys(store.state.currentComp).length > 0" /> -->
+						<!-- 不支持子组件模式  TODO:参照轮播图 改为两个父子组件 再设计出一个gz-tab-pane组件-->
+						<!-- {{ store.state.currentComp }} -->
+						<p class="placeholder">请选择组件(属性)</p>
+					</div>
+					<div label="数据" name="second" class="tab-pane">
+						<p class="placeholder">请选择组件(数据)</p>
+					</div>
+					<div label="交互" name="third" class="tab-pane">
+						<p class="placeholder">请选择组件(交互)</p>
+					</div>
 				</gz-tabs>
 			</div>
 		</div>
@@ -58,12 +71,17 @@ export default {
 </script>
 <script setup>
 import { ref, inject, computed, reactive, toRef } from "vue";
-import Navbar from "layouts/components/Navbar.vue";
-import configJson from "./property.json";
-import compList from "./compList.vue";
+import { useStore } from "vuex";
 
+import configJson from "./property.json";
+
+import Navbar from "layouts/components/Navbar.vue";
+import compList from "./compList.vue";
+import Grid from "./grid.vue";
+import AttrList from "@/components/attrList/index.vue";
 let currentComp = null;
 
+const store = useStore();
 const json = ref(configJson);
 const canvasRef = ref(null);
 const state = reactive({
@@ -109,6 +127,8 @@ const drop = e => {
 				key: currentComp.key,
 				top: e.offsetY,
 				left: e.offsetX,
+				// width: 0,
+				// height: 0,
 				zIndex: 1,
 				alignCenter: true, // 松手时居中
 			},
@@ -119,10 +139,12 @@ const drop = e => {
 };
 
 const dragend = e => {
-	// canvasRef.value.removeListener("dragenter", dragenter);
-	// canvasRef.value.removeListener("dragover", dragover);
-	// canvasRef.value.removeListener("dragleave", dragleave);
-	// canvasRef.value.removeListener("drop", drop);
+	if (canvasRef.value.removeListener) {
+		canvasRef.value.removeListener("dragenter", dragenter);
+		canvasRef.value.removeListener("dragover", dragover);
+		canvasRef.value.removeListener("dragleave", dragleave);
+		canvasRef.value.removeListener("drop", drop);
+	}
 };
 
 // 撤销
@@ -191,8 +213,17 @@ window.addEventListener("keydown", keyboardEvent());
 					height: 60px;
 					margin-bottom: 5px;
 					border: 1px solid #ffffff;
-					.compTitle {
+					position: relative;
+					.sub-compTitle {
+						padding: 3px;
+						font-size: 12px;
+						position: absolute;
 						background: #2ed573;
+					}
+					.compTitle {
+						font-weight: bold;
+						text-align: center;
+						line-height: 60px;
 					}
 				}
 			}

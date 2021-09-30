@@ -8,6 +8,7 @@
 		ref="blockRef"
 	>
 		<component :is="state.comp.render()"></component>
+		<!-- 防止触发组件上的事件，加的一层遮罩 -->
 		<div class="assistDom" @contextmenu.prevent.native="openMenu($event, state.comp)"></div>
 	</div>
 
@@ -20,7 +21,6 @@
 			<li>下对齐</li>
 		</ul>
 	</div>
-	<Grid></Grid>
 </template>
 
 <script>
@@ -31,15 +31,15 @@ export default {
 
 <script setup>
 import { computed, inject, ref, onMounted, reactive, watch } from "vue";
-
-import Grid from "./grid.vue";
+import { useStore } from "vuex";
 const props = defineProps({
 	block: {
 		type: Object,
 	},
 });
+const store = useStore();
 const compInfo = inject("compInfo");
-const comp = compInfo.compMapList.get(props.block.key);
+const comp = compInfo.compMapList.get(props.block.key); // 当前渲染组件信息
 const blockRef = ref(null);
 const state = reactive({
 	rightClickItem: null,
@@ -59,6 +59,9 @@ const blockStyle = computed(() => ({
 
 onMounted(() => {
 	let { offsetWidth, offsetHeight } = blockRef.value;
+	blockStyle.value.width = offsetWidth + "px";
+	blockStyle.value.height = offsetHeight + "px";
+	console.log(blockStyle.value, "blockStyle");
 });
 
 watch(
@@ -73,17 +76,41 @@ watch(
 );
 
 const blockMouseDown = (e, comp) => {
+	e.preventDefault();
+	e.stopPropagation();
+	// e.dataTransfer.dropEffect = "move";
 	if (!state.comp.focus) {
 		state.comp.focus = true;
 	} else {
 		state.comp.focus = false;
 	}
-	console.log(state.comp);
+	e.target.style.cursor = "move";
+	const pos = { ...blockStyle.value };
+	const startY = e.clientY;
+	const startX = e.clientX;
+	// 如果直接修改属性，值的类型会变为字符串，所以要转为数值型
+	const startTop = parseInt(pos.top);
+	const startLeft = parseInt(pos.left);
+	const move = moveEvent => {
+		const curX = moveEvent.clientX;
+		const curY = moveEvent.clientY;
+		pos.top = curY - startY + startTop + "px";
+		pos.left = curX - startX + startLeft + "px";
+		props.block.left = parseInt(pos.left);
+		props.block.top = parseInt(pos.top);
+		store.commit("setCurrentComp", blockStyle.value);
+	};
+
+	const up = () => {
+		document.removeEventListener("mousemove", move);
+		document.removeEventListener("mouseup", up);
+	};
+	document.addEventListener("mousemove", move);
+	document.addEventListener("mouseup", up);
 };
 
 const blockMouseUp = (e, comp) => {
-	console.log(state.comp);
-	console.log(e);
+	store.commit("setCurrentComp", blockStyle.value);
 };
 // 打开右键菜单
 const openMenu = (e, comp) => {

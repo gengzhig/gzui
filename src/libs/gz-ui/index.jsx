@@ -54,7 +54,8 @@ function compSign() {
 let compInfo = compSign();
 
 compInfo.register({
-	label: "五星好评",
+	label: "数据录入",
+	subLabel: "五星好评",
 	preview: () => <gzFiveStar num={3} size={20} highColor="orange"></gzFiveStar>,
 	render: () => <gzFiveStar num={3} size={20} highColor="orange"></gzFiveStar>,
 	// render: "gzFiveStar",
@@ -62,7 +63,8 @@ compInfo.register({
 });
 
 compInfo.register({
-	label: "tabs标签页",
+	label: "导航",
+	subLabel: "tabs标签页",
 	preview: () => <gz-tabs></gz-tabs>,
 	render: () => (
 		<gz-tabs activeName={config.activeName} width={400} height={200} headerHeight={60}>
@@ -82,14 +84,16 @@ compInfo.register({
 });
 
 compInfo.register({
-	label: "虚拟列表",
+	label: "数据展示",
+	subLabel: "虚拟列表",
 	preview: () => <gz-virtual-list width={300} height={200} itemHeight={30}></gz-virtual-list>,
 	render: () => <gz-virtual-list width={300} height={200} data={config.virtualData} itemHeight={30}></gz-virtual-list>,
 	key: "0003",
 });
 
 compInfo.register({
-	label: "模态框",
+	label: "反馈",
+	subLabel: "虚拟列表",
 	preview: () => (
 		<gz-modal
 			show={true}
@@ -124,21 +128,24 @@ compInfo.register({
 });
 
 compInfo.register({
-	label: "下拉菜单",
+	label: "数据录入",
+	subLabel: "下拉菜单",
 	preview: () => <gz-selector placeholder="请选择"></gz-selector>,
 	render: () => <gz-selector placeholder="请选择"></gz-selector>,
 	key: "0005",
 });
 
 compInfo.register({
-	label: "表格",
+	label: "数据展示",
+	subLabel: "table表格",
 	preview: () => <gz-table></gz-table>,
 	render: () => <gz-table config={config.tableConfig}></gz-table>,
 	key: "0006",
 });
 
 compInfo.register({
-	label: "分页器",
+	label: "导航",
+	subLabel: "分页器",
 	preview: () => <gz-pagination></gz-pagination>,
 	render: () => (
 		<gz-pagination
@@ -153,14 +160,16 @@ compInfo.register({
 });
 
 compInfo.register({
-	label: "按钮",
+	label: "通用",
+	subLabel: "按钮",
 	preview: () => <gz-button type="primary">按钮</gz-button>,
 	render: () => <gz-button type="primary">按钮</gz-button>,
 	key: "0008",
 });
 
 compInfo.register({
-	label: "轮播图",
+	label: "通用",
+	subLabel: "轮播图",
 	preview: () => (
 		<gz-carousel
 			dotBgColor="#333"

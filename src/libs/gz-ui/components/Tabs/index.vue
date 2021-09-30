@@ -32,11 +32,7 @@ export default {
 </script>
 
 <script setup>
-import {
-	onMounted,
-	reactive,
-	useSlots,
-} from "vue";
+import { onMounted, reactive, useSlots } from "vue";
 const props = defineProps({
 	activeName: {
 		type: String,
@@ -68,8 +64,12 @@ onMounted(() => {
 });
 const select = index => {
 	state.curIndex = index;
+	console.log(slots.default()[state.curIndex]);
 	if (slots.default() && slots.default()[state.curIndex].el) {
-		slots.default().map(s => s.el.classList.remove("active"));
+		slots.default().map(s => {
+			// console.log(s);
+			s?.el?.classList.remove("active");
+		});
 		slots.default()[state.curIndex].el.classList.add("active");
 	}
 };
