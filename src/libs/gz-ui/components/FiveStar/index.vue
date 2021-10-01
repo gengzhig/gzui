@@ -49,6 +49,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.star-container {
+	width: 150px;
+}
 @font-face {
 	font-family: "iconfont"; /* Project id 2686328 */
 	src: url("//at.alicdn.com/t/font_2686328_skauhedz5wm.woff2?t=1626747534640") format("woff2"),

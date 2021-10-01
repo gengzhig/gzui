@@ -28,7 +28,7 @@ export default defineConfig({
 		}, // 别名
 	},
 	server: {
-		host: "192.168.0.166",
+		// host: "192.168.0.166",
 		open: true,
 	},
 	plugins: [vue(), vueJsx()],

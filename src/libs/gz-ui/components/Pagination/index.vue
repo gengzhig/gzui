@@ -143,12 +143,14 @@ const selectItem = item => {
 
 <style lang="scss" scoped>
 .div_pagation {
+	width: 600px;
 	display: flex;
 	align-items: center;
 	.total {
 		color: #606266;
 		margin-right: 10px;
 		font-weight: 400;
+		white-space: nowrap;
 	}
 	button {
 		min-width: 30px;
@@ -162,6 +164,7 @@ const selectItem = item => {
 		cursor: pointer;
 	}
 	.btn-prev {
+		white-space: nowrap;
 		&:disabled {
 			color: #c0c4cc;
 			cursor: not-allowed;
@@ -169,6 +172,7 @@ const selectItem = item => {
 	}
 	.btn-next {
 		margin: 0;
+		white-space: nowrap;
 		&:disabled {
 			color: #c0c4cc;
 			cursor: not-allowed;

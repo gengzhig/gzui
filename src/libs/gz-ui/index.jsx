@@ -93,7 +93,7 @@ compInfo.register({
 
 compInfo.register({
 	label: "反馈",
-	subLabel: "虚拟列表",
+	subLabel: "模态框",
 	preview: () => (
 		<gz-modal
 			show={true}

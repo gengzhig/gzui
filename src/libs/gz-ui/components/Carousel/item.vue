@@ -8,7 +8,7 @@
 -->
 <template>
 	<transition>
-		<div class="carousel-item" v-if="state.selfIndex === state.currentIndex">
+		<div class="carousel-item" v-if="state.selfIndex == state.currentIndex">
 			<slot></slot>
 		</div>
 	</transition>
@@ -22,16 +22,17 @@ export default {
 import { getCurrentInstance, reactive, ref, watch } from "vue";
 
 const instance = getCurrentInstance();
+
+// console.log(instance.vnode.key);
 // const imgFit = ref(instance.parent.ctx.imgFit);
 const state = reactive({
 	imgFit: instance.parent.ctx.imgFit,
-	selfIndex: instance.vnode.key,
-	currentIndex: instance.parent.ctx.state.currentIndex,
+	selfIndex: instance?.vnode?.key,
+	currentIndex: instance?.parent?.ctx?.state?.currentIndex,
 });
-
 watch(
 	() => {
-		return instance.parent.ctx.state.currentIndex;
+		return instance?.parent?.ctx?.state?.currentIndex;
 	},
 	value => {
 		state.currentIndex = value;
