@@ -12,6 +12,7 @@ import gzModal from "./components/Modal/index.vue";
 import gzFiveStar from "./components/FiveStar/index.vue";
 import gzVirtualList from "./components/virtualList/index.vue";
 import gzTabs from "./components/Tabs/index.vue";
+import gzTabsPane from "./components/Tabs/pane.vue";
 import gzTable from "./components/Table/index.vue";
 import gzPagination from "./components/Pagination/index.vue";
 import gzInput from "./components/Input/index.vue";
@@ -28,6 +29,7 @@ gzUI.install = function (Vue) {
 	Vue.component(gzFiveStar.name, gzFiveStar);
 	Vue.component(gzVirtualList.name, gzVirtualList);
 	Vue.component(gzTabs.name, gzTabs);
+	Vue.component(gzTabsPane.name, gzTabsPane);
 	Vue.component(gzTable.name, gzTable);
 	Vue.component(gzPagination.name, gzPagination);
 	Vue.component(gzInput.name, gzInput);

@@ -4,7 +4,7 @@
 		<span class="total" v-if="showTotal">共{{ total }}条</span>
 		<gz-selector
 			v-if="showLimit"
-			:width="120"
+			:width="200"
 			:height="35"
 			:filtrateData="false"
 			:value="pager"
@@ -143,7 +143,7 @@ const selectItem = item => {
 
 <style lang="scss" scoped>
 .div_pagation {
-	width: 600px;
+	width: 800px;
 	display: flex;
 	align-items: center;
 	.total {

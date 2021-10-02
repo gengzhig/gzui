@@ -1,5 +1,12 @@
 <template>
-	<div class="modal-mask" ref="modalMask" style="">
+	<div
+		class="modal-mask"
+		ref="modalMask"
+		:style="{
+			width: width + 'px',
+			height: '200px',
+		}"
+	>
 		<div
 			class="ui-modal"
 			ref="uiModal"
@@ -128,13 +135,13 @@ export default {
 
 <style lang="scss" scoped>
 .modal-mask {
+	position: absolute;
 	top: 0;
 	left: 0;
-	width: 100%;
-	height: 100%;
 	background: rgba(0, 0, 0, 0.3);
 	z-index: 2;
 	.ui-modal {
+		height: 200px;
 		position: absolute;
 		left: 50%;
 		top: 50%;

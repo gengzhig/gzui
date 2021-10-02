@@ -15,10 +15,11 @@
 
 		<div class="meta">
 			<div class="demo">
+				<gz-tabs-pane label="用户管理" name="first">12313</gz-tabs-pane>
 				<gz-tabs v-model:activeName="activeName" :width="400" :height="200" :headerHeight="60">
-					<div label="用户管理" name="first" class="tab-pane">111</div>
-					<div label="配置管理" name="second" class="tab-pane">222</div>
-					<div label="角色管理" name="third" class="tab-pane">333</div>
+					<gz-tabs-pane label="用户管理" name="first" class="tab-pane"> 1212 </gz-tabs-pane>
+					<gz-tabs-pane label="配置管理" name="second" class="tab-pane">222</gz-tabs-pane>
+					<gz-tabs-pane label="角色管理" name="third" class="tab-pane">333</gz-tabs-pane>
 				</gz-tabs>
 			</div>
 			<base-copy :code="code"></base-copy>
