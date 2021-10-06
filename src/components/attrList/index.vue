@@ -1,4 +1,6 @@
-<template></template>
+<template>
+1234
+</template>
 
 <script>
 export default {

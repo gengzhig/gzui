@@ -7,7 +7,21 @@
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Tabs\index.vue
 -->
 <template>
-	<div class="comp-tag" :style="{ width: width + 'px', height: height + 'px' }"></div>
+	<div class="comp-tag" :style="{ width: width + 'px', height: height + 'px' }">
+		<div class="header" :style="{ height: headerHeight + 'px' }">
+			<span
+				:class="['tab', index == state.curIndex ? 'active' : '']"
+				v-for="(item, index) in state.slots"
+				:key="index"
+				@click="select(index)"
+			>
+				{{ item.props.label }}
+			</span>
+		</div>
+		<div class="tag-content">
+			<slot></slot>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -18,6 +32,7 @@ export default {
 
 <script setup>
 import { onMounted, reactive, useSlots } from "vue";
+import mitt from "@/mitt.js";
 const props = defineProps({
 	activeName: {
 		type: String,
@@ -44,25 +59,40 @@ const state = reactive({
 });
 onMounted(() => {
 	state.curIndex = state.slots.findIndex(s => s.props.name === props.activeName);
-	// console.log(slots.default()[state.curIndex].el.classList);
 	if (slots.default() && slots.default()[state.curIndex].el) {
 		slots.default()[state.curIndex].el.classList.add("active");
 	}
+	mitt.emit("current-tabIndex", state.curIndex);
 });
 const select = index => {
 	state.curIndex = index;
 	if (slots.default() && slots.default()[state.curIndex].el) {
 		slots.default().map(s => {
-			// console.log(s);
 			s?.el?.classList.remove("active");
 		});
 		slots.default()[state.curIndex].el.classList.add("active");
 	}
+	mitt.emit("current-tabIndex", state.curIndex);
 };
 </script>
 
 <style lang="scss">
 .comp-tag {
 	border: 1px solid #ccc;
+	.header {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		background: #2ed573;
+		.tab {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			color: #fff;
+			cursor: pointer;
+			&.active {
+				background: chartreuse;
+			}
+		}
+	}
 }
 </style>

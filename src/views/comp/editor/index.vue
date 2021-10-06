@@ -45,18 +45,17 @@
 			</div>
 			<div class="operateMain" @click="change">
 				<gz-tabs v-model:activeName="state.activeName" :width="400" :height="500" :headerHeight="60">
-					<div label="属性" name="first" class="tab-pane">
-						<!-- <AttrList v-if="Object.keys(store.state.currentComp).length > 0" /> -->
-						<!-- 不支持子组件模式  TODO:参照轮播图 改为两个父子组件 再设计出一个gz-tab-pane组件-->
-						<!-- {{ store.state.currentComp }} -->
-						<p class="placeholder">请选择组件(属性)</p>
-					</div>
-					<div label="数据" name="second" class="tab-pane">
+					<gz-tabs-pane label="属性" name="first" class="tab-pane">
+						{{ store.state.currentComp }}
+						<AttrList v-if="Object.keys(store.state.currentComp).length > 0" />
+						<p v-else class="placeholder">请选择组件(属性)</p>
+					</gz-tabs-pane>
+					<gz-tabs-pane label="数据" name="second" class="tab-pane">
 						<p class="placeholder">请选择组件(数据)</p>
-					</div>
-					<div label="交互" name="third" class="tab-pane">
+					</gz-tabs-pane>
+					<gz-tabs-pane label="交互" name="third" class="tab-pane">
 						<p class="placeholder">请选择组件(交互)</p>
-					</div>
+					</gz-tabs-pane>
 				</gz-tabs>
 			</div>
 		</div>

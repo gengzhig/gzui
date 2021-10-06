@@ -67,37 +67,52 @@
 </body>
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-
-    const keyboardEvent = () => {
-        const keyCodes = {
-            90: "z",
-            89: "y"
-        }
-        const onkeydown = (e) => {
-            const { ctrlKey, keyCode } = e;
-            let keyString = [];
-            if (ctrlKey) keyString.push("ctrl")
-            keyString.push(keyCodes[keyCode]);
-            keyString = keyString.join("+");
-            if (keyString === "ctrl+z") {
-                console.log("撤销快捷键");
-            }
-            else if (keyString === "ctrl+y") {
-                console.log("重做")
-            } else {
-                console.log("一般操作")
-            }
-        }
-        const init = () => {
-            window.addEventListener("keydown", onkeydown)
-            return () => {
-                window.removeEventListener("keydown", onkeydown)
-            }
-        }
-        return init
+    function someAsyncOperation(i) {
+        setTimeout((i) => {
+            console.log("someAsyncOperation=", i)
+        }, 1000)
     }
+    async function f() {
+        [1, 2, 3].forEach(async i => {
+            await someAsyncOperation(i)
+        })
 
-    window.addEventListener("keydown", keyboardEvent())
+        for (const i of [1, 2, 3]) {
+            await someAsyncOperation(i)
+        }
+        console.log("done")
+    }
+    f()
+    // const keyboardEvent = () => {
+    //     const keyCodes = {
+    //         90: "z",
+    //         89: "y"
+    //     }
+    //     const onkeydown = (e) => {
+    //         const { ctrlKey, keyCode } = e;
+    //         let keyString = [];
+    //         if (ctrlKey) keyString.push("ctrl")
+    //         keyString.push(keyCodes[keyCode]);
+    //         keyString = keyString.join("+");
+    //         if (keyString === "ctrl+z") {
+    //             console.log("撤销快捷键");
+    //         }
+    //         else if (keyString === "ctrl+y") {
+    //             console.log("重做")
+    //         } else {
+    //             console.log("一般操作")
+    //         }
+    //     }
+    //     const init = () => {
+    //         window.addEventListener("keydown", onkeydown)
+    //         return () => {
+    //             window.removeEventListener("keydown", onkeydown)
+    //         }
+    //     }
+    //     return init
+    // }
+
+    // window.addEventListener("keydown", keyboardEvent())
 
 </script>
 

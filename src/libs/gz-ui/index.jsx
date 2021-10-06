@@ -70,15 +70,15 @@ compInfo.register({
 	preview: () => <gz-tabs></gz-tabs>,
 	render: () => (
 		<gz-tabs activeName={config.activeName} width={400} height={200} headerHeight={60}>
-			<div label="用户管理" name="first" class="tab-pane">
+			<gz-tabs-pane label="用户管理" name="first" class="tab-pane">
 				111
-			</div>
-			<div label="配置管理" name="second" class="tab-pane">
+			</gz-tabs-pane>
+			<gz-tabs-pane label="配置管理" name="second" class="tab-pane">
 				222
-			</div>
-			<div label="角色管理" name="third" class="tab-pane">
+			</gz-tabs-pane>
+			<gz-tabs-pane label="角色管理" name="third" class="tab-pane">
 				333
-			</div>
+			</gz-tabs-pane>
 		</gz-tabs>
 	),
 
