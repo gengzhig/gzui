@@ -32,7 +32,6 @@ export default createStore({
 		},
 		setCurrentComp(state, payload) {
 			state.currentComp = payload;
-			console.log(state.currentComp);
 		},
 	},
 	actions: {

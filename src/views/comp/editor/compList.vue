@@ -48,7 +48,6 @@ const state = reactive({
 	visible: false,
 	comp: comp,
 });
-
 const blockStyle = computed(() => ({
 	top: `${props.block.top}px`,
 	left: `${props.block.left}px`,
@@ -61,7 +60,6 @@ onMounted(() => {
 	let { offsetWidth, offsetHeight } = blockRef.value;
 	blockStyle.value.width = offsetWidth + "px";
 	blockStyle.value.height = offsetHeight + "px";
-	console.log(blockStyle.value, "blockStyle");
 });
 
 watch(
@@ -74,7 +72,6 @@ watch(
 		}
 	}
 );
-
 const blockMouseDown = (e, comp) => {
 	e.preventDefault();
 	e.stopPropagation();
@@ -86,6 +83,7 @@ const blockMouseDown = (e, comp) => {
 	}
 	e.target.style.cursor = "move";
 	const pos = { ...blockStyle.value };
+
 	const startY = e.clientY;
 	const startX = e.clientX;
 	// 如果直接修改属性，值的类型会变为字符串，所以要转为数值型
@@ -98,6 +96,8 @@ const blockMouseDown = (e, comp) => {
 		pos.left = curX - startX + startLeft + "px";
 		props.block.left = parseInt(pos.left);
 		props.block.top = parseInt(pos.top);
+		// props.block.width = parseInt(pos.top);
+		// props.block.height = parseInt(pos.top);
 		store.commit("setCurrentComp", blockStyle.value);
 	};
 
@@ -134,7 +134,7 @@ const closeMenu = () => {
 }
 
 .editor-block-focus {
-	border: 1px red dashed;
+	border: 1px #70c0ff solid;
 }
 
 .assistDom {

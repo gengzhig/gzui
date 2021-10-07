@@ -43,10 +43,9 @@
 					<Grid></Grid>
 				</div>
 			</div>
-			<div class="operateMain" @click="change">
+			<div class="operateMain">
 				<gz-tabs v-model:activeName="state.activeName" :width="400" :height="500" :headerHeight="60">
 					<gz-tabs-pane label="属性" name="first" class="tab-pane">
-						{{ store.state.currentComp }}
 						<AttrList v-if="Object.keys(store.state.currentComp).length > 0" />
 						<p v-else class="placeholder">请选择组件(属性)</p>
 					</gz-tabs-pane>
@@ -126,8 +125,8 @@ const drop = e => {
 				key: currentComp.key,
 				top: e.offsetY,
 				left: e.offsetX,
-				// width: 0,
-				// height: 0,
+				width: currentComp.style.width,
+				height: currentComp.style.height,
 				zIndex: 1,
 				alignCenter: true, // 松手时居中
 			},

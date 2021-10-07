@@ -60,8 +60,11 @@ compInfo.register({
 	subLabel: "五星好评",
 	preview: () => <gzFiveStar num={3} size={20} highColor="orange"></gzFiveStar>,
 	render: () => <gzFiveStar num={3} size={20} highColor="orange"></gzFiveStar>,
-	// render: "gzFiveStar",
 	key: "0001",
+	style: {
+		width: 150,
+		height: 26,
+	},
 });
 
 compInfo.register({
@@ -81,8 +84,11 @@ compInfo.register({
 			</gz-tabs-pane>
 		</gz-tabs>
 	),
-
 	key: "0002",
+	style: {
+		width: 400,
+		height: 200,
+	},
 });
 
 compInfo.register({
@@ -91,6 +97,10 @@ compInfo.register({
 	preview: () => <gz-virtual-list width={300} height={200} itemHeight={30}></gz-virtual-list>,
 	render: () => <gz-virtual-list width={300} height={200} data={config.virtualData} itemHeight={30}></gz-virtual-list>,
 	key: "0003",
+	style: {
+		width: 300,
+		height: 200,
+	},
 });
 
 compInfo.register({
@@ -127,6 +137,10 @@ compInfo.register({
 		</gz-modal>
 	),
 	key: "0004",
+	style: {
+		width: 400,
+		height: 200,
+	},
 });
 
 compInfo.register({
@@ -135,6 +149,10 @@ compInfo.register({
 	preview: () => <gz-selector placeholder="请选择"></gz-selector>,
 	render: () => <gz-selector placeholder="请选择"></gz-selector>,
 	key: "0005",
+	style: {
+		width: 200,
+		height: 40,
+	},
 });
 
 compInfo.register({
@@ -143,6 +161,10 @@ compInfo.register({
 	preview: () => <gz-table></gz-table>,
 	render: () => <gz-table config={config.tableConfig}></gz-table>,
 	key: "0006",
+	style: {
+		width: 800,
+		height: 250,
+	},
 });
 
 compInfo.register({
@@ -159,6 +181,10 @@ compInfo.register({
 		></gz-pagination>
 	),
 	key: "0007",
+	style: {
+		width: 800,
+		height: 50,
+	},
 });
 
 compInfo.register({
@@ -167,6 +193,10 @@ compInfo.register({
 	preview: () => <gz-button type="primary">按钮</gz-button>,
 	render: () => <gz-button type="primary">按钮</gz-button>,
 	key: "0008",
+	style: {
+		width: 69,
+		height: 40,
+	},
 });
 
 compInfo.register({
@@ -199,5 +229,9 @@ compInfo.register({
 		></gz-carousel>
 	),
 	key: "0009",
+	style: {
+		width: 600,
+		height: 400,
+	},
 });
 export default { gzUI, compInfo };

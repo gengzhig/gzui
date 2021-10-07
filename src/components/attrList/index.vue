@@ -1,5 +1,5 @@
 <template>
-1234
+	{{ store.state.currentComp }}
 </template>
 
 <script>
