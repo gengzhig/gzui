@@ -31,7 +31,7 @@ export default {
 </script>
 
 <script setup>
-import { onMounted, reactive, useSlots } from "vue";
+import { onMounted, reactive, useSlots, getCurrentInstance } from "vue";
 import mitt from "@/mitt.js";
 const props = defineProps({
 	activeName: {
@@ -51,28 +51,30 @@ const props = defineProps({
 	},
 });
 const slots = useSlots();
-
+const ctx = getCurrentInstance();
 const state = reactive({
 	content: "",
 	curIndex: 0,
-	slots: slots.default(),
+	slots: slots.default().length > 1 ? slots.default() : slots.default()[0].children,
 });
+console.log(slots.default());
 onMounted(() => {
-	state.curIndex = state.slots.findIndex(s => s.props.name === props.activeName);
-	if (slots.default() && slots.default()[state.curIndex].el) {
-		slots.default()[state.curIndex].el.classList.add("active");
-	}
-	mitt.emit("current-tabIndex", state.curIndex);
+	// state.curIndex = state.slots.findIndex(s => s.props.name === props.activeName);
+	// if (slots.default() && slots.default()[state.curIndex].el) {
+	// 	slots.default()[state.curIndex].el.classList.add("active");
+	// }
+	// mitt.emit("current-tabIndex", state.curIndex);
 });
 const select = index => {
 	state.curIndex = index;
-	if (slots.default() && slots.default()[state.curIndex].el) {
-		slots.default().map(s => {
-			s?.el?.classList.remove("active");
-		});
-		slots.default()[state.curIndex].el.classList.add("active");
-	}
-	mitt.emit("current-tabIndex", state.curIndex);
+	// console.log(ctx);
+	// if (slots.default() && slots.default()[state.curIndex].el) {
+	// 	slots.default().map(s => {
+	// 		s?.el?.classList.remove("active");
+	// 	});
+	// 	slots.default()[state.curIndex].el.classList.add("active");
+	// }
+	// mitt.emit("current-tabIndex", state.curIndex);
 };
 </script>
 

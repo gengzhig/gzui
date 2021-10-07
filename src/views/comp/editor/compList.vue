@@ -49,13 +49,13 @@ const state = reactive({
 	comp: comp,
 });
 const blockStyle = computed(() => ({
+	name: props.block.name,
 	top: `${props.block.top}px`,
 	left: `${props.block.left}px`,
 	width: `${props.block.width}px`,
 	height: `${props.block.height}px`,
 	zIndex: `${props.block.zIndex}`,
 }));
-
 onMounted(() => {
 	let { offsetWidth, offsetHeight } = blockRef.value;
 	blockStyle.value.width = offsetWidth + "px";
@@ -96,8 +96,6 @@ const blockMouseDown = (e, comp) => {
 		pos.left = curX - startX + startLeft + "px";
 		props.block.left = parseInt(pos.left);
 		props.block.top = parseInt(pos.top);
-		// props.block.width = parseInt(pos.top);
-		// props.block.height = parseInt(pos.top);
 		store.commit("setCurrentComp", blockStyle.value);
 	};
 

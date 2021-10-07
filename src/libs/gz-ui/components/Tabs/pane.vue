@@ -13,7 +13,6 @@ export default {
 <script setup>
 import { reactive, ref, onMounted, watch, computed, getCurrentInstance, useSlots, nextTick } from "vue";
 import { useStore } from "vuex";
-import mitt from "@/mitt.js";
 const ctx = getCurrentInstance();
 
 const props = defineProps({
@@ -31,14 +30,27 @@ const state = reactive({
 	curIndex: 0,
 	slots: slots.default(),
 });
-mitt.on("current-tabIndex", index => {
-	let pNode = contRef?.value?.parentNode?.getElementsByTagName("div");
-	if (!pNode) window.location.reload();
+watch(
+	() => {
+		return ctx?.parent?.ctx?.state?.curIndex;
+	},
+	value => {
+		console.log(value);
+		state.curIndex = value;
+		changeContent();
+	}
+);
+onMounted(() => {
+	changeContent();
+});
+const changeContent = () => {
+	let pNode = contRef?.value?.parentNode?.getElementsByClassName("tab-pane");
+	console.log(pNode);
 	for (let i = 0; i < pNode.length; i++) {
 		pNode[i].style.display = "none";
-		pNode[index].style.display = "block";
+		pNode[state.curIndex].style.display = "block";
 	}
-});
+};
 </script>
 <style scoped lang="scss">
 .tag-content {

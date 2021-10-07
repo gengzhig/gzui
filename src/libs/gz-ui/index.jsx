@@ -73,14 +73,14 @@ compInfo.register({
 	preview: () => <gz-tabs></gz-tabs>,
 	render: () => (
 		<gz-tabs activeName={config.activeName} width={400} height={200} headerHeight={60}>
-			<gz-tabs-pane label="用户管理" name="first" class="tab-pane">
-				111
-			</gz-tabs-pane>
-			<gz-tabs-pane label="配置管理" name="second" class="tab-pane">
-				222
-			</gz-tabs-pane>
-			<gz-tabs-pane label="角色管理" name="third" class="tab-pane">
-				333
+			<gz-tabs-pane
+				v-for="(item, index) in config.tabsData"
+				key={index}
+				label={item.label}
+				name={item.name}
+				class="tab-pane"
+			>
+				{item.content}
 			</gz-tabs-pane>
 		</gz-tabs>
 	),

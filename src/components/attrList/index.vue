@@ -1,5 +1,33 @@
 <template>
-	{{ store.state.currentComp }}
+	<div v-if="state.comp.name">
+		<h3>{{ state.comp.name }}</h3>
+		<el-form label-width="80px" :model="state.comp" class="demo-form-inline">
+			<el-form-item label="图标尺寸">
+				<el-col :span="11">
+					<el-input v-model="state.comp.width" placeholder="Approved by"></el-input>
+				</el-col>
+				<el-col class="line" :span="2">-</el-col>
+				<el-col :span="11">
+					<el-input v-model="state.comp.height" placeholder="Approved by"></el-input>
+				</el-col>
+			</el-form-item>
+			<el-form-item label="图标位置">
+				<el-col :span="11">
+					<el-input v-model="state.comp.left" placeholder="Approved by"></el-input>
+				</el-col>
+				<el-col class="line" :span="2">-</el-col>
+				<el-col :span="11">
+					<el-input v-model="state.comp.top" placeholder="Approved by"></el-input>
+				</el-col>
+			</el-form-item>
+			<el-form-item label="旋转角度">
+				<el-input v-model="state.comp.widths" placeholder="旋转角度"></el-input>
+			</el-form-item>
+			<el-form-item label="不透明度">
+				<el-input v-model="state.comp.widths" placeholder="不透明度"></el-input>
+			</el-form-item>
+		</el-form>
+	</div>
 </template>
 
 <script>
@@ -10,25 +38,24 @@ export default {
 
 <script setup>
 import { reactive, ref, onMounted, watch, computed, getCurrentInstance, useSlots, nextTick } from "vue";
-import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 const props = defineProps({});
 const ctx = getCurrentInstance();
 const emit = defineEmits();
-const state = reactive({});
 const contentHeight = computed(() => {});
 const store = useStore();
-const route = useRoute();
 const slots = useSlots();
-const router = useRouter();
-const fn = val => {};
 onMounted(() => {});
-// watch(
-// 	() => [name, title],
-// 	([nname, ntitle], [oname, otitle]) => {
-// 		console.log(nname, oname), console.log(ntitle, otitle);
-// 	}
-// );
+
+const state = reactive({
+	comp: {},
+});
+watch(
+	() => store.state.currentComp,
+	value => {
+		state.comp = value;
+	}
+);
 </script>
 
 <style scoped lang="scss"></style>

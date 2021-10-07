@@ -19,6 +19,23 @@ let config = {
 	carousel: {
 		cData: cData,
 	},
+	tabsData: [
+		{
+			label: "属性",
+			name: "first",
+			content: 1,
+		},
+		{
+			label: "数据",
+			name: "second",
+			content: 2,
+		},
+		{
+			label: "事件",
+			name: "third",
+			content: 3,
+		},
+	],
 	activeName: "first",
 	virtualData: virtualResult,
 	tableConfig: {

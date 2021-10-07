@@ -15,37 +15,52 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-tabs v-model:activeName="activeName" :width="400" :height="200" :headerHeight="60">
-					<gz-tabs-pane label="用户管理" name="first" class="tab-pane"> 用户管理1 </gz-tabs-pane>
-					<gz-tabs-pane label="配置管理" name="second" class="tab-pane">配置管理1</gz-tabs-pane>
-					<gz-tabs-pane label="角色管理" name="third" class="tab-pane">角色管理1</gz-tabs-pane>
+				<gz-tabs v-model:activeName="state.activeName" :width="400" :height="200" :headerHeight="60">
+					<gz-tabs-pane
+						v-for="(item, index) in state.tabsData"
+						:key="index"
+						:label="item.label"
+						:name="item.name"
+						class="tab-pane"
+					>
+						{{ item.content }}
+					</gz-tabs-pane>
 				</gz-tabs>
 			</div>
-			<base-copy :code="code"></base-copy>
+			<base-copy :code="state.code"></base-copy>
 		</div>
 	</div>
 </template>
 
-<script>
+<script setup>
 import { reactive, toRefs } from "vue";
 import { onMounted } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
-export default {
-	components: { baseCopy },
-	setup() {
-		const state = reactive({
-			activeName: "third",
-			code: `<gz-tabs v-model:activeName="activeName" :width="400" :height="200" :headerHeight="60">
-	<div label="用户管理" name="first" class="tab-pane">111</div>
-	<div label="配置管理" name="second" class="tab-pane">222</div>
-	<div label="角色管理" name="third" class="tab-pane">333</div>
+const state = reactive({
+	tabsData: [
+		{
+			label: "用户管理",
+			name: "first",
+			content: 1,
+		},
+		{
+			label: "配置管理",
+			name: "second",
+			content: 2,
+		},
+		{
+			label: "角色管理",
+			name: "third",
+			content: 3,
+		},
+	],
+	activeName: "first",
+	code: `<gz-tabs v-model:activeName="activeName" :width="400" :height="200" :headerHeight="60">
+	<gz-tabs-pane label="用户管理" name="first" class="tab-pane">111</gz-tabs-pane>
+	<gz-tabs-pane label="配置管理" name="second" class="tab-pane">222</gz-tabs-pane>
+	<gz-tabs-pane label="角色管理" name="third" class="tab-pane">333</gz-tabs-pane>
 </gz-tabs>`,
-		});
-		return {
-			...toRefs(state),
-		};
-	},
-};
+});
 </script>
 <style scoped lang="scss">
 </style>

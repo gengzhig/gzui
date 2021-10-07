@@ -122,6 +122,7 @@ const drop = e => {
 		blocks: [
 			...blocks,
 			{
+				name: currentComp.subLabel,
 				key: currentComp.key,
 				top: e.offsetY,
 				left: e.offsetX,
