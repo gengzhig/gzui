@@ -73,15 +73,13 @@ compInfo.register({
 	preview: () => <gz-tabs></gz-tabs>,
 	render: () => (
 		<gz-tabs activeName={config.activeName} width={400} height={200} headerHeight={60}>
-			<gz-tabs-pane
-				v-for="(item, index) in config.tabsData"
-				key={index}
-				label={item.label}
-				name={item.name}
-				class="tab-pane"
-			>
-				{item.content}
-			</gz-tabs-pane>
+			{config.tabsData.map((item, index) => {
+				return (
+					<gz-tabs-pane key={index} label={item.label} name={item.name} class="tab-pane">
+						{item.content}
+					</gz-tabs-pane>
+				);
+			})}
 		</gz-tabs>
 	),
 	key: "0002",
@@ -226,12 +224,20 @@ compInfo.register({
 			initial={0}
 			hasDot={true}
 			hasDirector={true}
-		></gz-carousel>
+		>
+			{config.carousel.cData.map((item, index) => {
+				return (
+					<gz-carousel-item key={index}>
+						<img src={item.src} />
+					</gz-carousel-item>
+				);
+			})}
+		</gz-carousel>
 	),
 	key: "0009",
 	style: {
 		width: 600,
-		height: 400,
+		height: 300,
 	},
 });
 export default { gzUI, compInfo };

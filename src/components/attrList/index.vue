@@ -1,30 +1,30 @@
 <template>
-	<div v-if="state.comp.name">
-		<h3>{{ state.comp.name }}</h3>
+	<div v-if="state.comp.name" class="comp-attrList">
+		<h3 class="comp-name">{{ state.comp.name }}</h3>
 		<el-form label-width="80px" :model="state.comp" class="demo-form-inline">
-			<el-form-item label="图标尺寸">
+			<el-form-item label="组件尺寸">
 				<el-col :span="11">
-					<el-input v-model="state.comp.width" placeholder="Approved by"></el-input>
+					<el-input v-model="state.comp.width" placeholder="组件宽度"></el-input>
 				</el-col>
 				<el-col class="line" :span="2">-</el-col>
 				<el-col :span="11">
-					<el-input v-model="state.comp.height" placeholder="Approved by"></el-input>
+					<el-input v-model="state.comp.height" placeholder="组件高度"></el-input>
 				</el-col>
 			</el-form-item>
-			<el-form-item label="图标位置">
+			<el-form-item label="组件位置">
 				<el-col :span="11">
-					<el-input v-model="state.comp.left" placeholder="Approved by"></el-input>
+					<el-input v-model="state.comp.left" placeholder="x"></el-input>
 				</el-col>
 				<el-col class="line" :span="2">-</el-col>
 				<el-col :span="11">
-					<el-input v-model="state.comp.top" placeholder="Approved by"></el-input>
+					<el-input v-model="state.comp.top" placeholder="y"></el-input>
 				</el-col>
 			</el-form-item>
 			<el-form-item label="旋转角度">
-				<el-input v-model="state.comp.widths" placeholder="旋转角度"></el-input>
+				<el-input v-model="state.comp.rotationAngle" placeholder="旋转角度"></el-input>
 			</el-form-item>
 			<el-form-item label="不透明度">
-				<el-input v-model="state.comp.widths" placeholder="不透明度"></el-input>
+				<el-input v-model="state.comp.opacity" placeholder="不透明度"></el-input>
 			</el-form-item>
 		</el-form>
 	</div>
@@ -58,4 +58,10 @@ watch(
 );
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.comp-attrList {
+	padding: 15px;
+	.comp-name {
+	}
+}
+</style>

@@ -35,18 +35,18 @@
 					<gz-button type="primary" @click="revocation">撤销</gz-button>
 					<gz-button type="primary">置顶</gz-button>
 					<gz-button type="primary">置底</gz-button>
-					<gz-button type="primary">上移</gz-button>
-					<gz-button type="primary">下移</gz-button>
+					<gz-button type="primary" @click="moveUp" :disabled="!store.state.currentCompList.length">上移</gz-button>
+					<gz-button type="primary" @click="moveDown">下移</gz-button>
 				</div>
 				<div class="canvas" ref="canvasRef" :style="containerStyle">
-					<comp-list v-for="(item, index) in json.blocks" :key="index" :block="item"></comp-list>
+					<comp-list v-for="(item, index) in store.state.currentCompList" :key="index" :block="item"></comp-list>
 					<Grid></Grid>
 				</div>
 			</div>
 			<div class="operateMain">
 				<gz-tabs v-model:activeName="state.activeName" :width="400" :height="500" :headerHeight="60">
 					<gz-tabs-pane label="属性" name="first" class="tab-pane">
-						<AttrList v-if="Object.keys(store.state.currentComp).length > 0" />
+						<AttrList v-if="store.state.currentComp.name" />
 						<p v-else class="placeholder">请选择组件(属性)</p>
 					</gz-tabs-pane>
 					<gz-tabs-pane label="数据" name="second" class="tab-pane">
@@ -71,8 +71,6 @@ export default {
 import { ref, inject, computed, reactive, toRef } from "vue";
 import { useStore } from "vuex";
 
-import configJson from "./property.json";
-
 import Navbar from "layouts/components/Navbar.vue";
 import compList from "./compList.vue";
 import Grid from "./grid.vue";
@@ -80,16 +78,17 @@ import AttrList from "@/components/attrList/index.vue";
 let currentComp = null;
 
 const store = useStore();
-const json = ref(configJson);
 const canvasRef = ref(null);
 const state = reactive({
 	activeName: "first",
 });
 const compInfo = inject("compInfo");
-const containerStyle = computed(() => ({
-	width: `${json.value.container?.width}px`,
-	height: `${json.value.container?.height}px`,
-}));
+
+// 画布尺寸
+// const containerStyle = computed(() => ({
+// 	width: `${json.value.container?.width}px`,
+// 	height: `${json.value.container?.height}px`,
+// }));
 
 const dragstart = (e, comp) => {
 	// dragenter 进入元素中，标识改为移动标识
@@ -116,27 +115,32 @@ const dragleave = e => {
 };
 
 const drop = e => {
-	let blocks = json.value.blocks; // 画布内已存在组件
-	json.value = {
-		...json.value,
-		blocks: [
-			...blocks,
-			{
-				name: currentComp.subLabel,
-				key: currentComp.key,
-				top: e.offsetY,
-				left: e.offsetX,
-				width: currentComp.style.width,
-				height: currentComp.style.height,
-				zIndex: 1,
-				alignCenter: true, // 松手时居中
-			},
-		],
-	};
-	console.log(json.value.blocks, " 画布内已存在组件");
+	let currentCompList = [
+		...store.state.currentCompList,
+		{
+			id: new Date().getTime(),
+			name: currentComp.subLabel,
+			key: currentComp.key,
+			top: e.offsetY,
+			left: e.offsetX,
+			width: currentComp.style.width,
+			height: currentComp.style.height,
+			zIndex: 1,
+			alignCenter: true, // 松手时居中
+		},
+	];
+	console.log(currentCompList);
+	console.log(currentComp);
+	// 按照先后拖入顺序设置zIndex
+	setZindex(currentCompList);
 	currentComp = null;
 };
-
+const setZindex = data => {
+	data.map((c, i) => {
+		c.zIndex = i + 1;
+	});
+	store.commit("setCurrentCompList", data);
+};
 const dragend = e => {
 	if (canvasRef.value.removeListener) {
 		canvasRef.value.removeListener("dragenter", dragenter);
@@ -148,8 +152,26 @@ const dragend = e => {
 
 // 撤销
 const revocation = () => {
-	json.value.blocks.pop();
-	console.log(json.value.blocks, " 画布内已存在组件");
+	store.commit("revocationComp");
+};
+
+// 上移
+const moveUp = () => {
+	console.log("上移选中组件", store.state.currentComp);
+	// 获取点击组件在组件列表处索引i 将此和下一组件移动位置
+	// let moveIndex = store.state.currentCompList.findIndex(c => c.id == store.state.currentComp.id);
+	// if (store.state.currentCompList.length > 1) {
+	// 	store.state.currentCompList = swapArr(store.state.currentCompList, moveIndex, moveIndex + 1);
+	// 	// 交换两个元素
+	// 	function swapArr(arr, index1, index2) {
+	// 		arr[index1] = arr.splice(index2, 1, arr[index1])[0];
+	// 		return arr;
+	// 	}
+	// 	setZindex(store.state.currentCompList);
+	// 	// if (moveIndex > -1) store.commit("upComponent", moveIndex);
+	// 	console.log("上移组件列表", store.state.currentCompList);
+	// }
+	store.commit("upComponent");
 };
 
 // ctrl快捷键操作
@@ -171,6 +193,7 @@ const keyboardEvent = () => {
 			console.log("重做");
 		} else {
 			console.log("一般操作");
+			return;
 		}
 	};
 	const init = () => {
@@ -203,7 +226,7 @@ window.addEventListener("keydown", keyboardEvent());
 			box-sizing: border-box;
 			.compList {
 				.header {
-					text-align: center;
+					text-align: left;
 					font-weight: bold;
 					font-size: 18px;
 					margin: 5px;
@@ -236,18 +259,19 @@ window.addEventListener("keydown", keyboardEvent());
 			top: 0;
 			left: 0;
 			box-sizing: border-box;
-			padding: 90px 415px 30px 230px;
+			padding: 80px 405px 20px 220px;
 			overflow: auto;
 			.operateGroup {
+				margin-bottom: 20px;
 				button {
 					margin-right: 5px;
 				}
 			}
 			.canvas {
 				border: 1px solid rgb(124, 100, 100);
-				height: 100%;
+				width: 100%;
+				height: calc(100vh - 160px);
 				position: relative;
-				overflow: auto;
 			}
 		}
 		.operateMain {

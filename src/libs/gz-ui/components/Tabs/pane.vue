@@ -35,7 +35,6 @@ watch(
 		return ctx?.parent?.ctx?.state?.curIndex;
 	},
 	value => {
-		console.log(value);
 		state.curIndex = value;
 		changeContent();
 	}
@@ -45,7 +44,6 @@ onMounted(() => {
 });
 const changeContent = () => {
 	let pNode = contRef?.value?.parentNode?.getElementsByClassName("tab-pane");
-	console.log(pNode);
 	for (let i = 0; i < pNode.length; i++) {
 		pNode[i].style.display = "none";
 		pNode[state.curIndex].style.display = "block";

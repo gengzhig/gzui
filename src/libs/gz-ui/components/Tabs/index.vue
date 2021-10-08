@@ -57,7 +57,6 @@ const state = reactive({
 	curIndex: 0,
 	slots: slots.default().length > 1 ? slots.default() : slots.default()[0].children,
 });
-console.log(slots.default());
 onMounted(() => {
 	// state.curIndex = state.slots.findIndex(s => s.props.name === props.activeName);
 	// if (slots.default() && slots.default()[state.curIndex].el) {

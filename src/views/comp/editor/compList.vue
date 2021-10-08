@@ -1,17 +1,17 @@
 <template>
 	<div
 		draggable="true"
-		:class="['editor-block', state.comp.focus ? 'editor-block-focus' : '']"
+		:class="['editor-block', state.isActive ? 'editor-block-focus' : '']"
 		:style="blockStyle"
-		@mousedown="e => blockMouseDown(e, state.comp)"
-		@mouseup="e => blockMouseUp(e, state.comp)"
+		:comp-id="blockStyle.id"
+		@mousedown="e => blockMouseDown(e)"
+		@mouseup="e => blockMouseUp(e)"
 		ref="blockRef"
 	>
-		<component :is="state.comp.render()"></component>
+		<component :is="compInfo.compMapList.get(blockStyle.key).render()"></component>
 		<!-- 防止触发组件上的事件，加的一层遮罩 -->
-		<div class="assistDom" @contextmenu.prevent.native="openMenu($event, state.comp)"></div>
+		<div class="assistDom" @contextmenu.prevent.native="openMenu($event)"></div>
 	</div>
-
 	<div v-if="state.visible" class="rightMenu" :style="{ left: state.left + 'px', top: state.top + 'px' }">
 		<h3>右键功能菜单</h3>
 		<ul>
@@ -39,22 +39,24 @@ const props = defineProps({
 });
 const store = useStore();
 const compInfo = inject("compInfo");
-const comp = compInfo.compMapList.get(props.block.key); // 当前渲染组件信息
 const blockRef = ref(null);
 const state = reactive({
 	rightClickItem: null,
 	top: null,
 	left: null,
 	visible: false,
-	comp: comp,
+	isActive: false,
 });
 const blockStyle = computed(() => ({
+	id: props.block.id,
+	key: props.block.key,
 	name: props.block.name,
 	top: `${props.block.top}px`,
 	left: `${props.block.left}px`,
 	width: `${props.block.width}px`,
 	height: `${props.block.height}px`,
 	zIndex: `${props.block.zIndex}`,
+	alignCenter: props.block.alignCenter,
 }));
 onMounted(() => {
 	let { offsetWidth, offsetHeight } = blockRef.value;
@@ -72,18 +74,13 @@ watch(
 		}
 	}
 );
-const blockMouseDown = (e, comp) => {
+
+const blockMouseDown = e => {
 	e.preventDefault();
 	e.stopPropagation();
-	// e.dataTransfer.dropEffect = "move";
-	if (!state.comp.focus) {
-		state.comp.focus = true;
-	} else {
-		state.comp.focus = false;
-	}
 	e.target.style.cursor = "move";
-	const pos = { ...blockStyle.value };
 
+	const pos = { ...blockStyle.value };
 	const startY = e.clientY;
 	const startX = e.clientX;
 	// 如果直接修改属性，值的类型会变为字符串，所以要转为数值型
@@ -96,7 +93,11 @@ const blockMouseDown = (e, comp) => {
 		pos.left = curX - startX + startLeft + "px";
 		props.block.left = parseInt(pos.left);
 		props.block.top = parseInt(pos.top);
-		store.commit("setCurrentComp", blockStyle.value);
+
+		let selectCompId = e.target.parentElement.getAttribute("comp-id");
+		let selectComp = store.state.currentCompList.filter(c => c.id == selectCompId);
+		let selectCompIndex = store.state.currentCompList.findIndex(c => c.id == selectCompId);
+		store.commit("setCurrentComp", { compData: selectComp, index: selectCompIndex });
 	};
 
 	const up = () => {
@@ -107,12 +108,16 @@ const blockMouseDown = (e, comp) => {
 	document.addEventListener("mouseup", up);
 };
 
-const blockMouseUp = (e, comp) => {
-	store.commit("setCurrentComp", blockStyle.value);
+const blockMouseUp = e => {
+	state.isActive = !state.isActive;
+	let selectCompId = e.target.parentElement.getAttribute("comp-id");
+	let selectComp = store.state.currentCompList.filter(c => c.id == selectCompId);
+	let selectCompIndex = store.state.currentCompList.findIndex(c => c.id == selectCompId);
+	store.commit("setCurrentComp", { compData: selectComp, index: selectCompIndex });
 };
 // 打开右键菜单
 const openMenu = (e, comp) => {
-	state.rightClickItem = comp;
+	state.rightClickItem = store.state.currentComp;
 	let x = e.clientX;
 	let y = e.clientY;
 	state.top = y - 90;
