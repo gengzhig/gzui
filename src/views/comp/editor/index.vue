@@ -46,7 +46,7 @@
 			<div class="operateMain">
 				<gz-tabs v-model:activeName="state.activeName" :width="400" :height="500" :headerHeight="60">
 					<gz-tabs-pane label="属性" name="first" class="tab-pane">
-						<AttrList v-if="store.state.currentComp.name" />
+						<AttrList v-if="store.state.currentComp[0].name" />
 						<p v-else class="placeholder">请选择组件(属性)</p>
 					</gz-tabs-pane>
 					<gz-tabs-pane label="数据" name="second" class="tab-pane">
