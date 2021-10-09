@@ -134,6 +134,7 @@ const closeMenu = () => {
 <style scoped lang="scss">
 .editor-block {
 	position: absolute;
+	border: 1px transparent solid;
 }
 
 .editor-block-focus {

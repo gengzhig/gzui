@@ -59,7 +59,7 @@ compInfo.register({
 	label: "数据录入",
 	subLabel: "五星好评",
 	preview: () => <gzFiveStar num={3} size={20} highColor="orange"></gzFiveStar>,
-	render: () => <gzFiveStar num={3} size={20} highColor="orange"></gzFiveStar>,
+	render: () => <gzFiveStar width={"100%"} height={"100%"} num={3} size={20} highColor="orange"></gzFiveStar>,
 	key: "0001",
 	style: {
 		width: 150,
@@ -72,7 +72,7 @@ compInfo.register({
 	subLabel: "tabs标签页",
 	preview: () => <gz-tabs></gz-tabs>,
 	render: () => (
-		<gz-tabs activeName={config.activeName} width={400} height={200} headerHeight={60}>
+		<gz-tabs width={"100%"} height={"100%"} activeName={config.activeName} headerHeight={60}>
 			{config.tabsData.map((item, index) => {
 				return (
 					<gz-tabs-pane key={index} label={item.label} name={item.name} class="tab-pane">
@@ -93,7 +93,9 @@ compInfo.register({
 	label: "数据展示",
 	subLabel: "虚拟列表",
 	preview: () => <gz-virtual-list width={300} height={200} itemHeight={30}></gz-virtual-list>,
-	render: () => <gz-virtual-list width={300} height={200} data={config.virtualData} itemHeight={30}></gz-virtual-list>,
+	render: () => (
+		<gz-virtual-list width={"100%"} height={"100%"} data={config.virtualData} itemHeight={30}></gz-virtual-list>
+	),
 	key: "0003",
 	style: {
 		width: 300,
@@ -122,7 +124,8 @@ compInfo.register({
 	render: () => (
 		<gz-modal
 			show={true}
-			width={400}
+			width={"100%"}
+			height={"100%"}
 			borderRadius={1}
 			headerTitle="新增"
 			headerTitleColor="#fff"
@@ -145,7 +148,7 @@ compInfo.register({
 	label: "数据录入",
 	subLabel: "下拉菜单",
 	preview: () => <gz-selector placeholder="请选择"></gz-selector>,
-	render: () => <gz-selector placeholder="请选择"></gz-selector>,
+	render: () => <gz-selector width={"100%"} height={"100%"} placeholder="请选择"></gz-selector>,
 	key: "0005",
 	style: {
 		width: 200,
@@ -180,7 +183,7 @@ compInfo.register({
 	),
 	key: "0007",
 	style: {
-		width: 800,
+		width: 600,
 		height: 50,
 	},
 });
@@ -189,10 +192,14 @@ compInfo.register({
 	label: "通用",
 	subLabel: "按钮",
 	preview: () => <gz-button type="primary">按钮</gz-button>,
-	render: () => <gz-button type="primary">按钮</gz-button>,
+	render: () => (
+		<gz-button width={"100%"} height={"100%"} type="primary">
+			按钮
+		</gz-button>
+	),
 	key: "0008",
 	style: {
-		width: 69,
+		width: 70,
 		height: 40,
 	},
 });
@@ -209,6 +216,8 @@ compInfo.register({
 			initial={0}
 			hasDot={true}
 			hasDirector={true}
+			width={"100%"}
+			height={"100%"}
 		>
 			<gz-carousel-item v-for="(item, index) in config.carousel.cData" key={index}>
 				<img src={item.src} />
@@ -217,6 +226,8 @@ compInfo.register({
 	),
 	render: () => (
 		<gz-carousel
+			width={"100%"}
+			height={"100%"}
 			dotBgColor="#333"
 			imgFit="cover"
 			autoplay={true}

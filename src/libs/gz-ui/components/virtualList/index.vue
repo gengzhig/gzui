@@ -35,11 +35,11 @@ const props = defineProps({
 		required: false,
 	},
 	width: {
-		type: Number,
+		type: [Number, String],
 		default: 300,
 	},
 	height: {
-		type: Number,
+		type: [Number, String],
 		default: 400,
 	},
 	itemHeight: {
@@ -47,7 +47,6 @@ const props = defineProps({
 		default: 30,
 	},
 });
-
 const visualContent = ref(null); // 可视高度
 const realContent = ref(null); // 总高度
 const contentHeight = computed(() => {
@@ -83,6 +82,8 @@ const handleScroll = () => {
 
 <style lang="scss" scoped>
 .list-view {
+	width: 100%;
+	height: 100%;
 	overflow: auto;
 	position: relative;
 	border: 1px solid #aaa;

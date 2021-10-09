@@ -49,6 +49,14 @@ const props = defineProps({
 		type: Number,
 		default: 60,
 	},
+	headerBgColor: {
+		type: String,
+		default: "#2ed573",
+	},
+	headerBgActiveColor: {
+		type: String,
+		default: "chartreuse",
+	},
 });
 const slots = useSlots();
 const ctx = getCurrentInstance();
@@ -79,21 +87,29 @@ const select = index => {
 
 <style lang="scss">
 .comp-tag {
+	height: 100%;
+	width: 100%;
 	border: 1px solid #ccc;
 	.header {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
-		background: #2ed573;
+		background: v-bind(headerBgColor);
 		.tab {
 			display: flex;
 			justify-content: center;
 			align-items: center;
 			color: #fff;
 			cursor: pointer;
+			border-top: 2px solid transparent;
 			&.active {
-				background: chartreuse;
+				background: v-bind(headerBgActiveColor);
+				border-top: 2px solid #2681ff;
 			}
 		}
+	}
+	.tag-content {
+		max-height: calc(100vh - 120px);
+		overflow: auto;
 	}
 }
 </style>

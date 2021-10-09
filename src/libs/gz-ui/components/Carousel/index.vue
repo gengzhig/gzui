@@ -1,5 +1,10 @@
 <template>
-	<div class="carousel" @mouseenter="mouseEnter" @mouseleave="mouseLeave">
+	<div
+		class="carousel"
+		:style="{ height: height + 'px', maxWidth: widthStyle ? '' : 'max-content' }"
+		@mouseenter="mouseEnter"
+		@mouseleave="mouseLeave"
+	>
 		<div class="inner">
 			<car-dots
 				:hasDot="hasDot"
@@ -20,10 +25,18 @@ export default {
 };
 </script>
 <script setup>
-import { onMounted, onBeforeUnmount, reactive, getCurrentInstance } from "vue";
+import { onMounted, onBeforeUnmount, reactive, computed, getCurrentInstance } from "vue";
 import carDots from "./dots.vue";
 import carDirector from "./director.vue";
 const props = defineProps({
+	width: {
+		type: [Number, String],
+		default: 300,
+	},
+	height: {
+		type: [Number, String],
+		default: 300,
+	},
 	autoplay: {
 		type: Boolean,
 		default: true,
@@ -52,6 +65,13 @@ const props = defineProps({
 		type: String,
 		default: "contain",
 	},
+});
+const widthStyle = computed(() => {
+	if (typeof props.width == "string") {
+		return true;
+	} else {
+		return false;
+	}
 });
 let t = null;
 const instance = getCurrentInstance();
@@ -121,7 +141,7 @@ onBeforeUnmount(() => {
 <style lang="scss" scoped>
 .carousel {
 	width: 100%;
-	height: 300px;
+	height: 100%;
 	.inner {
 		width: 100%;
 		height: 100%;

@@ -1,38 +1,82 @@
 <template>
-	<div v-if="state.comp[0].name" class="comp-attrList">
-		<h3 class="comp-name">{{ state.comp[0].name }}</h3>
-		<el-form label-width="80px" :model="state.comp" class="demo-form-inline">
+	<div v-if="compName" class="comp-attrList">
+		<h3 class="comp-name">{{ compName }}</h3>
+		<el-form label-width="80px" :model="state.compBaseInfo" class="demo-form-inline">
 			<el-form-item label="组件尺寸">
 				<el-col :span="11">
-					<el-input v-model="state.comp[0].width" placeholder="组件宽度"></el-input>
+					<el-input-number v-model="compProperty.width" :min="0" controls-position="right" placeholder="组件宽度" />
 				</el-col>
-				<el-col class="line" :span="2">-</el-col>
+				<el-col class="line" :span="2"> - </el-col>
 				<el-col :span="11">
-					<el-input v-model="state.comp[0].height" placeholder="组件高度"></el-input>
+					<el-input-number v-model="compProperty.height" :min="0" controls-position="right" placeholder="组件高度" />
 				</el-col>
 			</el-form-item>
 			<el-form-item label="组件位置">
 				<el-col :span="11">
-					<el-input v-model="state.comp[0].left" placeholder="x"></el-input>
+					<el-input-number v-model="compProperty.left" :min="0" controls-position="right" placeholder="x" />
 				</el-col>
 				<el-col class="line" :span="2">-</el-col>
 				<el-col :span="11">
-					<el-input v-model="state.comp[0].top" placeholder="y"></el-input>
+					<el-input-number v-model="compProperty.top" :min="0" controls-position="right" placeholder="y" />
 				</el-col>
 			</el-form-item>
 			<el-form-item label="旋转角度">
-				<el-input v-model="state.comp[0].rotationAngle" placeholder="旋转角度"></el-input>
+				<el-input-number
+					v-model="compProperty.rotationAngle"
+					:min="0"
+					:max="360"
+					controls-position="right"
+					placeholder="旋转角度"
+				/>
 			</el-form-item>
 			<el-form-item label="不透明度">
-				<el-input v-model="state.comp[0].opacity" placeholder="不透明度"></el-input>
+				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
+			</el-form-item>
+			<el-form-item label="不透明度">
+				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
+			</el-form-item>
+			<el-form-item label="不透明度">
+				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
+			</el-form-item>
+			<el-form-item label="不透明度">
+				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
+			</el-form-item>
+			<el-form-item label="不透明度">
+				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
+			</el-form-item>
+			<el-form-item label="不透明度">
+				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
+			</el-form-item>
+			<el-form-item label="不透明度">
+				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
+			</el-form-item>
+			<el-form-item label="不透明度">
+				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
+			</el-form-item>
+			<el-form-item label="不透明度">
+				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
+			</el-form-item>
+			<el-form-item label="不透明度">
+				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
+			</el-form-item>
+			<el-form-item label="不透明度">
+				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
+			</el-form-item>
+			<el-form-item label="不透明度10">
+				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
 			</el-form-item>
 		</el-form>
 	</div>
 </template>
 
 <script>
+import { mapState, mapGetters } from "vuex";
 export default {
 	name: "",
+	// computed: {
+	// 	...mapState(["currentComp"]),
+	// 	...mapGetters(["currentCompName", "compProperty"]),
+	// },
 };
 </script>
 
@@ -46,22 +90,35 @@ const contentHeight = computed(() => {});
 const store = useStore();
 const slots = useSlots();
 onMounted(() => {});
-
-const state = reactive({
-	comp: {},
+const compProperty = computed(() => {
+	return store.state.currentComp[0];
 });
-watch(
-	() => store.state.currentComp,
-	value => {
-		state.comp = value;
-	}
-);
+const compName = computed(() => {
+	return store.state.currentComp[0].name;
+});
+const compInfo = computed(() => {
+	return store.state.currentComp;
+});
+const state = reactive({
+	compBaseInfo: compProperty.value,
+});
+// watch(
+// 	compProperty.value,
+// 	value => {
+// 		console.log(value);
+// 	},
+// 	{ deep: true }
+// );
 </script>
 
 <style scoped lang="scss">
 .comp-attrList {
 	padding: 15px;
 	.comp-name {
+		margin-bottom: 15px;
+	}
+	.el-col.el-col-2.line {
+		text-align: center;
 	}
 }
 </style>

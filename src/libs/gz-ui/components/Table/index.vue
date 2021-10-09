@@ -92,4 +92,9 @@ const fn = val => {};
 onMounted(() => {});
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.gz-table {
+	width: 100%;
+	height: 100%;
+}
+</style>

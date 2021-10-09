@@ -8,17 +8,22 @@
 -->
 <template>
 	<div class="nav-bar">
-		<h3 class="title" @click="goHome">gzUI组件库</h3>
+		<div class="menuList">
+			<h3 class="title" @click="goHome">gzUI组件库</h3>
+			<gz-button>组件库</gz-button>
+		</div>
 		<el-avatar icon="el-icon-user-solid"></el-avatar>
 	</div>
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
+const route = useRouter();
 const router = useRouter();
 const goHome = e => {
 	router.push("/home");
 };
+console.log(route);
 </script>
 
 <style lang="scss" scoped>
@@ -37,9 +42,13 @@ const goHome = e => {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	.title {
-		letter-spacing: 0.2em;
-		cursor: pointer;
+	.menuList {
+		display: flex;
+		align-items: center;
+		.title {
+			letter-spacing: 0.2em;
+			cursor: pointer;
+		}
 	}
 }
 </style>

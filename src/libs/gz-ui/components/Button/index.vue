@@ -9,6 +9,7 @@
 			plain ? 'isPlain' : '',
 			round ? 'isRound' : '',
 		]"
+		:style="{ height: height + 'px', maxWidth: buttonWidthStyle ? '' : 'max-content' }"
 	>
 		<span>
 			<slot></slot>
@@ -42,6 +43,14 @@ const props = defineProps({
 	disabled: {
 		type: Boolean,
 		default: false,
+	},
+	width: {
+		type: [Number, String],
+		default: 70,
+	},
+	height: {
+		type: [Number, String],
+		default: 40,
 	},
 });
 const butttonSizeClass = computed(() => {
@@ -94,13 +103,22 @@ const butttonTypeClass = computed(() => {
 	}
 	return buttonClass;
 });
+const buttonWidthStyle = computed(() => {
+	if (typeof props.width == "string") {
+		return true;
+	} else {
+		return false;
+	}
+});
 </script>
 
 <style lang="scss" scoped>
 .gz-button {
+	height: 100%;
+	width: 100%;
+
 	display: inline-block;
 	line-height: 1;
-	min-height: 40px;
 	white-space: nowrap;
 	cursor: pointer;
 	text-align: center;

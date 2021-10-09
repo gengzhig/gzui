@@ -4,17 +4,17 @@
 		ref="modalMask"
 		:style="{
 			width: width + 'px',
-			height: '200px',
+			height: height + 'px',
 		}"
 	>
 		<div
 			class="ui-modal"
 			ref="uiModal"
 			:style="{
-				width: width + 'px',
+				// width: width + 'px',
 				borderRadius: borderRadius + 'px',
-				marginLeft: -width / 2 + 'px',
-				marginTop: -modalHeight / 2 + 'px',
+				// marginLeft: -width / 2 + 'px',
+				// marginTop: -modalHeight / 2 + 'px',
 			}"
 			v-show="showModal"
 		>
@@ -55,6 +55,10 @@ export default {
 			type: Number,
 			default: 400,
 		},
+		height: {
+			type: Number,
+			default: 200,
+		},
 		borderRadius: {
 			type: Number,
 			default: 1,
@@ -85,6 +89,7 @@ export default {
 		},
 	},
 	setup(props, ctx) {
+		console.log(props);
 		const uiModal = ref(null);
 		const modalMask = ref(null);
 		const state = reactive({
@@ -135,16 +140,20 @@ export default {
 
 <style lang="scss" scoped>
 .modal-mask {
+	width: 100%;
+	height: 100%;
 	position: absolute;
 	top: 0;
 	left: 0;
 	background: rgba(0, 0, 0, 0.3);
 	z-index: 2;
 	.ui-modal {
-		height: 200px;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
 		position: absolute;
-		left: 50%;
-		top: 50%;
 		overflow: hidden;
 		background-color: #fff;
 		box-shadow: 0 1px 3px rgb(0 0 0 / 30%);
@@ -164,6 +173,7 @@ export default {
 		article {
 			padding: 10px 20px;
 			margin: 20px 0;
+			flex: 1;
 		}
 		.btn-group {
 			padding: 10px 20px;

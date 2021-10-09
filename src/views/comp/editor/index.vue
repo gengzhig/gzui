@@ -33,10 +33,10 @@
 			<div class="appMain">
 				<div class="operateGroup">
 					<gz-button type="primary" @click="revocation">撤销</gz-button>
-					<gz-button type="primary">置顶</gz-button>
-					<gz-button type="primary">置底</gz-button>
+					<gz-button type="primary" @click="moveTop" :disabled="!store.state.currentCompList.length">置顶</gz-button>
+					<gz-button type="primary" @click="moveBottom" :disabled="!store.state.currentCompList.length">置底</gz-button>
 					<gz-button type="primary" @click="moveUp" :disabled="!store.state.currentCompList.length">上移</gz-button>
-					<gz-button type="primary" @click="moveDown">下移</gz-button>
+					<gz-button type="primary" @click="moveDown" :disabled="!store.state.currentCompList.length">下移</gz-button>
 				</div>
 				<div class="canvas" ref="canvasRef" :style="containerStyle">
 					<comp-list v-for="(item, index) in store.state.currentCompList" :key="index" :block="item"></comp-list>
@@ -44,9 +44,15 @@
 				</div>
 			</div>
 			<div class="operateMain">
-				<gz-tabs v-model:activeName="state.activeName" :width="400" :height="500" :headerHeight="60">
+				<gz-tabs
+					v-model:activeName="state.activeName"
+					:width="500"
+					:headerHeight="60"
+					headerBgColor="#13161A"
+					headerBgActiveColor="#1D2126"
+				>
 					<gz-tabs-pane label="属性" name="first" class="tab-pane">
-						<AttrList v-if="store.state.currentComp[0].name" />
+						<AttrList v-if="currentCompName" />
 						<p v-else class="placeholder">请选择组件(属性)</p>
 					</gz-tabs-pane>
 					<gz-tabs-pane label="数据" name="second" class="tab-pane">
@@ -62,20 +68,25 @@
 </template>
 
 <script>
+import { useStore, mapGetters } from "vuex";
 export default {
 	components: { compList },
 	name: "Editor",
+	computed: {
+		...mapGetters(["currentCompName"]),
+	},
 };
 </script>
 <script setup>
 import { ref, inject, computed, reactive, toRef } from "vue";
-import { useStore } from "vuex";
+import { useStore, mapGetters } from "vuex";
 
 import Navbar from "layouts/components/Navbar.vue";
 import compList from "./compList.vue";
 import Grid from "./grid.vue";
 import AttrList from "@/components/attrList/index.vue";
-let currentComp = null;
+
+let currentComp = null; // 当前组件
 
 const store = useStore();
 const canvasRef = ref(null);
@@ -129,8 +140,6 @@ const drop = e => {
 			alignCenter: true, // 松手时居中
 		},
 	];
-	console.log(currentCompList);
-	console.log(currentComp);
 	// 按照先后拖入顺序设置zIndex
 	setZindex(currentCompList);
 	currentComp = null;
@@ -154,26 +163,22 @@ const dragend = e => {
 const revocation = () => {
 	store.commit("revocationComp");
 };
-
+// 置顶
+const moveTop = () => {
+	store.commit("topComponent");
+};
+// 置底
+const moveBottom = () => {
+	store.commit("bottomComponentt");
+};
 // 上移
 const moveUp = () => {
-	console.log("上移选中组件", store.state.currentComp);
-	// 获取点击组件在组件列表处索引i 将此和下一组件移动位置
-	// let moveIndex = store.state.currentCompList.findIndex(c => c.id == store.state.currentComp.id);
-	// if (store.state.currentCompList.length > 1) {
-	// 	store.state.currentCompList = swapArr(store.state.currentCompList, moveIndex, moveIndex + 1);
-	// 	// 交换两个元素
-	// 	function swapArr(arr, index1, index2) {
-	// 		arr[index1] = arr.splice(index2, 1, arr[index1])[0];
-	// 		return arr;
-	// 	}
-	// 	setZindex(store.state.currentCompList);
-	// 	// if (moveIndex > -1) store.commit("upComponent", moveIndex);
-	// 	console.log("上移组件列表", store.state.currentCompList);
-	// }
 	store.commit("upComponent");
 };
-
+// 下移
+const moveDown = () => {
+	store.commit("downComponent");
+};
 // ctrl快捷键操作
 const keyboardEvent = () => {
 	const keyCodes = {
@@ -212,6 +217,7 @@ window.addEventListener("keydown", keyboardEvent());
 .layouts {
 	height: 100vh;
 	.container {
+		height: calc(100vh);
 		.sidebar {
 			width: 200px;
 			height: calc(100vh - 60px);
@@ -259,7 +265,7 @@ window.addEventListener("keydown", keyboardEvent());
 			top: 0;
 			left: 0;
 			box-sizing: border-box;
-			padding: 80px 405px 20px 220px;
+			padding: 80px 505px 20px 220px;
 			overflow: auto;
 			.operateGroup {
 				margin-bottom: 20px;
@@ -275,7 +281,7 @@ window.addEventListener("keydown", keyboardEvent());
 			}
 		}
 		.operateMain {
-			width: 400px;
+			width: 500px;
 			height: calc(100vh - 60px);
 			color: #fff;
 			background-color: #304156;
@@ -284,6 +290,9 @@ window.addEventListener("keydown", keyboardEvent());
 			right: 0;
 			z-index: 1;
 			margin-top: 60px;
+			.comp-tag {
+				height: calc(100vh - 60px) !important;
+			}
 		}
 	}
 }

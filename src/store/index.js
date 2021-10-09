@@ -8,22 +8,19 @@ import { Store } from "vuex";
  * @FilePath: \zimeigui-vite2-vue3\src\store\index.js
  */
 import { createStore } from "vuex";
+import tool from "@/assets/js/tool.js";
 
 export default createStore({
 	state: {
 		isMobile: false,
 		routerMenu: localStorage.getItem("routerMenu") ? JSON.parse(localStorage.getItem("routerMenu")) : [],
-		currentComp: {
-			// id: null,
-			// name: null,
-			// width: 0,
-			// height: 0,
-			// left: 0,
-			// top: 0,
-			// zIndex: 0,
-		},
+		currentComp: [],
 		curComponentIndex: -1,
 		currentCompList: [],
+	},
+	getters: {
+		currentCompName: state => state.currentComp && state.currentComp.length > 0 && state.currentComp[0].name,
+		currentCompProperty: state => state.currentComp && state.currentComp.length > 0 && state.currentComp[0],
 	},
 	mutations: {
 		saveRouterMenu(state, payload) {
@@ -45,6 +42,7 @@ export default createStore({
 		// 撤销组件
 		revocationComp(state, payload) {
 			state.currentCompList.pop();
+			state.currentComp = null;
 		},
 		// 上移
 		upComponent(state, payload) {
@@ -52,13 +50,37 @@ export default createStore({
 			// 上移图层 index，表示元素在数组中越往后
 			if (state.curComponentIndex < state.currentCompList.length - 1) {
 				swap(state.currentCompList, state.curComponentIndex, state.curComponentIndex + 1);
-				state.currentCompList.map((c, i) => {
-					c.zIndex = i + 1;
-				});
-				console.log(state.currentCompList);
+				tool.resetZindex(state.currentCompList);
 			}
 			function swap(arr, i, j) {
 				arr[i] = arr.splice(j, 1, arr[i])[0];
+			}
+		},
+		// 下移
+		downComponent(state, payload) {
+			// 下移图层 index，表示元素在数组中越往前
+			if (state.curComponentIndex > 0) {
+				swap(state.currentCompList, state.curComponentIndex, state.curComponentIndex - 1);
+				tool.resetZindex(state.currentCompList);
+			}
+			function swap(arr, i, j) {
+				arr[i] = arr.splice(j, 1, arr[i])[0];
+			}
+		},
+		// 置顶
+		topComponent(state, payload) {
+			if (state.curComponentIndex < state.currentCompList.length - 1) {
+				state.currentCompList.splice(state.curComponentIndex, 1);
+				state.currentCompList.push(state.currentComp[0]);
+				tool.resetZindex(state.currentCompList);
+			}
+		},
+		// 置底
+		bottomComponentt(state, payload) {
+			if (state.curComponentIndex > 0) {
+				state.currentCompList.splice(state.curComponentIndex, 1);
+				state.currentCompList.unshift(state.currentComp[0]);
+				tool.resetZindex(state.currentCompList);
 			}
 		},
 	},

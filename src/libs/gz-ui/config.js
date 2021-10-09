@@ -42,8 +42,8 @@ let config = {
 		style: {
 			stripe: true,
 			border: true,
-			height: 250,
-			width: 800,
+			height: "100%",
+			width: "100%",
 			index: false,
 			radio: false,
 			checkBox: false,
@@ -108,7 +108,7 @@ let config = {
 	},
 	pagination: {
 		total: 51,
-		defaultLimit: "10条/页",
+		defaultLimit: 10,
 		defaultLimitData: [
 			{
 				id: 1,

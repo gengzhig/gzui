@@ -1,5 +1,5 @@
 <template>
-	<div class="star-container" ref="starContainer">
+	<div class="star-container" ref="starContainer" :style="{ height: height + 'px', width: width + 'px' }">
 		<span
 			:class="['iconfont icon-star', starNum <= num ? 'active' : '']"
 			v-active
@@ -32,6 +32,14 @@ export default {
 			type: String,
 			default: "orange",
 		},
+		width: {
+			type: [Number, String],
+			default: 150,
+		},
+		height: {
+			type: [Number, String],
+			default: 26,
+		},
 	},
 	setup(props, ctx) {
 		const starContainer = ref(null);
@@ -50,7 +58,8 @@ export default {
 
 <style lang="scss" scoped>
 .star-container {
-	width: 150px;
+	width: 100%;
+	height: 100%;
 }
 @font-face {
 	font-family: "iconfont"; /* Project id 2686328 */

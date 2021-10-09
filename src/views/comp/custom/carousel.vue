@@ -15,6 +15,7 @@
 		<div class="meta">
 			<div class="demo">
 				<gz-carousel
+					width="100%"
 					dotBgColor="#333"
 					imgFit="cover"
 					:autoplay="true"
