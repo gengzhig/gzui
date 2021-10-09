@@ -10,20 +10,41 @@
 	<div class="nav-bar">
 		<div class="menuList">
 			<h3 class="title" @click="goHome">gzUI组件库</h3>
-			<gz-button>组件库</gz-button>
+			<gz-button @click="openCompLibrary">组件库</gz-button>
 		</div>
 		<el-avatar icon="el-icon-user-solid"></el-avatar>
+		<el-drawer
+			title="组件库"
+			:append-to-body="true"
+			:visible.sync="drawer"
+			style="position: absolute"
+			direction="ltr"
+			z-index="1"
+			:before-close="handleClose"
+		>
+			<compLibrary></compLibrary>
+		</el-drawer>
 	</div>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
+
+import compLibrary from "@/views/comp/editor/compLibrary.vue";
 const route = useRouter();
 const router = useRouter();
+const drawer = ref(false);
 const goHome = e => {
 	router.push("/home");
 };
-console.log(route);
+const openCompLibrary = () => {
+	drawer.value = true;
+	console.log("打开组件库");
+};
+const handleClose = done => {
+	drawer.value = false;
+};
 </script>
 
 <style lang="scss" scoped>
@@ -50,5 +71,18 @@ console.log(route);
 			cursor: pointer;
 		}
 	}
+}
+.el-header {
+	color: #333;
+	padding: 0 !important;
+	height: 50px !important;
+	background: antiquewhite;
+}
+
+.el-main {
+	height: 100%;
+	padding: 0 !important;
+	overflow: hidden;
+	position: relative;
 }
 </style>

@@ -11,24 +11,7 @@
 		<Navbar></Navbar>
 		<div class="container">
 			<div class="sidebar">
-				<div class="compList">
-					<div class="header">组件列表</div>
-					<div
-						class="compItem"
-						v-for="(item, index) in compInfo.compList"
-						:key="index"
-						draggable="true"
-						@dragstart="e => dragstart(e, item)"
-						@dragend="e => dragend(e)"
-					>
-						<span class="sub-compTitle">
-							{{ item.label }}
-						</span>
-						<div class="compTitle">
-							{{ item.subLabel }}
-						</div>
-					</div>
-				</div>
+				<compLibrary></compLibrary>
 			</div>
 			<div class="appMain">
 				<div class="operateGroup">
@@ -83,10 +66,9 @@ import { useStore, mapGetters } from "vuex";
 
 import Navbar from "layouts/components/Navbar.vue";
 import compList from "./compList.vue";
+import compLibrary from "./compLibrary.vue";
 import Grid from "./grid.vue";
 import AttrList from "@/components/attrList/index.vue";
-
-let currentComp = null; // 当前组件
 
 const store = useStore();
 const canvasRef = ref(null);
@@ -101,62 +83,11 @@ const compInfo = inject("compInfo");
 // 	height: `${json.value.container?.height}px`,
 // }));
 
-const dragstart = (e, comp) => {
-	// dragenter 进入元素中，标识改为移动标识
-	// dragover 在目标元素经过，阻止默认行为，否则无法触发drop
-	// dragleave 离开元素时，增加一个禁用标识
-	// drop 松手时，根据拖拽组件添加进去
-	canvasRef.value.addEventListener("dragenter", dragenter);
-	canvasRef.value.addEventListener("dragover", dragover);
-	canvasRef.value.addEventListener("dragleave", dragleave);
-	canvasRef.value.addEventListener("drop", drop);
-	currentComp = comp;
-};
-
-const dragenter = e => {
-	e.dataTransfer.dropEffect = "move";
-};
-
-const dragover = e => {
-	e.preventDefault();
-};
-
-const dragleave = e => {
-	e.dataTransfer.dropEffect = "none";
-};
-
-const drop = e => {
-	let currentCompList = [
-		...store.state.currentCompList,
-		{
-			id: new Date().getTime(),
-			name: currentComp.subLabel,
-			key: currentComp.key,
-			top: e.offsetY,
-			left: e.offsetX,
-			width: currentComp.style.width,
-			height: currentComp.style.height,
-			zIndex: 1,
-			alignCenter: true, // 松手时居中
-		},
-	];
-	// 按照先后拖入顺序设置zIndex
-	setZindex(currentCompList);
-	currentComp = null;
-};
 const setZindex = data => {
 	data.map((c, i) => {
 		c.zIndex = i + 1;
 	});
 	store.commit("setCurrentCompList", data);
-};
-const dragend = e => {
-	if (canvasRef.value.removeListener) {
-		canvasRef.value.removeListener("dragenter", dragenter);
-		canvasRef.value.removeListener("dragover", dragover);
-		canvasRef.value.removeListener("dragleave", dragleave);
-		canvasRef.value.removeListener("drop", drop);
-	}
 };
 
 // 撤销
@@ -230,31 +161,6 @@ window.addEventListener("keydown", keyboardEvent());
 			margin-top: 60px;
 			padding: 0 5px;
 			box-sizing: border-box;
-			.compList {
-				.header {
-					text-align: left;
-					font-weight: bold;
-					font-size: 18px;
-					margin: 5px;
-				}
-				.compItem {
-					height: 60px;
-					margin-bottom: 5px;
-					border: 1px solid #ffffff;
-					position: relative;
-					.sub-compTitle {
-						padding: 3px;
-						font-size: 12px;
-						position: absolute;
-						background: #2ed573;
-					}
-					.compTitle {
-						font-weight: bold;
-						text-align: center;
-						line-height: 60px;
-					}
-				}
-			}
 		}
 		.appMain {
 			width: 100%;
