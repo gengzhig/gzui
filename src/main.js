@@ -30,7 +30,6 @@ app.use(element3);
 app.use(ui.gzUI);
 
 router.beforeEach((to, from, next) => {
-	console.log(to, from, next);
 	if (to.path == "/editor") {
 		store.commit("navbar/toggleEditScreen", true);
 	} else {

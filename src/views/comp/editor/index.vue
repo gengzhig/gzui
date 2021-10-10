@@ -31,7 +31,7 @@
 						@selectItem="selectItem"
 					></gz-selector>
 				</div>
-				<div class="canvas" ref="canvasRef" :style="containerStyle">
+				<div class="canvas" ref="canvasRef" :style="containerStyle" @click="e => canvasClick(e)">
 					<comp-list v-for="(item, index) in store.state.currentCompList" :key="index" :block="item"></comp-list>
 					<Grid></Grid>
 				</div>
@@ -98,7 +98,6 @@ const compInfo = inject("compInfo");
 watch(
 	() => [store.state.sidebar.layerArea, store.state.sidebar.compLibraryArea, store.state.sidebar.operateMainArea],
 	value => {
-		console.log(value);
 		let [layerArea, compLibraryArea, operateMainArea] = value;
 		if (!layerArea && !compLibraryArea) {
 			appMainRef.value.style.paddingLeft = "20px";
@@ -115,6 +114,23 @@ watch(
 	}
 );
 
+const canvasClick = e => {
+	let canvasDom = e.path;
+	for (let i = 0; i < canvasDom.length; i++) {
+		console.log(canvasDom[i].className);
+		if (
+			typeof canvasDom[i].className != "string" ||
+			!canvasDom[i].className ||
+			canvasDom[i].className.indexOf("editor-block") == -1
+		) {
+			// 将画布内所有active清掉
+			// let editorBlock = document.querySelectorAll(".canvas .editor-block");
+			// [...editorBlock].map(b => {
+			// 	b.classList.remove("editor-block-focus");
+			// });
+		}
+	}
+};
 const setZindex = data => {
 	data.map((c, i) => {
 		c.zIndex = i + 1;

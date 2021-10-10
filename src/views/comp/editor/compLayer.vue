@@ -1,7 +1,7 @@
 <template>
 	<div class="compLayer">
 		<div class="compLayer-top">
-			<div class="layer-num">图层</div>
+			<div class="layer-num">图层{{ store.state.curComponentIndex }}</div>
 		</div>
 		<div class="layer-toolbar layer-toolbar-top">
 			<el-tooltip class="item" effect="dark" content="上移一层" placement="bottom">
@@ -58,7 +58,7 @@
 					size="mini"
 					type="primary"
 					icon="el-icon-delete"
-					@click="moveDown"
+					@click="deleteComp"
 				></el-button>
 			</el-tooltip>
 			<el-tooltip class="item" effect="dark" content="锁定" placement="bottom">
@@ -146,6 +146,8 @@ const moveUp = () => {
 const moveDown = () => {
 	store.commit("downComponent");
 };
+
+const deleteComp = () => {};
 const handleDragStart = (node, ev) => {
 	console.log("drag start", node);
 };
@@ -204,6 +206,9 @@ const allowDrag = draggingNode => {
 		}
 		&.layer-toolbar-top {
 			border-bottom: 1px solid #282f3a;
+		}
+		&.layer-toolbar-bottom {
+			border-top: 1px solid #282f3a;
 		}
 	}
 	.gz-tree {

@@ -13,9 +13,9 @@
 				@dragstart="e => dragstart(e, item)"
 				@dragend="e => dragend(e)"
 			>
-				<span class="sub-compTitle">
+				<div class="sub-compTitle">
 					{{ item.label }}
-				</span>
+				</div>
 				<div class="compTitle">
 					{{ item.subLabel }}
 				</div>
@@ -116,28 +116,41 @@ const setZindex = data => {
 	}
 	.compList {
 		padding: 5px;
-		// .header {
-		// 	text-align: left;
-		// 	font-weight: bold;
-		// 	font-size: 18px;
-		// 	margin: 5px;
-		// }
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		background: #0a0b0d;
+		overflow: auto;
+		height: calc(100vh - 90px);
 		.compItem {
-			height: 60px;
-			margin-bottom: 5px;
-			border: 1px solid #ffffff;
-			position: relative;
+			width: 100%;
 			cursor: pointer;
+			display: inline-block;
+			color: #bcc9d4;
+			vertical-align: top;
+			user-select: none;
+			flex: none;
+			margin-bottom: 16px;
+			border-radius: 3px;
+			border: 1px #d9caca70 solid;
+			box-sizing: border-box;
+			overflow: hidden;
+			position: relative;
 			.sub-compTitle {
-				padding: 3px;
 				font-size: 12px;
-				position: absolute;
-				background: #2ed573;
+				padding: 0 5px;
+				text-align: left;
+				overflow: hidden;
+				background: #212326;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				line-height: 22px;
 			}
 			.compTitle {
+				height: 92px;
 				font-weight: bold;
 				text-align: center;
-				line-height: 60px;
+				line-height: 92px;
 			}
 		}
 	}

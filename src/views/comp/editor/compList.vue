@@ -1,7 +1,7 @@
 <template>
 	<div
 		draggable="true"
-		:class="['editor-block', state.isActive ? 'editor-block-focus' : '']"
+		:class="['editor-block']"
 		:style="blockStyle"
 		:comp-id="blockStyle.id"
 		@mousedown="e => blockMouseDown(e)"
@@ -12,6 +12,7 @@
 		<!-- 防止触发组件上的事件，加的一层遮罩 -->
 		<div class="assistDom" @contextmenu.prevent.native="openMenu($event)"></div>
 	</div>
+	{{ state.isActive }}
 	<div v-if="state.visible" class="rightMenu" :style="{ left: state.left + 'px', top: state.top + 'px' }">
 		<h3>右键功能菜单</h3>
 		<ul>
@@ -76,6 +77,13 @@ watch(
 );
 
 const blockMouseDown = e => {
+	let editorBlock = blockRef.value.parentElement.querySelectorAll(".editor-block");
+	[...editorBlock].map(b => {
+		b.classList.remove("editor-block-focus");
+	});
+	e.currentTarget.classList.add("editor-block-focus");
+	console.log("blockMouseDown");
+	// state.isActive = true;
 	e.preventDefault();
 	e.stopPropagation();
 	e.target.style.cursor = "move";
@@ -109,7 +117,7 @@ const blockMouseDown = e => {
 };
 
 const blockMouseUp = e => {
-	state.isActive = !state.isActive;
+	console.log("blockMouseUp");
 	let selectCompId = e.target.parentElement.getAttribute("comp-id");
 	let selectComp = store.state.currentCompList.filter(c => c.id == selectCompId);
 	let selectCompIndex = store.state.currentCompList.findIndex(c => c.id == selectCompId);
