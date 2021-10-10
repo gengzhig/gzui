@@ -12,7 +12,6 @@
 		<!-- 防止触发组件上的事件，加的一层遮罩 -->
 		<div class="assistDom" @contextmenu.prevent.native="openMenu($event)"></div>
 	</div>
-	{{ state.isActive }}
 	<div v-if="state.visible" class="rightMenu" :style="{ left: state.left + 'px', top: state.top + 'px' }">
 		<h3>右键功能菜单</h3>
 		<ul>
@@ -46,7 +45,6 @@ const state = reactive({
 	top: null,
 	left: null,
 	visible: false,
-	isActive: false,
 });
 const blockStyle = computed(() => ({
 	id: props.block.id,
@@ -83,7 +81,6 @@ const blockMouseDown = e => {
 	});
 	e.currentTarget.classList.add("editor-block-focus");
 	console.log("blockMouseDown");
-	// state.isActive = true;
 	e.preventDefault();
 	e.stopPropagation();
 	e.target.style.cursor = "move";

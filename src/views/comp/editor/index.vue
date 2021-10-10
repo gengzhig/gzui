@@ -116,19 +116,16 @@ watch(
 
 const canvasClick = e => {
 	let canvasDom = e.path;
-	for (let i = 0; i < canvasDom.length; i++) {
-		console.log(canvasDom[i].className);
-		if (
-			typeof canvasDom[i].className != "string" ||
-			!canvasDom[i].className ||
-			canvasDom[i].className.indexOf("editor-block") == -1
-		) {
-			// 将画布内所有active清掉
-			// let editorBlock = document.querySelectorAll(".canvas .editor-block");
-			// [...editorBlock].map(b => {
-			// 	b.classList.remove("editor-block-focus");
-			// });
-		}
+	let isCompClickArea = canvasDom.some(c => {
+		return c.className && typeof c.className == "string" && c.className.indexOf("editor-block") > -1;
+	});
+	if (!isCompClickArea) {
+		// 将画布内所有组件的active 类清掉;同时将全局state组件索引置为-1
+		let editorBlock = document.querySelectorAll(".canvas .editor-block");
+		[...editorBlock].map(b => {
+			b.classList.remove("editor-block-focus");
+		});
+		store.commit("resetCurrentCompIndex");
 	}
 };
 const setZindex = data => {

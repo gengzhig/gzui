@@ -39,6 +39,7 @@ export default createStore({
 			state.routerMenu = payload;
 			localStorage.setItem("routerMenu", JSON.stringify(payload));
 		},
+		// 切换设备
 		toggleDevice(state, payload) {
 			state.isMobile = payload;
 		},
@@ -46,6 +47,11 @@ export default createStore({
 		setCurrentComp(state, { compData, index }) {
 			state.currentComp = compData;
 			state.curComponentIndex = index;
+		},
+		// 重置当前选中组件
+		resetCurrentCompIndex(state, payload) {
+			state.curComponentIndex = -1;
+			state.currentComp = [];
 		},
 		// 设置当前画布内所有组件
 		setCurrentCompList(state, payload) {
