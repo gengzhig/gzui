@@ -107,7 +107,7 @@ let config = {
 		],
 	},
 	pagination: {
-		total: 51,
+		total: 21,
 		defaultLimit: 10,
 		defaultLimitData: [
 			{

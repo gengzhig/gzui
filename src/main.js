@@ -29,6 +29,15 @@ app.use(store);
 app.use(element3);
 app.use(ui.gzUI);
 
+router.beforeEach((to, from, next) => {
+	console.log(to, from, next);
+	if (to.path == "/editor") {
+		store.commit("navbar/toggleEditScreen", true);
+	} else {
+		store.commit("navbar/toggleEditScreen", false);
+	}
+	next();
+});
 app.config.errorHandler = (err, vm, info) => {
 	console.log(err);
 	console.log(vm);

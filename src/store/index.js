@@ -8,6 +8,8 @@ import { Store } from "vuex";
  * @FilePath: \zimeigui-vite2-vue3\src\store\index.js
  */
 import { createStore } from "vuex";
+import sidebar from "./sidebar";
+import navbar from "./navbar";
 import tool from "@/assets/js/tool.js";
 
 export default createStore({
@@ -19,6 +21,16 @@ export default createStore({
 		currentCompList: [],
 	},
 	getters: {
+		currentCompLayerTreeList: state =>
+			state.currentCompList
+				.map(c => {
+					return {
+						id: c.id,
+						label: c.name,
+						children: [],
+					};
+				})
+				.reverse(),
 		currentCompName: state => state.currentComp && state.currentComp.length > 0 && state.currentComp[0].name,
 		currentCompProperty: state => state.currentComp && state.currentComp.length > 0 && state.currentComp[0],
 	},
@@ -88,5 +100,9 @@ export default createStore({
 		changeDevice({ commit }, payload) {
 			commit("toggleDevice", payload);
 		},
+	},
+	modules: {
+		sidebar,
+		navbar,
 	},
 });

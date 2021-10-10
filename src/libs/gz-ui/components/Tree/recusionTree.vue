@@ -13,7 +13,7 @@
 			{{ item.label }}
 		</div>
 		<template v-if="item.children && item.children.length > 0">
-			<recusion-tree :data="item.children" @nodeClick="nodeClick"></recusion-tree>
+			<recusion-tree :data="item.children" @nodeClick="nodeClick" :hoverBgColor="hoverBgColor"></recusion-tree>
 		</template>
 	</div>
 </template>
@@ -30,7 +30,12 @@ const props = defineProps({
 		type: Array,
 		default: () => [],
 	},
+	hoverBgColor: {
+		type: String,
+		default: "#f5f7fa",
+	},
 });
+console.log(props.hoverBgColor);
 const emit = defineEmits(["nodeClick"]);
 
 const handleNodeClick = (item, e) => {
@@ -68,7 +73,8 @@ const findSiblings = tag => {
 		transition: 0.3s ease-in-out;
 	}
 	&:hover {
-		background: #f5f7fa;
+		background: v-bind("hoverBgColor");
+		//
 	}
 	& ~ .gz-tree-list {
 		display: none;

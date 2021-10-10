@@ -183,7 +183,7 @@ compInfo.register({
 	),
 	key: "0007",
 	style: {
-		width: 600,
+		width: 500,
 		height: 50,
 	},
 });

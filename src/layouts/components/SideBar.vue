@@ -128,7 +128,7 @@ const resizeHandler = () => {
 	width: 200px;
 	height: calc(100vh - 60px);
 	color: #fff;
-	background-color: #304156;
+	background-color: #1d2127;
 	position: fixed;
 	top: 0;
 	left: 0;
