@@ -8,7 +8,7 @@
 -->
 <template>
 	<div class="gz-tree">
-		<recusion-tree :data="data" @nodeClick="nodeClick"></recusion-tree>
+		<recusion-tree :data="data" :highlightList="highlightList" @nodeClick="nodeClick"></recusion-tree>
 	</div>
 </template>
 
@@ -25,6 +25,14 @@ import recusionTree from "./recusionTree.vue";
 const emit = defineEmits(["nodeClick"]);
 const props = defineProps({
 	data: {
+		type: Array,
+		default: () => [],
+	},
+	hoverBgColor: {
+		type: String,
+		default: "#f5f7fa",
+	},
+	highlightList: {
 		type: Array,
 		default: () => [],
 	},

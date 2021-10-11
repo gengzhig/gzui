@@ -6,7 +6,7 @@
 		<div class="layer-toolbar layer-toolbar-top">
 			<el-tooltip class="item" effect="dark" content="上移一层" placement="bottom">
 				<el-button
-					:disabled="!store.state.currentCompList.length"
+					:disabled="buttonStatus || store.state.curComponentIndex == store.state.currentCompList.length - 1"
 					size="mini"
 					type="primary"
 					icon="el-icon-top"
@@ -15,7 +15,7 @@
 			</el-tooltip>
 			<el-tooltip class="item" effect="dark" content="下移一层" placement="bottom">
 				<el-button
-					:disabled="!store.state.currentCompList.length"
+					:disabled="buttonStatus || store.state.curComponentIndex == 0"
 					size="mini"
 					type="primary"
 					icon="el-icon-bottom"
@@ -24,7 +24,7 @@
 			</el-tooltip>
 			<el-tooltip class="item" effect="dark" content="置顶" placement="bottom">
 				<el-button
-					:disabled="!store.state.currentCompList.length"
+					:disabled="buttonStatus || store.state.curComponentIndex == store.state.currentCompList.length - 1"
 					size="mini"
 					type="primary"
 					icon="el-icon-upload2"
@@ -33,7 +33,7 @@
 			</el-tooltip>
 			<el-tooltip class="item" effect="dark" content="置底" placement="bottom">
 				<el-button
-					:disabled="!store.state.currentCompList.length"
+					:disabled="buttonStatus || store.state.curComponentIndex == 0"
 					size="mini"
 					type="primary"
 					icon="el-icon-download"
@@ -41,45 +41,8 @@
 				></el-button>
 			</el-tooltip>
 		</div>
-		<gz-tree :hoverBgColor="hoverBgColor" :data="currentCompLayerTreeList"></gz-tree>
-		<div class="layer-toolbar layer-toolbar-bottom">
-			<el-tooltip class="item" effect="dark" content="成组" placement="bottom">
-				<el-button
-					:disabled="!store.state.currentCompList.length"
-					size="mini"
-					type="primary"
-					icon="el-icon-folder"
-					@click="moveUp"
-				></el-button>
-			</el-tooltip>
-			<el-tooltip class="item" effect="dark" content="删除" placement="bottom">
-				<el-button
-					:disabled="!store.state.currentCompList.length"
-					size="mini"
-					type="primary"
-					icon="el-icon-delete"
-					@click="deleteComp"
-				></el-button>
-			</el-tooltip>
-			<el-tooltip class="item" effect="dark" content="锁定" placement="bottom">
-				<el-button
-					:disabled="!store.state.currentCompList.length"
-					size="mini"
-					type="primary"
-					icon="el-icon-s-goods"
-					@click="moveTop"
-				></el-button>
-			</el-tooltip>
-			<el-tooltip class="item" effect="dark" content="隐藏" placement="bottom">
-				<el-button
-					:disabled="!store.state.currentCompList.length"
-					size="mini"
-					type="primary"
-					icon="el-icon-view"
-					@click="moveBottom"
-				></el-button>
-			</el-tooltip>
-		</div>
+		{{ compTree }}
+		<gz-tree :hoverBgColor="hoverBgColor" :data="compTree"></gz-tree>
 		<!-- <el-tree
 			ref="compTreeRef"
 			:data="currentCompLayerTreeList"
@@ -95,6 +58,44 @@
 			:allow-drag="allowDrag"
 		>
 		</el-tree> -->
+		<div class="layer-toolbar layer-toolbar-bottom">
+			<el-tooltip class="item" effect="dark" content="成组" placement="bottom">
+				<el-button
+					:disabled="buttonStatus"
+					size="mini"
+					type="primary"
+					icon="el-icon-folder"
+					@click="moveUp"
+				></el-button>
+			</el-tooltip>
+			<el-tooltip class="item" effect="dark" content="删除" placement="bottom">
+				<el-button
+					:disabled="buttonStatus"
+					size="mini"
+					type="primary"
+					icon="el-icon-delete"
+					@click="deleteComp"
+				></el-button>
+			</el-tooltip>
+			<el-tooltip class="item" effect="dark" content="锁定" placement="bottom">
+				<el-button
+					:disabled="buttonStatus"
+					size="mini"
+					type="primary"
+					icon="el-icon-s-goods"
+					@click="moveTop"
+				></el-button>
+			</el-tooltip>
+			<el-tooltip class="item" effect="dark" content="隐藏" placement="bottom">
+				<el-button
+					:disabled="buttonStatus"
+					size="mini"
+					type="primary"
+					icon="el-icon-view"
+					@click="moveBottom"
+				></el-button>
+			</el-tooltip>
+		</div>
 	</div>
 </template>
 
@@ -118,12 +119,21 @@ const emit = defineEmits();
 const store = useStore();
 const compTreeRef = ref(null);
 const hoverBgColor = ref("#2181ff");
+const compTree = computed(() => {
+	return store.getters.currentCompLayerTreeList;
+});
+const buttonStatus = computed(() => {
+	return !store.state.currentCompList.length || store.state.curComponentIndex == -1;
+});
 // watch(
-// 	() => store.getters.currentCompLayerTreeList,
+// 	() => compTree.value,
 // 	value => {
 // 		console.log(value);
-// 		compTreeRef.value.initRoot();
-// 	}
+// 		nextTick(() => {
+// 			compTreeRef.value.initRoot();
+// 		});
+// 	},
+// 	{ deep: true }
 // );
 const route = useRoute();
 const slots = useSlots();
@@ -147,7 +157,9 @@ const moveDown = () => {
 	store.commit("downComponent");
 };
 
-const deleteComp = () => {};
+const deleteComp = () => {
+	store.commit("deleteComponent");
+};
 const handleDragStart = (node, ev) => {
 	console.log("drag start", node);
 };

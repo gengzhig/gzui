@@ -11,7 +11,7 @@ import { createStore } from "vuex";
 import sidebar from "./sidebar";
 import navbar from "./navbar";
 import tool from "@/assets/js/tool.js";
-
+import { Notification } from "element3";
 export default createStore({
 	state: {
 		isMobile: false,
@@ -21,16 +21,18 @@ export default createStore({
 		currentCompList: [],
 	},
 	getters: {
-		currentCompLayerTreeList: state =>
-			state.currentCompList
+		currentCompLayerTreeList: state => {
+			return state.currentCompList
 				.map(c => {
 					return {
 						id: c.id,
-						label: c.name,
+						highLight: c.highLight,
+						label: c.name + "(" + c.zIndex + ")",
 						children: [],
 					};
 				})
-				.reverse(),
+				.reverse();
+		},
 		currentCompName: state => state.currentComp && state.currentComp.length > 0 && state.currentComp[0].name,
 		currentCompProperty: state => state.currentComp && state.currentComp.length > 0 && state.currentComp[0],
 	},
@@ -69,6 +71,19 @@ export default createStore({
 			if (state.curComponentIndex < state.currentCompList.length - 1) {
 				swap(state.currentCompList, state.curComponentIndex, state.curComponentIndex + 1);
 				tool.resetZindex(state.currentCompList);
+
+				let editorBlock = document.querySelectorAll(".canvas .editor-block");
+				[...editorBlock].map(b => {
+					b.classList.remove("editor-block-focus");
+				});
+				[...editorBlock][state.curComponentIndex + 1].classList.add("editor-block-focus");
+				state.curComponentIndex += 1;
+			} else {
+				Notification({
+					title: "警告",
+					message: "当前组件已处于最高层级！",
+					type: "warning",
+				});
 			}
 			function swap(arr, i, j) {
 				arr[i] = arr.splice(j, 1, arr[i])[0];
@@ -80,6 +95,18 @@ export default createStore({
 			if (state.curComponentIndex > 0) {
 				swap(state.currentCompList, state.curComponentIndex, state.curComponentIndex - 1);
 				tool.resetZindex(state.currentCompList);
+				let editorBlock = document.querySelectorAll(".canvas .editor-block");
+				[...editorBlock].map(b => {
+					b.classList.remove("editor-block-focus");
+				});
+				[...editorBlock][state.curComponentIndex - 1].classList.add("editor-block-focus");
+				state.curComponentIndex -= 1;
+			} else {
+				Notification({
+					title: "警告",
+					message: "当前组件已处于最低层级！",
+					type: "warning",
+				});
 			}
 			function swap(arr, i, j) {
 				arr[i] = arr.splice(j, 1, arr[i])[0];
@@ -87,10 +114,23 @@ export default createStore({
 		},
 		// 置顶
 		topComponent(state, payload) {
+			if (state.curComponentIndex == -1) return false;
 			if (state.curComponentIndex < state.currentCompList.length - 1) {
 				state.currentCompList.splice(state.curComponentIndex, 1);
 				state.currentCompList.push(state.currentComp[0]);
 				tool.resetZindex(state.currentCompList);
+				let editorBlock = document.querySelectorAll(".canvas .editor-block");
+				[...editorBlock].map(b => {
+					b.classList.remove("editor-block-focus");
+				});
+				[...editorBlock][state.currentCompList.length - 1].classList.add("editor-block-focus");
+				state.curComponentIndex = state.currentCompList.length - 1;
+			} else {
+				Notification({
+					title: "警告",
+					message: "当前组件已处于最高层级！",
+					type: "warning",
+				});
 			}
 		},
 		// 置底
@@ -99,7 +139,26 @@ export default createStore({
 				state.currentCompList.splice(state.curComponentIndex, 1);
 				state.currentCompList.unshift(state.currentComp[0]);
 				tool.resetZindex(state.currentCompList);
+				let editorBlock = document.querySelectorAll(".canvas .editor-block");
+				[...editorBlock].map(b => {
+					b.classList.remove("editor-block-focus");
+				});
+				[...editorBlock][0].classList.add("editor-block-focus");
+				state.curComponentIndex = 0;
+			} else {
+				Notification({
+					title: "警告",
+					message: "当前组件已处于最低层级！",
+					type: "warning",
+				});
 			}
+		},
+		// 删除
+		deleteComponent(state, payload) {
+			state.currentCompList.splice(state.curComponentIndex, 1);
+			tool.resetZindex(state.currentCompList);
+			state.curComponentIndex = -1;
+			state.currentComp = [];
 		},
 	},
 	actions: {

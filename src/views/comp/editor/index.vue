@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { useStore, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 export default {
 	components: { compList },
 	name: "Editor",
@@ -72,7 +72,7 @@ export default {
 </script>
 <script setup>
 import { ref, inject, computed, reactive, toRef, watch } from "vue";
-import { useStore, mapGetters } from "vuex";
+import { useStore } from "vuex";
 
 import Navbar from "layouts/components/Navbar.vue";
 import compList from "./compList.vue";

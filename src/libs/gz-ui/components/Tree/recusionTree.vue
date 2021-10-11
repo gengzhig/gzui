@@ -8,12 +8,17 @@
 -->
 <template>
 	<div class="gz-tree-list" v-for="(item, index) in data" :key="index">
-		<div class="gz-tree-item" @click="e => handleNodeClick(item, e)">
+		<div class="gz-tree-item" :treeId="item.id" @click="e => handleNodeClick(item, e)">
 			<img src="@/assets/icon/arrow.png" v-if="item.children && item.children.length > 0" alt="" />
 			{{ item.label }}
 		</div>
 		<template v-if="item.children && item.children.length > 0">
-			<recusion-tree :data="item.children" @nodeClick="nodeClick" :hoverBgColor="hoverBgColor"></recusion-tree>
+			<recusion-tree
+				:data="item.children"
+				@nodeClick="nodeClick"
+				:hoverBgColor="hoverBgColor"
+				:highlightList="highlightList"
+			></recusion-tree>
 		</template>
 	</div>
 </template>
@@ -34,12 +39,21 @@ const props = defineProps({
 		type: String,
 		default: "#f5f7fa",
 	},
+	highlightList: {
+		type: Array,
+		default: () => [],
+	},
 });
-console.log(props.hoverBgColor);
+
 const emit = defineEmits(["nodeClick"]);
 
+const highlightNode = num => {
+	console.log(num);
+};
+highlightNode(props.highlightList);
 const handleNodeClick = (item, e) => {
 	e.target.classList.toggle("expanded");
+	e.target.classList.toggle("active");
 	emit("nodeClick", item);
 };
 const nodeClick = val => {
@@ -61,7 +75,7 @@ const findSiblings = tag => {
 
 <style lang="scss" scoped>
 .gz-tree-list {
-	padding-left: 36px;
+	padding-left: 20px;
 }
 .gz-tree-item {
 	display: flex;
@@ -74,6 +88,7 @@ const findSiblings = tag => {
 	}
 	&:hover {
 		background: v-bind("hoverBgColor");
+		color: #333;
 		//
 	}
 	& ~ .gz-tree-list {
@@ -87,6 +102,9 @@ const findSiblings = tag => {
 	}
 	&.expanded ~ .gz-tree-list {
 		display: block;
+	}
+	&.active {
+		background: #2681ff;
 	}
 }
 </style>
