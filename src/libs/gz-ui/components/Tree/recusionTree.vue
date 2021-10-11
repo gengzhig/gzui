@@ -7,7 +7,7 @@
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Tree\recusionTree.vue
 -->
 <template>
-	<div class="gz-tree-list" v-for="(item, index) in data" :key="index">
+	<div ref="treeListRef" class="gz-tree-list" v-for="(item, index) in data" :key="index">
 		<div class="gz-tree-item" :treeId="item.id" @click="e => handleNodeClick(item, e)">
 			<img src="@/assets/icon/arrow.png" v-if="item.children && item.children.length > 0" alt="" />
 			{{ item.label }}
@@ -44,13 +44,22 @@ const props = defineProps({
 		default: () => [],
 	},
 });
-
+const treeListRef = ref(null);
 const emit = defineEmits(["nodeClick"]);
-
+// 默认高亮节点
 const highlightNode = num => {
-	console.log(num);
+	let treeNodes = document.querySelectorAll(".gz-tree .gz-tree-item");
+	let highTreeNodes = [...treeNodes].filter(t => {
+		return num.includes(Number(t.getAttribute("treeid")));
+	});
+	highTreeNodes.map(h => {
+		h.classList.add("active");
+	});
 };
-highlightNode(props.highlightList);
+setTimeout(() => {
+	highlightNode(props.highlightList);
+});
+
 const handleNodeClick = (item, e) => {
 	e.target.classList.toggle("expanded");
 	e.target.classList.toggle("active");
@@ -88,7 +97,7 @@ const findSiblings = tag => {
 	}
 	&:hover {
 		background: v-bind("hoverBgColor");
-		color: #333;
+		color: #fff;
 		//
 	}
 	& ~ .gz-tree-list {

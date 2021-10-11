@@ -8,7 +8,12 @@
 -->
 <template>
 	<div class="gz-tree">
-		<recusion-tree :data="data" :highlightList="highlightList" @nodeClick="nodeClick"></recusion-tree>
+		<recusion-tree
+			:hoverBgColor="hoverBgColor"
+			:data="data"
+			:highlightList="highlightList"
+			@nodeClick="nodeClick"
+		></recusion-tree>
 	</div>
 </template>
 

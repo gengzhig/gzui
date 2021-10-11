@@ -41,8 +41,7 @@
 				></el-button>
 			</el-tooltip>
 		</div>
-		{{ compTree }}
-		<gz-tree :hoverBgColor="hoverBgColor" :data="compTree"></gz-tree>
+		<gz-tree :highlightList="highlightList" :hoverBgColor="hoverBgColor" :data="compTree"></gz-tree>
 		<!-- <el-tree
 			ref="compTreeRef"
 			:data="currentCompLayerTreeList"
@@ -104,7 +103,7 @@ import { mapGetters } from "vuex";
 export default {
 	name: "compLayer",
 	computed: {
-		...mapGetters(["currentCompLayerTreeList"]),
+		...mapGetters(["currentCompLayerTreeList,currentCompProperty"]),
 	},
 };
 </script>
@@ -118,13 +117,19 @@ const ctx = getCurrentInstance();
 const emit = defineEmits();
 const store = useStore();
 const compTreeRef = ref(null);
-const hoverBgColor = ref("#2181ff");
+const hoverBgColor = ref("#1d2127");
 const compTree = computed(() => {
 	return store.getters.currentCompLayerTreeList;
+});
+const highlightList = computed(() => {
+	if (typeof store.getters.currentCompProperty == "object") {
+		return [store.getters.currentCompProperty.id];
+	}
 });
 const buttonStatus = computed(() => {
 	return !store.state.currentCompList.length || store.state.curComponentIndex == -1;
 });
+
 // watch(
 // 	() => compTree.value,
 // 	value => {

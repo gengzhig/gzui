@@ -15,7 +15,12 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-tree :data="state.data" @nodeClick="nodeClick" :highlightList="state.highlightList"></gz-tree>
+				<gz-tree
+					:hoverBgColor="state.hoverBgColor"
+					:data="state.data"
+					@nodeClick="nodeClick"
+					:highlightList="state.highlightList"
+				></gz-tree>
 			</div>
 			<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
 		</div>
@@ -27,7 +32,7 @@ import { reactive, toRefs, ref } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 
 const state = reactive({
-	highlightList: [1],
+	highlightList: [1, 9],
 	data: [
 		{
 			id: 1,
@@ -111,6 +116,7 @@ const state = reactive({
 			},
 		],
 	},
+	hoverBgColor: "#3333337d",
 });
 
 const nodeClick = val => {
