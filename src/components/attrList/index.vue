@@ -22,61 +22,24 @@
 			</el-form-item>
 			<el-form-item label="旋转角度">
 				<el-input-number
-					v-model="compProperty.rotationAngle"
-					:min="0"
+					v-model="compProperty.rotate"
+					:min="-360"
 					:max="360"
+					:step="0.1"
 					controls-position="right"
 					placeholder="旋转角度"
 				/>
 			</el-form-item>
 			<el-form-item label="不透明度">
-				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
-			</el-form-item>
-			<el-form-item label="不透明度">
-				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
-			</el-form-item>
-			<el-form-item label="不透明度">
-				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
-			</el-form-item>
-			<el-form-item label="不透明度">
-				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
-			</el-form-item>
-			<el-form-item label="不透明度">
-				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
-			</el-form-item>
-			<el-form-item label="不透明度">
-				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
-			</el-form-item>
-			<el-form-item label="不透明度">
-				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
-			</el-form-item>
-			<el-form-item label="不透明度">
-				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
-			</el-form-item>
-			<el-form-item label="不透明度">
-				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
-			</el-form-item>
-			<el-form-item label="不透明度">
-				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
-			</el-form-item>
-			<el-form-item label="不透明度">
-				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
-			</el-form-item>
-			<el-form-item label="不透明度10">
-				<el-input v-model="compProperty.opacity" placeholder="不透明度"></el-input>
+				<el-slider v-model="compProperty.opacity" show-input> </el-slider>
 			</el-form-item>
 		</el-form>
 	</div>
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
 export default {
 	name: "",
-	// computed: {
-	// 	...mapState(["currentComp"]),
-	// 	...mapGetters(["currentCompName", "compProperty"]),
-	// },
 };
 </script>
 
@@ -86,10 +49,8 @@ import { useStore } from "vuex";
 const props = defineProps({});
 const ctx = getCurrentInstance();
 const emit = defineEmits();
-const contentHeight = computed(() => {});
 const store = useStore();
 const slots = useSlots();
-onMounted(() => {});
 const compProperty = computed(() => {
 	return store.state.currentComp[0];
 });

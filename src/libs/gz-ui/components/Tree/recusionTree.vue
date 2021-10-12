@@ -61,8 +61,13 @@ setTimeout(() => {
 });
 
 const handleNodeClick = (item, e) => {
+	let treeNodes = document.querySelectorAll(".gz-tree .gz-tree-item");
+	[...treeNodes].map(t => {
+		t.classList.remove("active");
+	});
 	e.target.classList.toggle("expanded");
 	e.target.classList.toggle("active");
+	item.active = e.target.className.includes("active");
 	emit("nodeClick", item);
 };
 const nodeClick = val => {

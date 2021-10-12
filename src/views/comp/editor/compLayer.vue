@@ -41,7 +41,12 @@
 				></el-button>
 			</el-tooltip>
 		</div>
-		<gz-tree :highlightList="highlightList" :hoverBgColor="hoverBgColor" :data="compTree"></gz-tree>
+		<gz-tree
+			:highlightList="highlightList"
+			:hoverBgColor="hoverBgColor"
+			:data="compTree"
+			@nodeClick="nodeClick"
+		></gz-tree>
 		<!-- <el-tree
 			ref="compTreeRef"
 			:data="currentCompLayerTreeList"
@@ -145,6 +150,12 @@ const slots = useSlots();
 const router = useRouter();
 onMounted(() => {});
 
+const nodeClick = value => {
+	let { id, active, zIndex } = value;
+	console.log(id, active);
+	console.log(store.state.curComponentIndex);
+	store.commit("setCurrentComp", { compData: store.state.currentCompList.filter(c => c.id == id), index: zIndex - 1 });
+};
 // 置顶
 const moveTop = () => {
 	store.commit("topComponent");

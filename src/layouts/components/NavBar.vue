@@ -27,7 +27,33 @@
 				<el-button type="primary" icon="el-icon-setting" @click="openRightArea"></el-button>
 			</el-tooltip>
 		</div>
-		<el-avatar icon="el-icon-user-solid"></el-avatar>
+		<div class="global-actions">
+			<el-tooltip
+				v-if="store.state.navbar.isEditScreen"
+				class="item"
+				effect="dark"
+				content="生成快照"
+				placement="bottom"
+			>
+				<el-button type="primary" icon="el-icon-dish" @click="createSnapshot"></el-button>
+			</el-tooltip>
+			<el-tooltip
+				v-if="store.state.navbar.isEditScreen"
+				class="item"
+				effect="dark"
+				content="管理快照"
+				placement="bottom"
+			>
+				<el-button type="primary" icon="el-icon-fork-spoon" @click="manageSnapshot"></el-button>
+			</el-tooltip>
+			<el-tooltip v-if="store.state.navbar.isEditScreen" class="item" effect="dark" content="发布" placement="bottom">
+				<el-button type="primary" icon="el-icon-position" @click="publish"></el-button>
+			</el-tooltip>
+			<el-tooltip v-if="store.state.navbar.isEditScreen" class="item" effect="dark" content="预览" placement="bottom">
+				<el-button type="primary" icon="el-icon-video-play" @click="preview"></el-button>
+			</el-tooltip>
+		</div>
+		<!-- <el-avatar icon="el-icon-user-solid"></el-avatar> -->
 		<!-- <el-drawer
 			title="组件库"
 			:append-to-body="true"
@@ -46,6 +72,7 @@
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
+import { Message } from "element3";
 import compLibrary from "@/views/comp/editor/compLibrary.vue";
 const route = useRouter();
 const router = useRouter();
@@ -65,6 +92,31 @@ const openRightArea = () => {
 };
 const handleClose = done => {
 	drawer.value = false;
+};
+
+const createSnapshot = () => {
+	Message({
+		message: "此功能尚未开放！",
+		type: "warning",
+	});
+};
+const manageSnapshot = () => {
+	Message({
+		message: "此功能尚未开放！",
+		type: "warning",
+	});
+};
+const publish = () => {
+	Message({
+		message: "此功能尚未开放！",
+		type: "warning",
+	});
+};
+const preview = () => {
+	Message({
+		message: "此功能尚未开放！",
+		type: "warning",
+	});
 };
 </script>
 

@@ -78,6 +78,8 @@ const drop = e => {
 			width: currentComp.style.width,
 			height: currentComp.style.height,
 			zIndex: 1,
+			opacity: 100,
+			rotate: 0,
 			alignCenter: true, // 松手时居中
 		},
 	];

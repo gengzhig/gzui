@@ -33,7 +33,10 @@
 				</div>
 				<div class="canvas" ref="canvasRef" :style="containerStyle" @click="e => canvasClick(e)">
 					<comp-list v-for="(item, index) in store.state.currentCompList" :key="index" :block="item"></comp-list>
+					<!-- 网格线 -->
 					<Grid></Grid>
+					<!-- 标线 -->
+					<!-- <MarkLine></MarkLine> -->
 				</div>
 			</div>
 			<div class="operateMain" :class="store.state.sidebar.operateMainArea ? '' : 'hide'">
@@ -78,7 +81,7 @@ import Navbar from "layouts/components/Navbar.vue";
 import compList from "./compList.vue";
 import compLibrary from "./compLibrary.vue";
 import compLayer from "./compLayer.vue";
-
+import MarkLine from "./MarkLine.vue";
 import Grid from "./grid.vue";
 import AttrList from "@/components/attrList/index.vue";
 

@@ -11,7 +11,7 @@ import { createStore } from "vuex";
 import sidebar from "./sidebar";
 import navbar from "./navbar";
 import tool from "@/assets/js/tool.js";
-import { Notification } from "element3";
+import { Notification, Msgbox, Message } from "element3";
 export default createStore({
 	state: {
 		isMobile: false,
@@ -19,6 +19,12 @@ export default createStore({
 		currentComp: [],
 		curComponentIndex: -1,
 		currentCompList: [],
+		// 页面全局样式数据
+		canvasStyleData: {
+			width: 1200,
+			height: 740,
+			scale: 100,
+		},
 	},
 	getters: {
 		currentCompLayerTreeList: state => {
@@ -29,6 +35,7 @@ export default createStore({
 						highLight: c.highLight,
 						label: c.name + "(" + c.zIndex + ")",
 						children: [],
+						zIndex: c.zIndex,
 					};
 				})
 				.reverse();
@@ -49,6 +56,10 @@ export default createStore({
 		setCurrentComp(state, { compData, index }) {
 			state.currentComp = compData;
 			state.curComponentIndex = index;
+			// 给选中组件加选中样式
+			let editorBlock = document.querySelectorAll(".canvas .editor-block");
+			tool.clearAllEditorBlock();
+			[...editorBlock][state.curComponentIndex].classList.add("editor-block-focus");
 		},
 		// 重置当前选中组件
 		resetCurrentCompIndex(state, payload) {
@@ -71,11 +82,7 @@ export default createStore({
 			if (state.curComponentIndex < state.currentCompList.length - 1) {
 				swap(state.currentCompList, state.curComponentIndex, state.curComponentIndex + 1);
 				tool.resetZindex(state.currentCompList);
-
-				let editorBlock = document.querySelectorAll(".canvas .editor-block");
-				[...editorBlock].map(b => {
-					b.classList.remove("editor-block-focus");
-				});
+				tool.clearAllEditorBlock();
 				[...editorBlock][state.curComponentIndex + 1].classList.add("editor-block-focus");
 				state.curComponentIndex += 1;
 			} else {
@@ -95,10 +102,7 @@ export default createStore({
 			if (state.curComponentIndex > 0) {
 				swap(state.currentCompList, state.curComponentIndex, state.curComponentIndex - 1);
 				tool.resetZindex(state.currentCompList);
-				let editorBlock = document.querySelectorAll(".canvas .editor-block");
-				[...editorBlock].map(b => {
-					b.classList.remove("editor-block-focus");
-				});
+				tool.clearAllEditorBlock();
 				[...editorBlock][state.curComponentIndex - 1].classList.add("editor-block-focus");
 				state.curComponentIndex -= 1;
 			} else {
@@ -119,10 +123,7 @@ export default createStore({
 				state.currentCompList.splice(state.curComponentIndex, 1);
 				state.currentCompList.push(state.currentComp[0]);
 				tool.resetZindex(state.currentCompList);
-				let editorBlock = document.querySelectorAll(".canvas .editor-block");
-				[...editorBlock].map(b => {
-					b.classList.remove("editor-block-focus");
-				});
+				tool.clearAllEditorBlock();
 				[...editorBlock][state.currentCompList.length - 1].classList.add("editor-block-focus");
 				state.curComponentIndex = state.currentCompList.length - 1;
 			} else {
@@ -139,10 +140,7 @@ export default createStore({
 				state.currentCompList.splice(state.curComponentIndex, 1);
 				state.currentCompList.unshift(state.currentComp[0]);
 				tool.resetZindex(state.currentCompList);
-				let editorBlock = document.querySelectorAll(".canvas .editor-block");
-				[...editorBlock].map(b => {
-					b.classList.remove("editor-block-focus");
-				});
+				tool.clearAllEditorBlock();
 				[...editorBlock][0].classList.add("editor-block-focus");
 				state.curComponentIndex = 0;
 			} else {
@@ -155,10 +153,27 @@ export default createStore({
 		},
 		// 删除
 		deleteComponent(state, payload) {
-			state.currentCompList.splice(state.curComponentIndex, 1);
-			tool.resetZindex(state.currentCompList);
-			state.curComponentIndex = -1;
-			state.currentComp = [];
+			Msgbox.confirm("此操作将永久删除该组件, 是否继续?", "提示", {
+				confirmButtonText: "确定",
+				cancelButtonText: "取消",
+				type: "warning",
+			})
+				.then(() => {
+					state.currentCompList.splice(state.curComponentIndex, 1);
+					tool.resetZindex(state.currentCompList);
+					state.curComponentIndex = -1;
+					state.currentComp = [];
+					Message({
+						type: "success",
+						message: "删除成功!",
+					});
+				})
+				.catch(() => {
+					Message({
+						type: "info",
+						message: "已取消删除",
+					});
+				});
 		},
 	},
 	actions: {
