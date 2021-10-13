@@ -70,7 +70,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter, useRoute, RouterLink } from "vue-router";
 import { useStore } from "vuex";
 import { Message } from "element3";
 import compLibrary from "@/views/comp/editor/compLibrary.vue";
@@ -113,10 +113,10 @@ const publish = () => {
 	});
 };
 const preview = () => {
-	Message({
-		message: "此功能尚未开放！",
-		type: "warning",
+	let routeUrl = router.resolve({
+		path: "/preview",
 	});
+	window.open(routeUrl.href, "_blank");
 };
 </script>
 

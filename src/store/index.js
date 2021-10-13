@@ -58,8 +58,9 @@ export default createStore({
 			state.curComponentIndex = index;
 			// 给选中组件加选中样式
 			let editorBlock = document.querySelectorAll(".canvas .editor-block");
-			tool.clearAllEditorBlock();
+			tool.clearAllEditorBlock(editorBlock);
 			[...editorBlock][state.curComponentIndex].classList.add("editor-block-focus");
+			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 		},
 		// 重置当前选中组件
 		resetCurrentCompIndex(state, payload) {
@@ -69,11 +70,13 @@ export default createStore({
 		// 设置当前画布内所有组件
 		setCurrentCompList(state, payload) {
 			state.currentCompList = payload;
+			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 		},
 		// 撤销组件
 		revocationComp(state, payload) {
 			state.currentCompList.pop();
 			state.currentComp = null;
+			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 		},
 		// 上移
 		upComponent(state, payload) {
@@ -82,9 +85,11 @@ export default createStore({
 			if (state.curComponentIndex < state.currentCompList.length - 1) {
 				swap(state.currentCompList, state.curComponentIndex, state.curComponentIndex + 1);
 				tool.resetZindex(state.currentCompList);
-				tool.clearAllEditorBlock();
+				let editorBlock = document.querySelectorAll(".canvas .editor-block");
+				tool.clearAllEditorBlock(editorBlock);
 				[...editorBlock][state.curComponentIndex + 1].classList.add("editor-block-focus");
 				state.curComponentIndex += 1;
+				localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 			} else {
 				Notification({
 					title: "警告",
@@ -102,9 +107,11 @@ export default createStore({
 			if (state.curComponentIndex > 0) {
 				swap(state.currentCompList, state.curComponentIndex, state.curComponentIndex - 1);
 				tool.resetZindex(state.currentCompList);
-				tool.clearAllEditorBlock();
+				let editorBlock = document.querySelectorAll(".canvas .editor-block");
+				tool.clearAllEditorBlock(editorBlock);
 				[...editorBlock][state.curComponentIndex - 1].classList.add("editor-block-focus");
 				state.curComponentIndex -= 1;
+				localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 			} else {
 				Notification({
 					title: "警告",
@@ -123,9 +130,11 @@ export default createStore({
 				state.currentCompList.splice(state.curComponentIndex, 1);
 				state.currentCompList.push(state.currentComp[0]);
 				tool.resetZindex(state.currentCompList);
-				tool.clearAllEditorBlock();
+				let editorBlock = document.querySelectorAll(".canvas .editor-block");
+				tool.clearAllEditorBlock(editorBlock);
 				[...editorBlock][state.currentCompList.length - 1].classList.add("editor-block-focus");
 				state.curComponentIndex = state.currentCompList.length - 1;
+				localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 			} else {
 				Notification({
 					title: "警告",
@@ -140,9 +149,11 @@ export default createStore({
 				state.currentCompList.splice(state.curComponentIndex, 1);
 				state.currentCompList.unshift(state.currentComp[0]);
 				tool.resetZindex(state.currentCompList);
-				tool.clearAllEditorBlock();
+				let editorBlock = document.querySelectorAll(".canvas .editor-block");
+				tool.clearAllEditorBlock(editorBlock);
 				[...editorBlock][0].classList.add("editor-block-focus");
 				state.curComponentIndex = 0;
+				localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 			} else {
 				Notification({
 					title: "警告",
@@ -163,6 +174,7 @@ export default createStore({
 					tool.resetZindex(state.currentCompList);
 					state.curComponentIndex = -1;
 					state.currentComp = [];
+					localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 					Message({
 						type: "success",
 						message: "删除成功!",

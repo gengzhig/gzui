@@ -223,6 +223,14 @@ const router = createRouter({
 			},
 			component: () => import("views/comp/editor/index.vue"),
 		},
+		{
+			path: "/preview",
+			name: "Preview",
+			meta: {
+				title: "预览区",
+			},
+			component: () => import("views/comp/editor/preview.vue"),
+		},
 	],
 });
 export default router;

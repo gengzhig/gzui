@@ -28,8 +28,8 @@ let tools = {
 		return s;
 	},
 	// 清除画布内所有组件的选中样式
-	clearAllEditorBlock() {
-		let editorBlock = document.querySelectorAll(".canvas .editor-block");
+	clearAllEditorBlock(editorBlock) {
+		// let editorBlock = document.querySelectorAll(".canvas .editor-block");
 		[...editorBlock].map(b => {
 			b.classList.remove("editor-block-focus");
 		});

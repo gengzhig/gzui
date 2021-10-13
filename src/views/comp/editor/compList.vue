@@ -28,7 +28,7 @@
 			<div class="navigator-line-left" :style="{ width: blockStyle.left }"></div>
 			<div class="navigator-line-top" :style="{ height: blockStyle.top }"></div>
 			<div class="navigator-line-account" style="font-size: 16px; left: -15px; top: -15px">
-				{{ blockStyle.left }},{{ blockStyle.top }}
+				{{ parseInt(blockStyle.left) }},{{ parseInt(blockStyle.top) }}
 			</div>
 		</div>
 	</div>
