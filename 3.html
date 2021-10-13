@@ -67,6 +67,16 @@
 </body>
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
+    let data = [{ id: 1, name: "zhangsan", left: "20px", top: "10px" }, { id: 1, name: "李思", left: "20px", top: "15px" }]
+    let result = data.map(d => {
+        return Object.assign(d, {
+            style: {
+                left: d.left,
+                top: d.top
+            }
+        })
+    })
+    console.log(result)
     function parseRGBA(sHex) {
         // 十六进制颜色值的正则表达式
         var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{4}|[0-9a-fA-f]{6}|[0-9a-fA-f]{8})$/

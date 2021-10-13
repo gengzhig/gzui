@@ -143,11 +143,22 @@ const revocation = () => {
 	store.commit("revocationComp");
 };
 
+// 复制
+const copy = () => {
+	store.commit("copy");
+};
+// 粘贴
+const paste = () => {
+	store.commit("paste", true);
+};
 // ctrl快捷键操作
 const keyboardEvent = () => {
 	const keyCodes = {
 		90: "z",
 		89: "y",
+		67: "c",
+		86: "v",
+		68: "d",
 	};
 	const onkeydown = e => {
 		const { ctrlKey, keyCode } = e;
@@ -155,14 +166,22 @@ const keyboardEvent = () => {
 		if (ctrlKey) keyString.push("ctrl");
 		keyString.push(keyCodes[keyCode]);
 		keyString = keyString.join("+");
-		if (keyString === "ctrl+z") {
-			console.log("撤销快捷键");
-			revocation();
-		} else if (keyString === "ctrl+y") {
-			console.log("重做");
-		} else {
-			console.log("一般操作");
-			return;
+		switch (keyString) {
+			case "ctrl+z":
+				revocation();
+				break;
+			case "ctrl+c":
+				copy();
+				break;
+			case "ctrl+v":
+				paste();
+				break;
+			case "ctrl+y":
+				console.log("重做");
+				break;
+			default:
+				console.log("一般操作");
+				break;
 		}
 	};
 	const init = () => {

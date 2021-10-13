@@ -14,13 +14,13 @@
 		<!-- 锁定图标 -->
 		<!-- <span class="iconfont icon-suo"></span> -->
 		<!-- 8个坐标点 -->
-		<div
+		<i
 			class="shape-point"
 			v-for="item in state.pointList"
 			:key="item"
 			@mousedown="handleMouseDownOnPoint(item, $event)"
 			:style="getPointStyle(item)"
-		></div>
+		></i>
 		<component :is="compInfo.compMapList.get(blockStyle.key).render()"></component>
 		<!-- 防止触发组件上的事件，加的一层遮罩 -->
 		<div class="assistDom" @contextmenu.prevent.native="openMenu($event)"></div>
@@ -201,7 +201,8 @@ const getPointStyle = point => {
 
 const getCursor = () => {
 	let { angleToCursor, initialAngle, pointList } = state;
-	const rotate = 0; // 取余 360
+	const rotate =
+		(store.state.currentComp && store.state.currentComp.length > 0 && store.state.currentComp[0].rotate + 360) % 360; // 取余 360
 	const result = {};
 	let lastMatchIndex = -1; // 从上一个命中的角度的索引开始匹配下一个，降低时间复杂度
 

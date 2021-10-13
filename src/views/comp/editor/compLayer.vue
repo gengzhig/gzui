@@ -127,7 +127,7 @@ const compTree = computed(() => {
 	return store.getters.currentCompLayerTreeList;
 });
 const highlightList = computed(() => {
-	if (typeof store.getters.currentCompProperty == "object") {
+	if (store.getters.currentCompProperty && typeof store.getters.currentCompProperty == "object") {
 		return [store.getters.currentCompProperty.id];
 	}
 });

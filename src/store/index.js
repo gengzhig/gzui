@@ -14,9 +14,11 @@ import tool from "@/assets/js/tool.js";
 import { Notification, Msgbox, Message } from "element3";
 export default createStore({
 	state: {
+		isCut: false,
 		isMobile: false,
 		routerMenu: localStorage.getItem("routerMenu") ? JSON.parse(localStorage.getItem("routerMenu")) : [],
 		currentComp: [],
+		copyData: null,
 		curComponentIndex: -1,
 		currentCompList: [],
 		// 页面全局样式数据
@@ -71,6 +73,81 @@ export default createStore({
 		setCurrentCompList(state, payload) {
 			state.currentCompList = payload;
 			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
+		},
+		// 复制
+		copy(state) {
+			if (state.currentComp.length == 0) {
+				Message({
+					message: "请先选择画布中的组件！",
+					type: "error",
+				});
+				return;
+			}
+
+			state.copyData = tool.deepCopy(state.currentComp);
+			state.copyData[0].id = new Date().getTime();
+			Message({
+				message: "复制成功！",
+				type: "success",
+			});
+			state.isCut = false;
+		},
+		// 粘贴
+		paste(state, isMouse) {
+			if (!state.copyData) {
+				Message({
+					message: "请先选择画布中的组件！",
+					type: "error",
+				});
+				return;
+			}
+
+			const data = state.copyData[0];
+
+			// if (isMouse) {
+			// 	data.top = state.menuTop;
+			// 	data.left = state.menuLeft;
+			// } else {
+			// 	data.top += 10;
+			// 	data.left += 10;
+			// }
+			data.top += 10;
+			data.left += 10;
+			// data.id = generateID();
+			// Group 的子组件根节点的 id 是通过组件的 id 生成的，必须重新生成 id，否则拆分 Group 的时候获取根节点不正确
+			// if (data.component === "Group") {
+			// 	data.propValue.forEach(component => {
+			// 		component.id = generateID();
+			// 	});
+			// }
+			data.zIndex = ++state.curComponentIndex + 1;
+			state.currentCompList.push(tool.deepCopy(data));
+			if (state.isCut) {
+				state.copyData = null;
+			}
+		},
+		// 剪切
+		cut(state) {
+			if (!state.curComponent) {
+				toast("请选择组件");
+				return;
+			}
+
+			if (state.copyData) {
+				const data = deepCopy(state.copyData.data);
+				const index = state.copyData.index;
+				data.id = generateID();
+
+				store.commit("addComponent", { component: data, index });
+				if (state.curComponentIndex >= index) {
+					// 如果当前组件索引大于等于插入索引，需要加一，因为当前组件往后移了一位
+					state.curComponentIndex++;
+				}
+			}
+
+			store.commit("copy");
+			store.commit("deleteComponent");
+			state.isCut = true;
 		},
 		// 撤销组件
 		revocationComp(state, payload) {
