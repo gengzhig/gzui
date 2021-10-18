@@ -101,6 +101,7 @@ const blockStyle = computed(() => ({
 	zIndex: `${props.block.zIndex}`,
 	alignCenter: props.block.alignCenter,
 	opacity: props.block.opacity / 100,
+	rotate: props.block.rotate,
 	transform: `rotate(${props.block.rotate}deg)`,
 }));
 onMounted(() => {
@@ -196,13 +197,17 @@ const getPointStyle = point => {
 		top: `${newTop - 4}px`,
 		cursor: getCursor()[point],
 	};
+	console.log(style);
 	return style;
 };
 
 const getCursor = () => {
 	let { angleToCursor, initialAngle, pointList } = state;
-	const rotate =
-		(store.state.currentComp && store.state.currentComp.length > 0 && store.state.currentComp[0].rotate + 360) % 360; // 取余 360
+	const rotate = vm.$tool.mod360(
+		store.state.currentComp && store.state.currentComp.length > 0 && store.state.currentComp[0].rotate
+	); // 取余 360
+	// const rotate =
+	// 	(store.state.currentComp && store.state.currentComp.length > 0 && store.state.currentComp[0].rotate + 360) % 360; // 取余 360
 	const result = {};
 	let lastMatchIndex = -1; // 从上一个命中的角度的索引开始匹配下一个，降低时间复杂度
 

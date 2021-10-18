@@ -120,8 +120,8 @@ let tools = {
 	calculateLeftTop(style, curPositon, proportion, needLockProportion, pointInfo) {
 		const { symmetricPoint } = pointInfo;
 		let newCenterPoint = tools.getCenterPoint(curPositon, symmetricPoint);
-		let newTopLeftPoint = tools.calculateRotatedPointCoordinate(curPositon, newCenterPoint, 0);
-		let newBottomRightPoint = tools.calculateRotatedPointCoordinate(symmetricPoint, newCenterPoint, 0);
+		let newTopLeftPoint = tools.calculateRotatedPointCoordinate(curPositon, newCenterPoint, -style.rotate);
+		let newBottomRightPoint = tools.calculateRotatedPointCoordinate(symmetricPoint, newCenterPoint, -style.rotate);
 
 		let newWidth = newBottomRightPoint.x - newTopLeftPoint.x;
 		let newHeight = newBottomRightPoint.y - newTopLeftPoint.y;
@@ -138,10 +138,10 @@ let tools = {
 			// 由于现在求的未旋转前的坐标是以没按比例缩减宽高前的坐标来计算的
 			// 所以缩减宽高后，需要按照原来的中心点旋转回去，获得缩减宽高并旋转后对应的坐标
 			// 然后以这个坐标和对称点获得新的中心点，并重新计算未旋转前的坐标
-			const rotatedTopLeftPoint = tools.calculateRotatedPointCoordinate(newTopLeftPoint, newCenterPoint, 0);
+			const rotatedTopLeftPoint = tools.calculateRotatedPointCoordinate(newTopLeftPoint, newCenterPoint, style.rotate);
 			newCenterPoint = tools.getCenterPoint(rotatedTopLeftPoint, symmetricPoint);
-			newTopLeftPoint = tools.calculateRotatedPointCoordinate(rotatedTopLeftPoint, newCenterPoint, 0);
-			newBottomRightPoint = tools.calculateRotatedPointCoordinate(symmetricPoint, newCenterPoint, 0);
+			newTopLeftPoint = tools.calculateRotatedPointCoordinate(rotatedTopLeftPoint, newCenterPoint, -style.rotate);
+			newBottomRightPoint = tools.calculateRotatedPointCoordinate(symmetricPoint, newCenterPoint, -style.rotate);
 
 			newWidth = newBottomRightPoint.x - newTopLeftPoint.x;
 			newHeight = newBottomRightPoint.y - newTopLeftPoint.y;
@@ -158,8 +158,8 @@ let tools = {
 	calculateRightTop(style, curPositon, proportion, needLockProportion, pointInfo) {
 		const { symmetricPoint } = pointInfo;
 		let newCenterPoint = tools.getCenterPoint(curPositon, symmetricPoint);
-		let newTopRightPoint = tools.calculateRotatedPointCoordinate(curPositon, newCenterPoint, 0);
-		let newBottomLeftPoint = tools.calculateRotatedPointCoordinate(symmetricPoint, newCenterPoint, 0);
+		let newTopRightPoint = tools.calculateRotatedPointCoordinate(curPositon, newCenterPoint, -style.rotate);
+		let newBottomLeftPoint = tools.calculateRotatedPointCoordinate(symmetricPoint, newCenterPoint, -style.rotate);
 
 		let newWidth = newTopRightPoint.x - newBottomLeftPoint.x;
 		let newHeight = newBottomLeftPoint.y - newTopRightPoint.y;
@@ -173,10 +173,14 @@ let tools = {
 				newHeight = newWidth / proportion;
 			}
 
-			const rotatedTopRightPoint = tools.calculateRotatedPointCoordinate(newTopRightPoint, newCenterPoint, 0);
+			const rotatedTopRightPoint = tools.calculateRotatedPointCoordinate(
+				newTopRightPoint,
+				newCenterPoint,
+				style.rotate
+			);
 			newCenterPoint = tools.getCenterPoint(rotatedTopRightPoint, symmetricPoint);
-			newTopRightPoint = tools.calculateRotatedPointCoordinate(rotatedTopRightPoint, newCenterPoint, 0);
-			newBottomLeftPoint = tools.calculateRotatedPointCoordinate(symmetricPoint, newCenterPoint, 0);
+			newTopRightPoint = tools.calculateRotatedPointCoordinate(rotatedTopRightPoint, newCenterPoint, -style.rotate);
+			newBottomLeftPoint = tools.calculateRotatedPointCoordinate(symmetricPoint, newCenterPoint, -style.rotate);
 
 			newWidth = newTopRightPoint.x - newBottomLeftPoint.x;
 			newHeight = newBottomLeftPoint.y - newTopRightPoint.y;
@@ -193,8 +197,8 @@ let tools = {
 	calculateRightBottom(style, curPositon, proportion, needLockProportion, pointInfo) {
 		const { symmetricPoint } = pointInfo;
 		let newCenterPoint = tools.getCenterPoint(curPositon, symmetricPoint);
-		let newTopLeftPoint = tools.calculateRotatedPointCoordinate(symmetricPoint, newCenterPoint, 0);
-		let newBottomRightPoint = tools.calculateRotatedPointCoordinate(curPositon, newCenterPoint, 0);
+		let newTopLeftPoint = tools.calculateRotatedPointCoordinate(symmetricPoint, newCenterPoint, -style.rotate);
+		let newBottomRightPoint = tools.calculateRotatedPointCoordinate(curPositon, newCenterPoint, -style.rotate);
 
 		let newWidth = newBottomRightPoint.x - newTopLeftPoint.x;
 		let newHeight = newBottomRightPoint.y - newTopLeftPoint.y;
@@ -208,10 +212,18 @@ let tools = {
 				newHeight = newWidth / proportion;
 			}
 
-			const rotatedBottomRightPoint = tools.calculateRotatedPointCoordinate(newBottomRightPoint, newCenterPoint, 0);
+			const rotatedBottomRightPoint = tools.calculateRotatedPointCoordinate(
+				newBottomRightPoint,
+				newCenterPoint,
+				style.rotate
+			);
 			newCenterPoint = tools.getCenterPoint(rotatedBottomRightPoint, symmetricPoint);
-			newTopLeftPoint = tools.calculateRotatedPointCoordinate(symmetricPoint, newCenterPoint, 0);
-			newBottomRightPoint = tools.calculateRotatedPointCoordinate(rotatedBottomRightPoint, newCenterPoint, 0);
+			newTopLeftPoint = tools.calculateRotatedPointCoordinate(symmetricPoint, newCenterPoint, -style.rotate);
+			newBottomRightPoint = tools.calculateRotatedPointCoordinate(
+				rotatedBottomRightPoint,
+				newCenterPoint,
+				-style.rotate
+			);
 
 			newWidth = newBottomRightPoint.x - newTopLeftPoint.x;
 			newHeight = newBottomRightPoint.y - newTopLeftPoint.y;
@@ -228,8 +240,8 @@ let tools = {
 	calculateLeftBottom(style, curPositon, proportion, needLockProportion, pointInfo) {
 		const { symmetricPoint } = pointInfo;
 		let newCenterPoint = tools.getCenterPoint(curPositon, symmetricPoint);
-		let newTopRightPoint = tools.calculateRotatedPointCoordinate(symmetricPoint, newCenterPoint, 0);
-		let newBottomLeftPoint = tools.calculateRotatedPointCoordinate(curPositon, newCenterPoint, 0);
+		let newTopRightPoint = tools.calculateRotatedPointCoordinate(symmetricPoint, newCenterPoint, -style.rotate);
+		let newBottomLeftPoint = tools.calculateRotatedPointCoordinate(curPositon, newCenterPoint, -style.rotate);
 
 		let newWidth = newTopRightPoint.x - newBottomLeftPoint.x;
 		let newHeight = newBottomLeftPoint.y - newTopRightPoint.y;
@@ -243,10 +255,14 @@ let tools = {
 				newHeight = newWidth / proportion;
 			}
 
-			const rotatedBottomLeftPoint = tools.calculateRotatedPointCoordinate(newBottomLeftPoint, newCenterPoint, 0);
+			const rotatedBottomLeftPoint = tools.calculateRotatedPointCoordinate(
+				newBottomLeftPoint,
+				newCenterPoint,
+				style.rotate
+			);
 			newCenterPoint = tools.getCenterPoint(rotatedBottomLeftPoint, symmetricPoint);
-			newTopRightPoint = tools.calculateRotatedPointCoordinate(symmetricPoint, newCenterPoint, 0);
-			newBottomLeftPoint = tools.calculateRotatedPointCoordinate(rotatedBottomLeftPoint, newCenterPoint, 0);
+			newTopRightPoint = tools.calculateRotatedPointCoordinate(symmetricPoint, newCenterPoint, -style.rotate);
+			newBottomLeftPoint = tools.calculateRotatedPointCoordinate(rotatedBottomLeftPoint, newCenterPoint, -style.rotate);
 
 			newWidth = newTopRightPoint.x - newBottomLeftPoint.x;
 			newHeight = newBottomLeftPoint.y - newTopRightPoint.y;
@@ -264,7 +280,7 @@ let tools = {
 		const { symmetricPoint, curPoint } = pointInfo;
 		// 由于用户拉伸时是以任意角度拉伸的，所以在求得旋转前的坐标时，只取 y 坐标（这里的 x 坐标可能是任意值），x 坐标用 curPoint 的。
 		// 这个中心点（第二个参数）用 curPoint, center, symmetricPoint 都可以，只要他们在一条直线上就行
-		const rotatedcurPositon = tools.calculateRotatedPointCoordinate(curPositon, curPoint, 0);
+		const rotatedcurPositon = tools.calculateRotatedPointCoordinate(curPositon, curPoint, -style.rotate);
 
 		// 算出旋转前 y 坐标，再用 curPoint 的 x 坐标，重新计算它们旋转后对应的坐标
 		const rotatedTopMiddlePoint = tools.calculateRotatedPointCoordinate(
@@ -273,7 +289,7 @@ let tools = {
 				y: rotatedcurPositon.y,
 			},
 			curPoint,
-			0
+			style.rotate
 		);
 
 		// 用旋转后的坐标和对称点算出新的高度（勾股定理）
@@ -300,14 +316,14 @@ let tools = {
 
 	calculateRight(style, curPositon, proportion, needLockProportion, pointInfo) {
 		const { symmetricPoint, curPoint } = pointInfo;
-		const rotatedcurPositon = tools.calculateRotatedPointCoordinate(curPositon, curPoint, 0);
+		const rotatedcurPositon = tools.calculateRotatedPointCoordinate(curPositon, curPoint, -style.rotate);
 		const rotatedRightMiddlePoint = tools.calculateRotatedPointCoordinate(
 			{
 				x: rotatedcurPositon.x,
 				y: curPoint.y,
 			},
 			curPoint,
-			0
+			style.rotate
 		);
 
 		const newWidth = Math.sqrt(
@@ -333,14 +349,14 @@ let tools = {
 
 	calculateBottom(style, curPositon, proportion, needLockProportion, pointInfo) {
 		const { symmetricPoint, curPoint } = pointInfo;
-		const rotatedcurPositon = tools.calculateRotatedPointCoordinate(curPositon, curPoint, 0);
+		const rotatedcurPositon = tools.calculateRotatedPointCoordinate(curPositon, curPoint, -style.rotate);
 		const rotatedBottomMiddlePoint = tools.calculateRotatedPointCoordinate(
 			{
 				x: curPoint.x,
 				y: rotatedcurPositon.y,
 			},
 			curPoint,
-			0
+			style.rotate
 		);
 
 		const newHeight = Math.sqrt(
@@ -366,14 +382,14 @@ let tools = {
 
 	calculateLeft(style, curPositon, proportion, needLockProportion, pointInfo) {
 		const { symmetricPoint, curPoint } = pointInfo;
-		const rotatedcurPositon = tools.calculateRotatedPointCoordinate(curPositon, curPoint, 0);
+		const rotatedcurPositon = tools.calculateRotatedPointCoordinate(curPositon, curPoint, -style.rotate);
 		const rotatedLeftMiddlePoint = tools.calculateRotatedPointCoordinate(
 			{
 				x: rotatedcurPositon.x,
 				y: curPoint.y,
 			},
 			curPoint,
-			0
+			style.rotate
 		);
 
 		const newWidth = Math.sqrt(
