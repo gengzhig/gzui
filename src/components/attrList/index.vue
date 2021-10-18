@@ -21,14 +21,7 @@
 				</el-col>
 			</el-form-item>
 			<el-form-item label="旋转角度">
-				<el-input-number
-					v-model="compProperty.rotate"
-					:min="-360"
-					:max="360"
-					:step="0.1"
-					controls-position="right"
-					placeholder="旋转角度"
-				/>
+				<el-input-number v-model="compProperty.rotate" :step="0.1" controls-position="right" placeholder="旋转角度" />
 			</el-form-item>
 			<el-form-item label="不透明度">
 				<el-slider v-model="compProperty.opacity" show-input> </el-slider>

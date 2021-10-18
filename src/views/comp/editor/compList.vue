@@ -197,7 +197,6 @@ const getPointStyle = point => {
 		top: `${newTop - 4}px`,
 		cursor: getCursor()[point],
 	};
-	console.log(style);
 	return style;
 };
 

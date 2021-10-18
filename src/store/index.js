@@ -27,6 +27,17 @@ export default createStore({
 			height: 740,
 			scale: 100,
 		},
+		areaData: {
+			// 选中区域包含的组件以及区域位移信息
+			style: {
+				top: 0,
+				left: 0,
+				width: 0,
+				height: 0,
+			},
+			components: [],
+		},
+		editor: null,
 	},
 	getters: {
 		currentCompLayerTreeList: state => {
@@ -73,6 +84,9 @@ export default createStore({
 		setCurrentCompList(state, payload) {
 			state.currentCompList = payload;
 			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
+		},
+		setAreaData(state, data) {
+			state.areaData = data;
 		},
 		// 复制
 		copy(state) {
@@ -264,6 +278,7 @@ export default createStore({
 					});
 				});
 		},
+		hide(state, payload) {},
 	},
 	actions: {
 		changeDevice({ commit }, payload) {

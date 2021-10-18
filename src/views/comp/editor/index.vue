@@ -31,12 +31,20 @@
 						@selectItem="selectItem"
 					></gz-selector>
 				</div>
-				<div class="canvas" ref="canvasRef" :style="containerStyle" @click="e => canvasClick(e)">
+				<div
+					class="canvas"
+					ref="canvasRef"
+					:style="containerStyle"
+					@click="e => canvasClick(e)"
+					@mousedown="handleMouseDown"
+				>
 					<comp-list v-for="(item, index) in store.state.currentCompList" :key="index" :block="item"></comp-list>
 					<!-- 网格线 -->
 					<Grid></Grid>
 					<!-- 标线 -->
 					<!-- <MarkLine></MarkLine> -->
+					<!-- 选中区域 -->
+					<Area :start="area.start" :width="area.width" :height="area.height" v-show="area.isShowArea" />
 				</div>
 			</div>
 			<div class="operateMain" :class="store.state.sidebar.operateMainArea ? '' : 'hide'">
@@ -83,6 +91,7 @@ import compLibrary from "./compLibrary.vue";
 import compLayer from "./compLayer.vue";
 import MarkLine from "./MarkLine.vue";
 import Grid from "./grid.vue";
+import Area from "./Area.vue";
 import AttrList from "@/components/attrList/index.vue";
 
 const store = useStore();
@@ -90,6 +99,18 @@ const appMainRef = ref(null);
 const canvasRef = ref(null);
 const state = reactive({
 	activeName: "first",
+});
+const area = reactive({
+	editorX: 0,
+	editorY: 0,
+	// 选中区域的起点
+	start: {
+		x: 0,
+		y: 0,
+	},
+	width: 0,
+	height: 0,
+	isShowArea: false,
 });
 const compInfo = inject("compInfo");
 
@@ -117,6 +138,141 @@ watch(
 	}
 );
 
+const hideArea = () => {
+	area.isShowArea = 0;
+	area.width = 0;
+	area.height = 0;
+	store.commit("setAreaData", {
+		style: {
+			left: 0,
+			top: 0,
+			width: 0,
+			height: 0,
+		},
+		components: [],
+	});
+};
+const handleMouseDown = e => {
+	// 如果没有选中组件 在画布上点击时需要调用 e.preventDefault() 防止触发 drop 事件
+	if (store.state.currentComp.length == 0) {
+		e.preventDefault();
+	}
+
+	hideArea();
+	// 获取编辑器的位移信息，每次点击时都需要获取一次。主要是为了方便开发时调试用。
+	const rectInfo = canvasRef.value.getBoundingClientRect();
+	area.editorX = rectInfo.x;
+	area.editorY = rectInfo.y;
+
+	const startX = e.clientX;
+	const startY = e.clientY;
+	area.start.x = startX - area.editorX;
+	area.start.y = startY - area.editorY;
+	// 展示选中区域
+	area.isShowArea = true;
+
+	const move = moveEvent => {
+		area.width = Math.abs(moveEvent.clientX - startX);
+		area.height = Math.abs(moveEvent.clientY - startY);
+		if (moveEvent.clientX < startX) {
+			area.start.x = moveEvent.clientX - area.editorX;
+		}
+
+		if (moveEvent.clientY < startY) {
+			area.start.y = moveEvent.clientY - area.editorY;
+		}
+	};
+
+	const up = e => {
+		console.log(123);
+		document.removeEventListener("mousemove", move);
+		document.removeEventListener("mouseup", up);
+
+		if (e.clientX == startX && e.clientY == startY) {
+			hideArea();
+			return;
+		}
+
+		createGroup();
+	};
+
+	document.addEventListener("mousemove", move);
+	document.addEventListener("mouseup", up);
+};
+
+const createGroup = () => {
+	// 获取选中区域的组件数据
+	const areaData = getSelectArea();
+	if (areaData.length <= 1) {
+		hideArea();
+		return;
+	}
+
+	// 根据选中区域和区域中每个组件的位移信息来创建 Group 组件
+	// 要遍历选择区域的每个组件，获取它们的 left top right bottom 信息来进行比较
+	let top = Infinity,
+		left = Infinity;
+	let right = -Infinity,
+		bottom = -Infinity;
+	areaData.forEach(component => {
+		let style = {};
+		console.log(component);
+		if (component.component == "Group") {
+			component.propValue.forEach(item => {
+				const rectInfo = $(`#component${item.id}`).getBoundingClientRect();
+				style.left = rectInfo.left - this.editorX;
+				style.top = rectInfo.top - this.editorY;
+				style.right = rectInfo.right - this.editorX;
+				style.bottom = rectInfo.bottom - this.editorY;
+
+				if (style.left < left) left = style.left;
+				if (style.top < top) top = style.top;
+				if (style.right > right) right = style.right;
+				if (style.bottom > bottom) bottom = style.bottom;
+			});
+		} else {
+			style = vm.$tool.getComponentRotatedStyle(component);
+		}
+
+		if (style.left < left) left = style.left;
+		if (style.top < top) top = style.top;
+		if (style.right > right) right = style.right;
+		if (style.bottom > bottom) bottom = style.bottom;
+	});
+
+	area.start.x = left;
+	area.start.y = top;
+	area.width = right - left;
+	area.height = bottom - top;
+
+	// 设置选中区域位移大小信息和区域内的组件数据
+	store.commit("setAreaData", {
+		style: {
+			left,
+			top,
+			width: area.width,
+			height: area.height,
+		},
+		components: areaData,
+	});
+};
+
+const getSelectArea = () => {
+	const result = [];
+	// 区域起点坐标
+	const { x, y } = area.start;
+	// 计算所有的组件数据，判断是否在选中区域内
+	store.state.currentCompList.forEach(component => {
+		if (component.isLock) return;
+		const { left, top, width, height } = vm.$tool.getComponentRotatedStyle(component);
+		if (x <= left && y <= top && left + width <= x + area.width && top + height <= y + area.height) {
+			result.push(component);
+		}
+	});
+
+	// 返回在选中区域内的所有组件
+	return result;
+};
 const canvasClick = e => {
 	let canvasDom = e.path;
 	let isCompClickArea = canvasDom.some(c => {
