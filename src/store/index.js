@@ -115,7 +115,14 @@ export default createStore({
 		// 成组
 		compose({ currentCompList, areaData, editor }) {
 			const components = [];
+
 			areaData.components.forEach(component => {
+				component.style = {
+					left: component.left,
+					top: component.top,
+					width: component.width,
+					height: component.height,
+				};
 				if (!component.isGroup) {
 					components.push(component);
 				} else {
@@ -154,7 +161,6 @@ export default createStore({
 					opacity: 1,
 					rotate: 0,
 				},
-				propValue: components,
 			};
 			tool.createGroupStyle(groupComponent);
 			this.commit("addComponent", {

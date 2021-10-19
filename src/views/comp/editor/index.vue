@@ -265,7 +265,6 @@ const createGroup = () => {
 		if (style.right > right) right = style.right;
 		if (style.bottom > bottom) bottom = style.bottom;
 	});
-
 	area.start.x = left;
 	area.start.y = top;
 	area.width = right - left;

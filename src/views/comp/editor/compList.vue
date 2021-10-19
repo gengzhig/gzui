@@ -21,7 +21,6 @@
 			@mousedown="handleMouseDownOnPoint(item, $event)"
 			:style="getPointStyle(item)"
 		></i>
-		{{ block.group }}
 		<component v-if="!block.isGroup" :is="compInfo.compMapList.get(blockStyle.key).render()"></component>
 		<component v-if="block.isGroup" :is="block.group"></component>
 		<!-- 防止触发组件上的事件，加的一层遮罩 -->
@@ -93,6 +92,15 @@ const blockStyle = computed(() => ({
 	opacity: props.block.opacity / 100,
 	rotate: props.block.rotate,
 	transform: `rotate(${props.block.rotate}deg)`,
+	style: {
+		top: `${props.block.top}px`,
+		left: `${props.block.left}px`,
+		width: `${props.block.width}px`,
+		height: `${props.block.height}px`,
+		zIndex: `${props.block.zIndex}`,
+		opacity: props.block.opacity / 100,
+		rotate: props.block.rotate,
+	},
 }));
 onMounted(() => {
 	let { offsetWidth, offsetHeight } = blockRef.value;
