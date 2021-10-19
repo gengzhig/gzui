@@ -80,7 +80,21 @@ const drop = e => {
 			zIndex: 1,
 			opacity: 100,
 			rotate: 0,
-			alignCenter: true, // 松手时居中
+			isLock: false,
+			isGroup: false,
+			animations: [],
+			events: {},
+			groupStyle: {},
+			group: [],
+			style: {
+				// top: e.offsetY,
+				// left: e.offsetX,
+				// width: currentComp.style.width,
+				// height: currentComp.style.height,
+				// zIndex: 1,
+				// opacity: 100,
+				// rotate: 0,
+			},
 		},
 	];
 	// 按照先后拖入顺序设置zIndex
@@ -98,6 +112,7 @@ const dragend = e => {
 };
 
 const setZindex = data => {
+	console.log(data, "组件库");
 	data.map((c, i) => {
 		c.zIndex = i + 1;
 	});

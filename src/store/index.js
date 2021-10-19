@@ -11,12 +11,16 @@ import { createStore } from "vuex";
 import sidebar from "./sidebar";
 import navbar from "./navbar";
 import tool from "@/assets/js/tool.js";
+import mitt from "@/mitt.js";
 import { Notification, Msgbox, Message } from "element3";
 export default createStore({
 	state: {
 		isCut: false,
 		isMobile: false,
 		routerMenu: localStorage.getItem("routerMenu") ? JSON.parse(localStorage.getItem("routerMenu")) : [],
+		menuTop: 0, // 右击菜单数据
+		menuLeft: 0,
+		menuShow: false,
 		currentComp: [],
 		copyData: null,
 		curComponentIndex: -1,
@@ -65,6 +69,15 @@ export default createStore({
 		toggleDevice(state, payload) {
 			state.isMobile = payload;
 		},
+		showContextMenu(state, { top, left }) {
+			state.menuShow = true;
+			state.menuTop = top;
+			state.menuLeft = left;
+		},
+
+		hideContextMenu(state) {
+			state.menuShow = false;
+		},
 		// 设置当前选中组件
 		setCurrentComp(state, { compData, index }) {
 			state.currentComp = compData;
@@ -72,7 +85,9 @@ export default createStore({
 			// 给选中组件加选中样式
 			let editorBlock = document.querySelectorAll(".canvas .editor-block");
 			tool.clearAllEditorBlock(editorBlock);
-			[...editorBlock][state.curComponentIndex].classList.add("editor-block-focus");
+			[...editorBlock][state.curComponentIndex] &&
+				[...editorBlock][state.curComponentIndex].classList &&
+				[...editorBlock][state.curComponentIndex].classList.add("editor-block-focus");
 			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 		},
 		// 重置当前选中组件
@@ -80,13 +95,92 @@ export default createStore({
 			state.curComponentIndex = -1;
 			state.currentComp = [];
 		},
+		// 新增组件
+		addComponent(state, { component, index }) {
+			if (index !== undefined) {
+				state.currentCompList.splice(index, 0, component);
+			} else {
+				state.currentCompList.push(component);
+			}
+		},
 		// 设置当前画布内所有组件
 		setCurrentCompList(state, payload) {
 			state.currentCompList = payload;
 			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 		},
+		// 设置圈选组件数据
 		setAreaData(state, data) {
 			state.areaData = data;
+		},
+		// 成组
+		compose({ currentCompList, areaData, editor }) {
+			const components = [];
+			areaData.components.forEach(component => {
+				if (!component.isGroup) {
+					components.push(component);
+				} else {
+					// 如果要组合的组件中，已经存在组合数据，则需要提前拆分
+					// const parentStyle = { ...component.style };
+					// const subComponents = component.propValue;
+					// const editorRect = editor.getBoundingClientRect();
+					// this.commit("deleteComponent");
+					// subComponents.forEach(component => {
+					// 	decomposeComponent(component, editorRect, parentStyle);
+					// 	this.commit("addComponent", { component });
+					// });
+					// components.push(...component.propValue);
+					// this.commit("batchDeleteComponent", component.propValue);
+				}
+			});
+
+			const groupComponent = {
+				id: new Date().getTime(),
+				name: "成组组件",
+				top: areaData.style.top,
+				left: areaData.style.left,
+				width: areaData.style.width,
+				height: areaData.style.height,
+				zIndex: 1,
+				opacity: 100,
+				rotate: 0,
+				isLock: false,
+				isGroup: true,
+				animations: [],
+				events: {},
+				groupStyle: {},
+				group: components,
+				style: {
+					...areaData.style,
+					opacity: 1,
+					rotate: 0,
+				},
+				propValue: components,
+			};
+			tool.createGroupStyle(groupComponent);
+			this.commit("addComponent", {
+				component: groupComponent,
+			});
+
+			mitt.emit("hideArea");
+
+			this.commit("batchDeleteComponent", areaData.components);
+			this.commit("setCurrentComp", {
+				compData: currentCompList[currentCompList.length - 1],
+				index: currentCompList.length - 1,
+			});
+
+			areaData.components = [];
+		},
+		// 将已经放到 Group 组件数据删除，也就是在 componentData 中删除，因为它们已经放到 Group 组件中了
+		batchDeleteComponent({ currentCompList }, deleteData) {
+			deleteData.forEach(component => {
+				for (let i = 0, len = currentCompList.length; i < len; i++) {
+					if (component.id == currentCompList[i].id) {
+						currentCompList.splice(i, 1);
+						break;
+					}
+				}
+			});
 		},
 		// 复制
 		copy(state) {
@@ -152,15 +246,15 @@ export default createStore({
 				const index = state.copyData.index;
 				data.id = generateID();
 
-				store.commit("addComponent", { component: data, index });
+				this.commit("addComponent", { component: data, index });
 				if (state.curComponentIndex >= index) {
 					// 如果当前组件索引大于等于插入索引，需要加一，因为当前组件往后移了一位
 					state.curComponentIndex++;
 				}
 			}
 
-			store.commit("copy");
-			store.commit("deleteComponent");
+			this.commit("copy");
+			this.commit("deleteComponent");
 			state.isCut = true;
 		},
 		// 撤销组件
@@ -235,7 +329,7 @@ export default createStore({
 			}
 		},
 		// 置底
-		bottomComponentt(state, payload) {
+		bottomComponent(state, payload) {
 			if (state.curComponentIndex > 0) {
 				state.currentCompList.splice(state.curComponentIndex, 1);
 				state.currentCompList.unshift(state.currentComp[0]);

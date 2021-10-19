@@ -26,7 +26,44 @@ let tools = {
 	resetZindex(data) {
 		data.map((c, i) => {
 			c.zIndex = i + 1;
+			c.style.zIndex = i + 1;
 		});
+	},
+	getUnitStyle(style, filter = []) {
+		const needUnit = ["fontSize", "width", "height", "top", "left", "borderWidth", "letterSpacing", "borderRadius"];
+		const result = {};
+		Object.keys(style).forEach(key => {
+			if (!filter.includes(key)) {
+				if (key != "rotate") {
+					result[key] = style[key];
+
+					if (needUnit.includes(key)) {
+						result[key] += "px";
+					}
+				} else {
+					result.transform = key + "(" + style[key] + "deg)";
+				}
+			}
+		});
+		return result;
+	},
+	createGroupStyle(groupComponent) {
+		const parentStyle = groupComponent.style;
+		groupComponent.propValue.forEach(component => {
+			// component.groupStyle 的 top left 是相对于 group 组件的位置
+			// 如果已存在 component.groupStyle，说明已经计算过一次了。不需要再次计算
+			if (!Object.keys(component.groupStyle).length) {
+				const style = { ...component.style };
+				component.groupStyle = tools.getUnitStyle(style);
+				component.groupStyle.left = tools.toPercent((style.left - parentStyle.left) / parentStyle.width);
+				component.groupStyle.top = tools.toPercent((style.top - parentStyle.top) / parentStyle.height);
+				component.groupStyle.width = tools.toPercent(style.width / parentStyle.width);
+				component.groupStyle.height = tools.toPercent(style.height / parentStyle.height);
+			}
+		});
+	},
+	toPercent(val) {
+		return val * 100 + "%";
 	},
 	// 保留n位小数并格式化输出（不足的部分补0）
 	fomatFloat(value, n) {
@@ -54,16 +91,22 @@ let tools = {
 	angleToRadian(angle) {
 		return (angle * Math.PI) / 180;
 	},
+	sin(rotate) {
+		return Math.abs(Math.sin(tools.angleToRadian(rotate)));
+	},
+	cos(rotate) {
+		return Math.abs(Math.cos(tools.angleToRadian(rotate)));
+	},
 	// 获取一个组件旋转 rotate 后的样式
 	getComponentRotatedStyle(style) {
 		style = { ...style };
 		if (style.rotate != 0) {
-			const newWidth = style.width * cos(style.rotate) + style.height * sin(style.rotate);
+			const newWidth = style.width * tools.cos(style.rotate) + style.height * tools.sin(style.rotate);
 			const diffX = (style.width - newWidth) / 2; // 旋转后范围变小是正值，变大是负值
 			style.left += diffX;
 			style.right = style.left + newWidth;
 
-			const newHeight = style.height * cos(style.rotate) + style.width * sin(style.rotate);
+			const newHeight = style.height * tools.cos(style.rotate) + style.width * tools.sin(style.rotate);
 			const diffY = (newHeight - style.height) / 2; // 始终是正
 			style.top -= diffY;
 			style.bottom = style.top + newHeight;

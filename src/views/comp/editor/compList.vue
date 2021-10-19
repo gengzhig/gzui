@@ -6,13 +6,13 @@
 		:comp-id="blockStyle.id"
 		@mousedown="e => blockMouseDown(e)"
 		@mouseup="e => blockMouseUp(e)"
+		@click="hideMenu"
 		ref="blockRef"
 	>
 		<!-- 旋转图标 -->
-		<!-- <span class="iconfont icon-xiangyouxuanzhuan"></span>-->
 		<i class="el-icon-refresh-right" @mousedown="handleRotate"></i>
 		<!-- 锁定图标 -->
-		<!-- <span class="iconfont icon-suo"></span> -->
+		<!-- <i class="el-icon-lock"></i> -->
 		<!-- 8个坐标点 -->
 		<i
 			class="shape-point"
@@ -21,9 +21,11 @@
 			@mousedown="handleMouseDownOnPoint(item, $event)"
 			:style="getPointStyle(item)"
 		></i>
-		<component :is="compInfo.compMapList.get(blockStyle.key).render()"></component>
+		{{ block.group }}
+		<component v-if="!block.isGroup" :is="compInfo.compMapList.get(blockStyle.key).render()"></component>
+		<component v-if="block.isGroup" :is="block.group"></component>
 		<!-- 防止触发组件上的事件，加的一层遮罩 -->
-		<div class="assistDom" @contextmenu.prevent.native="openMenu($event)"></div>
+		<div class="assistDom"></div>
 		<div class="navigator-line">
 			<div class="navigator-line-left" :style="{ width: blockStyle.left }"></div>
 			<div class="navigator-line-top" :style="{ height: blockStyle.top }"></div>
@@ -31,15 +33,6 @@
 				{{ parseInt(blockStyle.left) }},{{ parseInt(blockStyle.top) }}
 			</div>
 		</div>
-	</div>
-	<div v-if="state.visible" class="rightMenu" :style="{ left: state.left + 'px', top: state.top + 'px' }">
-		<h3>右键功能菜单</h3>
-		<ul>
-			<li>左对齐</li>
-			<li>右对齐</li>
-			<li>上对齐</li>
-			<li>下对齐</li>
-		</ul>
 	</div>
 </template>
 
@@ -58,14 +51,12 @@ const props = defineProps({
 		type: Object,
 	},
 });
+console.log(props.block);
 const store = useStore();
 const compInfo = inject("compInfo");
 const blockRef = ref(null);
 const state = reactive({
 	rightClickItem: null,
-	top: null,
-	left: null,
-	visible: false,
 	pointList: ["lt", "t", "rt", "r", "rb", "b", "lb", "l"], // 八个方向
 	initialAngle: {
 		// 每个点对应的初始角度
@@ -99,7 +90,6 @@ const blockStyle = computed(() => ({
 	width: `${props.block.width}px`,
 	height: `${props.block.height}px`,
 	zIndex: `${props.block.zIndex}`,
-	alignCenter: props.block.alignCenter,
 	opacity: props.block.opacity / 100,
 	rotate: props.block.rotate,
 	transform: `rotate(${props.block.rotate}deg)`,
@@ -109,17 +99,6 @@ onMounted(() => {
 	blockStyle.value.width = offsetWidth + "px";
 	blockStyle.value.height = offsetHeight + "px";
 });
-
-watch(
-	() => state.visible,
-	value => {
-		if (value) {
-			document.body.addEventListener("click", closeMenu);
-		} else {
-			document.body.removeEventListener("click", closeMenu);
-		}
-	}
-);
 
 // 处理旋转
 const handleRotate = e => {
@@ -165,6 +144,7 @@ const handleRotate = e => {
 	document.addEventListener("mousemove", move);
 	document.addEventListener("mouseup", up);
 };
+
 const getPointStyle = point => {
 	let { width, height } = blockStyle.value;
 	let numberWidth = parseInt(width);
@@ -314,55 +294,58 @@ const handleMouseDownOnPoint = (point, e) => {
 	document.addEventListener("mousemove", move);
 	document.addEventListener("mouseup", up);
 };
+
 const blockMouseDown = e => {
-	let editorBlock = blockRef.value.parentElement.querySelectorAll(".editor-block");
-	[...editorBlock].map(b => {
-		b.classList.remove("editor-block-focus");
-	});
-	e.currentTarget.classList.add("editor-block-focus");
-	console.log("blockMouseDown");
-	e.preventDefault();
-	e.stopPropagation();
-	// e.target.style.cursor = "move";
-
-	const pos = { ...blockStyle.value };
-	const startY = e.clientY;
-	const startX = e.clientX;
-	// 如果直接修改属性，值的类型会变为字符串，所以要转为数值型
-	const startTop = parseInt(pos.top);
-	const startLeft = parseInt(pos.left);
-	const move = moveEvent => {
-		const curX = moveEvent.clientX;
-		const curY = moveEvent.clientY;
-		pos.top = curY - startY + startTop + "px";
-		pos.left = curX - startX + startLeft + "px";
-		props.block.left = parseInt(pos.left);
-		props.block.top = parseInt(pos.top);
-
-		let selectCompId = e.target.parentElement.getAttribute("comp-id");
-		let selectComp = store.state.currentCompList.filter(c => c.id == selectCompId);
-		let selectCompIndex = store.state.currentCompList.findIndex(c => c.id == selectCompId);
-		store.commit("setCurrentComp", { compData: selectComp, index: selectCompIndex });
-
-		// 等更新完当前组件的样式并绘制到屏幕后再判断是否需要吸附
-		// 如果不使用 $nextTick，吸附后将无法移动
-		nextTick(() => {
-			// 触发元素移动事件，用于显示标线、吸附功能
-			// 后面两个参数代表鼠标移动方向
-			// curY - startY > 0 true 表示向下移动 false 表示向上移动
-			// curX - startX > 0 true 表示向右移动 false 表示向左移动
-			mitt.emit("move", curY - startY > 0, curX - startX > 0);
+	try {
+		let editorBlock = blockRef.value.parentElement.querySelectorAll(".editor-block");
+		[...editorBlock].map(b => {
+			b.classList.remove("editor-block-focus");
 		});
-	};
+		e.currentTarget.classList.add("editor-block-focus");
+		e.preventDefault();
+		e.stopPropagation();
+		// e.target.cursor = "move";
+		const pos = { ...blockStyle.value };
+		const startY = e.clientY;
+		const startX = e.clientX;
+		// 如果直接修改属性，值的类型会变为字符串，所以要转为数值型
+		const startTop = parseInt(pos.top);
+		const startLeft = parseInt(pos.left);
+		const move = moveEvent => {
+			const curX = moveEvent.clientX;
+			const curY = moveEvent.clientY;
+			pos.top = curY - startY + startTop + "px";
+			pos.left = curX - startX + startLeft + "px";
+			props.block.left = parseInt(pos.left);
+			props.block.top = parseInt(pos.top);
 
-	const up = () => {
-		// 触发元素停止移动事件，用于隐藏标线
-		mitt.emit("unmove");
-		document.removeEventListener("mousemove", move);
-		document.removeEventListener("mouseup", up);
-	};
-	document.addEventListener("mousemove", move);
-	document.addEventListener("mouseup", up);
+			let selectCompId = e.target.parentElement.getAttribute("comp-id");
+			let selectComp = store.state.currentCompList.filter(c => c.id == selectCompId);
+			let selectCompIndex = store.state.currentCompList.findIndex(c => c.id == selectCompId);
+			store.commit("setCurrentComp", { compData: selectComp, index: selectCompIndex });
+
+			// 等更新完当前组件的样式并绘制到屏幕后再判断是否需要吸附
+			// 如果不使用 $nextTick，吸附后将无法移动
+			nextTick(() => {
+				// 触发元素移动事件，用于显示标线、吸附功能
+				// 后面两个参数代表鼠标移动方向
+				// curY - startY > 0 true 表示向下移动 false 表示向上移动
+				// curX - startX > 0 true 表示向右移动 false 表示向左移动
+				mitt.emit("move", curY - startY > 0, curX - startX > 0);
+			});
+		};
+
+		const up = () => {
+			// 触发元素停止移动事件，用于隐藏标线
+			mitt.emit("unmove");
+			document.removeEventListener("mousemove", move);
+			document.removeEventListener("mouseup", up);
+		};
+		document.addEventListener("mousemove", move);
+		document.addEventListener("mouseup", up);
+	} catch (error) {
+		console.log(error);
+	}
 };
 
 const blockMouseUp = e => {
@@ -372,19 +355,13 @@ const blockMouseUp = e => {
 	let selectCompIndex = store.state.currentCompList.findIndex(c => c.id == selectCompId);
 	store.commit("setCurrentComp", { compData: selectComp, index: selectCompIndex });
 };
-// 打开右键菜单
-const openMenu = (e, comp) => {
-	state.rightClickItem = store.state.currentComp;
-	let x = e.clientX;
-	let y = e.clientY;
-	state.top = y - 90;
-	state.left = x - 200;
-	state.visible = true;
-};
 
-// 关闭右键菜单
-const closeMenu = () => {
-	state.visible = false;
+// 隐藏菜单
+const hideMenu = e => {
+	// 阻止向父组件冒泡
+	e.stopPropagation();
+	e.preventDefault();
+	store.commit("hideContextMenu");
 };
 </script>
 
@@ -414,6 +391,15 @@ const closeMenu = () => {
 		transform: translateX(-50%);
 		cursor: grab;
 		color: #59c7f9;
+		font-size: 20px;
+		font-weight: 600;
+	}
+	.el-icon-lock {
+		display: block;
+		position: absolute;
+		top: 0;
+		right: 0;
+		color: #9e9e9ec4;
 		font-size: 20px;
 		font-weight: 600;
 	}
@@ -465,26 +451,5 @@ const closeMenu = () => {
 	height: 100%;
 	z-index: 999999999999999999999999999;
 	top: 0;
-}
-
-.rightMenu {
-	width: 200px;
-	height: 300px;
-	position: absolute;
-	border: 1px solid yellowgreen;
-	list-style-type: none;
-	padding: 5px 0;
-	border-radius: 4px;
-	font-size: 12px;
-	font-weight: 400;
-	color: #333;
-	background: gainsboro;
-	padding: 5px;
-	margin: 0;
-	box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
-	z-index: 99999999999999;
-	ul {
-		list-style: none;
-	}
 }
 </style>

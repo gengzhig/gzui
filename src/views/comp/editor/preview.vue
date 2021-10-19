@@ -40,7 +40,6 @@ onMounted(() => {
 					width: `${c.width}px`,
 					height: `${c.height}px`,
 					zIndex: `${c.zIndex}`,
-					alignCenter: c.alignCenter,
 					opacity: c.opacity,
 					transform: `rotate(${c.rotate}deg)`,
 				},

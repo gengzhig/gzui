@@ -1,17 +1,17 @@
 <template>
 	<div class="mark-line" ref="lineRef">
-		<!-- <div
+		<div
 			v-for="line in state.lines"
 			:key="line"
 			class="line"
 			:class="line.includes('x') ? 'xline' : 'yline'"
 			v-show="state.lineStatus[line] || false"
-		></div> -->
-		<div class="navigator-line">
+		></div>
+	</div>
+	<!-- <div class="navigator-line">
 			<div class="navigator-line-left" style="width: 1741.49px"></div>
 			<div class="navigator-line-top" style="width: 1741.49px"></div>
-		</div>
-	</div>
+		</div> -->
 </template>
 
 <script setup>
@@ -24,7 +24,7 @@ const lineRef = ref(null);
 const ctx = getCurrentInstance();
 const state = reactive({
 	lines: ["xt", "xc", "xb", "yl", "yc", "yr"], // 分别对应三条横线和三条竖线
-	diff: 3, // 相距 dff 像素将自动吸附
+	diff: 5, // 相距 3 像素将自动吸附
 	lineStatus: {
 		xt: false,
 		xc: false,
@@ -37,9 +37,7 @@ const state = reactive({
 onMounted(() => {
 	// 监听元素移动和不移动的事件
 	mitt.on("move", (isDownward, isRightward) => {
-		// setTimeout(() => {
-		// 	showLine(isDownward, isRightward);
-		// }, 1000);
+		showLine(isDownward, isRightward);
 	});
 	mitt.on("unmove", () => {
 		hideLine();
@@ -52,8 +50,11 @@ const hideLine = () => {
 };
 
 const showLine = (isDownward, isRightward) => {
-	const lines = lineRef.value;
-
+	let lines = {};
+	let aLines = lineRef.value.getElementsByClassName("line");
+	for (let i = 0; i < state.lines.length; i++) {
+		lines[state.lines[i]] = [aLines[i]];
+	}
 	const components = store.state.currentCompList;
 	const curComponentStyle = vm.$tool.getComponentRotatedStyle(store.state.currentComp[0]);
 	const curComponentHalfwidth = curComponentStyle.width / 2;
@@ -61,11 +62,10 @@ const showLine = (isDownward, isRightward) => {
 	hideLine();
 	components.forEach(component => {
 		if (component == store.state.currentComp[0]) return;
-		const componentStyle = vm.$tool.getComponentRotatedStyle(component.style);
+		const componentStyle = vm.$tool.getComponentRotatedStyle(component);
 		const { top, left, bottom, right } = componentStyle;
 		const componentHalfwidth = componentStyle.width / 2;
 		const componentHalfHeight = componentStyle.height / 2;
-
 		const conditions = {
 			top: [
 				{
@@ -152,10 +152,9 @@ const showLine = (isDownward, isRightward) => {
 			conditions[key].forEach(condition => {
 				if (!condition.isNearly) return;
 				// 修改当前组件位移
-				// this.$store.commit("setShapeSingleStyle", {
-				// 	key,
-				// 	value: rotate != 0 ? this.translatecurComponentShift(key, condition, curComponentStyle) : condition.dragShift,
-				// });
+				store.state.currentComp[0][key] =
+					rotate != 0 ? translatecurComponentShift(key, condition, curComponentStyle) : condition.dragShift;
+				store.commit("setCurrentComp", { compData: store.state.currentComp, index: store.state.curComponentIndex });
 				if (condition.lineNode) {
 					condition.lineNode.style[key] = `${condition.lineShift}px`;
 					needToShow.push(condition.line);
@@ -163,7 +162,6 @@ const showLine = (isDownward, isRightward) => {
 			});
 		});
 
-		// 同一方向上同时显示三条线可能不太美观，因此才有了这个解决方案
 		// 同一方向上的线只显示一条，例如多条横条只显示一条横线
 		if (needToShow.length) {
 			chooseTheTureLine(needToShow, isDownward, isRightward);
@@ -211,7 +209,6 @@ const chooseTheTureLine = (needToShow, isDownward, isRightward) => {
 			state.lineStatus.xt = true;
 		}
 	} else {
-		// eslint-disable-next-line no-lonely-if
 		if (needToShow.includes("xt")) {
 			state.lineStatus.xt = true;
 		} else if (needToShow.includes("xc")) {
@@ -232,7 +229,7 @@ const isNearly = (dragValue, targetValue) => {
 	height: 100%;
 }
 .line {
-	background: #59c7f9;
+	background: #333;
 	position: absolute;
 	z-index: 1000;
 }

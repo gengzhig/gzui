@@ -18,9 +18,11 @@
 					<compLibrary></compLibrary>
 				</div>
 			</div>
+
 			<div class="appMain" ref="appMainRef">
 				<div class="operateGroup">
 					<gz-button type="primary" @click="revocation">撤销</gz-button>
+					<gz-button type="primary" @click="compose">成组</gz-button>
 					<gz-selector
 						:width="200"
 						:height="40"
@@ -37,12 +39,15 @@
 					:style="containerStyle"
 					@click="e => canvasClick(e)"
 					@mousedown="handleMouseDown"
+					@contextmenu="handleContextMenu"
 				>
 					<comp-list v-for="(item, index) in store.state.currentCompList" :key="index" :block="item"></comp-list>
 					<!-- 网格线 -->
 					<Grid></Grid>
+					<!-- 右击菜单 -->
+					<ContextMenu />
 					<!-- 标线 -->
-					<!-- <MarkLine></MarkLine> -->
+					<MarkLine></MarkLine>
 					<!-- 选中区域 -->
 					<Area :start="area.start" :width="area.width" :height="area.height" v-show="area.isShowArea" />
 				</div>
@@ -92,6 +97,7 @@ import compLayer from "./compLayer.vue";
 import MarkLine from "./MarkLine.vue";
 import Grid from "./grid.vue";
 import Area from "./Area.vue";
+import ContextMenu from "./ContextMenu.vue";
 import AttrList from "@/components/attrList/index.vue";
 
 const store = useStore();
@@ -137,6 +143,25 @@ watch(
 		}
 	}
 );
+const handleContextMenu = e => {
+	e.stopPropagation();
+	e.preventDefault();
+	// 计算菜单相对于编辑器的位移
+	let target = e.target;
+	let top = e.offsetY;
+	let left = e.offsetX;
+
+	while (target instanceof SVGElement) {
+		target = target.parentNode;
+	}
+
+	while (!target.className.includes("canvas")) {
+		left += target.offsetLeft;
+		top += target.offsetTop;
+		target = target.parentNode;
+	}
+	store.commit("showContextMenu", { top, left });
+};
 
 const hideArea = () => {
 	area.isShowArea = 0;
@@ -203,7 +228,8 @@ const handleMouseDown = e => {
 const createGroup = () => {
 	// 获取选中区域的组件数据
 	const areaData = getSelectArea();
-	if (areaData.length <= 1) {
+	// 圈选区域组件个数小于1个时隐藏Area组件
+	if (areaData.length < 1) {
 		hideArea();
 		return;
 	}
@@ -217,13 +243,13 @@ const createGroup = () => {
 	areaData.forEach(component => {
 		let style = {};
 		console.log(component);
-		if (component.component == "Group") {
-			component.propValue.forEach(item => {
+		if (component.isGroup) {
+			component.group.forEach(item => {
 				const rectInfo = $(`#component${item.id}`).getBoundingClientRect();
-				style.left = rectInfo.left - this.editorX;
-				style.top = rectInfo.top - this.editorY;
-				style.right = rectInfo.right - this.editorX;
-				style.bottom = rectInfo.bottom - this.editorY;
+				style.left = rectInfo.left - area.editorX;
+				style.top = rectInfo.top - area.editorY;
+				style.right = rectInfo.right - area.editorX;
+				style.bottom = rectInfo.bottom - area.editorY;
 
 				if (style.left < left) left = style.left;
 				if (style.top < top) top = style.top;
@@ -290,6 +316,7 @@ const canvasClick = e => {
 const setZindex = data => {
 	data.map((c, i) => {
 		c.zIndex = i + 1;
+		c.style.zIndex = i + 1;
 	});
 	store.commit("setCurrentCompList", data);
 };
@@ -298,7 +325,10 @@ const setZindex = data => {
 const revocation = () => {
 	store.commit("revocationComp");
 };
-
+// 成组
+const compose = () => {
+	store.commit("compose");
+};
 // 复制
 const copy = () => {
 	store.commit("copy");

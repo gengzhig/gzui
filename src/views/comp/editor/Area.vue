@@ -1,31 +1,29 @@
 <template>
-	<!-- <div
+	<div
 		:style="{
-			left: start.x + 'px',
-			top: start.y + 'px',
+			left: start && start.x + 'px',
+			top: start && start.y + 'px',
 			width: width + 'px',
 			height: height + 'px',
 		}"
 		class="area"
-	></div> -->
-	<div>
-		{{ start }}
-	</div>
+	></div>
 </template>
 
 <script setup>
-const defineProps = {
+const props = defineProps({
 	start: {
 		type: Object,
 	},
 	width: {
 		type: Number,
+		default: 0,
 	},
 	height: {
 		type: Number,
+		default: 0,
 	},
-};
-console.log(defineProps);
+});
 </script>
 
 <style lang="scss" scoped>

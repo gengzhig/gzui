@@ -82,13 +82,7 @@
 				></el-button>
 			</el-tooltip>
 			<el-tooltip class="item" effect="dark" content="锁定" placement="bottom">
-				<el-button
-					:disabled="buttonStatus"
-					size="mini"
-					type="primary"
-					icon="el-icon-s-goods"
-					@click="moveTop"
-				></el-button>
+				<el-button :disabled="buttonStatus" size="mini" type="primary" icon="el-icon-lock" @click="moveTop"></el-button>
 			</el-tooltip>
 			<el-tooltip class="item" effect="dark" content="隐藏" placement="bottom">
 				<el-button
@@ -114,7 +108,7 @@ export default {
 </script>
 
 <script setup>
-import { reactive, ref, onMounted, watch, computed, getCurrentInstance, useSlots, nextTick } from "vue";
+import { reactive, ref, onMounted, onUpdated, watch, computed, getCurrentInstance, useSlots, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 const props = defineProps({});
@@ -149,7 +143,11 @@ const route = useRoute();
 const slots = useSlots();
 const router = useRouter();
 onMounted(() => {});
-
+onUpdated(() => {
+	console.log(store.state.curComponentIndex, "curComponentIndex");
+	console.log(store.state.currentComp, "currentComp");
+	console.log(store.state.currentCompList, "currentCompList");
+});
 const nodeClick = value => {
 	let { id, active, zIndex } = value;
 	console.log(id, active);
@@ -162,7 +160,7 @@ const moveTop = () => {
 };
 // 置底
 const moveBottom = () => {
-	store.commit("bottomComponentt");
+	store.commit("bottomComponent");
 };
 // 上移
 const moveUp = () => {
