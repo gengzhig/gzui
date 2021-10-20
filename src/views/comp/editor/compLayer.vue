@@ -128,31 +128,18 @@ const highlightList = computed(() => {
 const buttonStatus = computed(() => {
 	return !store.state.currentCompList.length || store.state.curComponentIndex == -1;
 });
-
-// watch(
-// 	() => compTree.value,
-// 	value => {
-// 		console.log(value);
-// 		nextTick(() => {
-// 			compTreeRef.value.initRoot();
-// 		});
-// 	},
-// 	{ deep: true }
-// );
 const route = useRoute();
 const slots = useSlots();
 const router = useRouter();
-onMounted(() => {});
-onUpdated(() => {
-	console.log(store.state.curComponentIndex, "curComponentIndex");
-	console.log(store.state.currentComp, "currentComp");
-	console.log(store.state.currentCompList, "currentCompList");
-});
+
 const nodeClick = value => {
 	let { id, active, zIndex } = value;
 	console.log(id, active);
 	console.log(store.state.curComponentIndex);
-	store.commit("setCurrentComp", { compData: store.state.currentCompList.filter(c => c.id == id), index: zIndex - 1 });
+	store.commit("setCurrentComp", {
+		compData: store.state.currentCompList.filter(c => c.id == id)[0],
+		index: zIndex - 1,
+	});
 };
 // 置顶
 const moveTop = () => {

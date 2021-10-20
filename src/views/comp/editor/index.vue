@@ -179,7 +179,7 @@ const hideArea = () => {
 };
 const handleMouseDown = e => {
 	// 如果没有选中组件 在画布上点击时需要调用 e.preventDefault() 防止触发 drop 事件
-	if (store.state.currentComp.length == 0) {
+	if (!store.state.currentComp) {
 		e.preventDefault();
 	}
 
@@ -188,7 +188,6 @@ const handleMouseDown = e => {
 	const rectInfo = canvasRef.value.getBoundingClientRect();
 	area.editorX = rectInfo.x;
 	area.editorY = rectInfo.y;
-
 	const startX = e.clientX;
 	const startY = e.clientY;
 	area.start.x = startX - area.editorX;
@@ -209,7 +208,6 @@ const handleMouseDown = e => {
 	};
 
 	const up = e => {
-		console.log(123);
 		document.removeEventListener("mousemove", move);
 		document.removeEventListener("mouseup", up);
 
@@ -217,7 +215,6 @@ const handleMouseDown = e => {
 			hideArea();
 			return;
 		}
-
 		createGroup();
 	};
 
@@ -245,7 +242,7 @@ const createGroup = () => {
 		console.log(component);
 		if (component.isGroup) {
 			component.group.forEach(item => {
-				const rectInfo = $(`#component${item.id}`).getBoundingClientRect();
+				const rectInfo = $(`#${item.id}`).getBoundingClientRect();
 				style.left = rectInfo.left - area.editorX;
 				style.top = rectInfo.top - area.editorY;
 				style.right = rectInfo.right - area.editorX;
@@ -257,7 +254,7 @@ const createGroup = () => {
 				if (style.bottom > bottom) bottom = style.bottom;
 			});
 		} else {
-			style = vm.$tool.getComponentRotatedStyle(component);
+			style = vm.$tool.getComponentRotatedStyle(component.style);
 		}
 
 		if (style.left < left) left = style.left;
@@ -289,7 +286,7 @@ const getSelectArea = () => {
 	// 计算所有的组件数据，判断是否在选中区域内
 	store.state.currentCompList.forEach(component => {
 		if (component.isLock) return;
-		const { left, top, width, height } = vm.$tool.getComponentRotatedStyle(component);
+		const { left, top, width, height } = vm.$tool.getComponentRotatedStyle(component.style);
 		if (x <= left && y <= top && left + width <= x + area.width && top + height <= y + area.height) {
 			result.push(component);
 		}

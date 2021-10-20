@@ -1,7 +1,6 @@
 <template>
 	<div v-if="compName" class="comp-attrList">
 		<h3 class="comp-name">{{ compName }}</h3>
-		{{ store.state.currentCompList }}
 		<el-form label-width="80px" :model="state.compBaseInfo" class="demo-form-inline">
 			<el-form-item label="组件尺寸">
 				<el-col :span="11">
@@ -46,10 +45,10 @@ const emit = defineEmits();
 const store = useStore();
 const slots = useSlots();
 const compProperty = computed(() => {
-	return store.state.currentComp[0];
+	return store.state.currentComp.style;
 });
 const compName = computed(() => {
-	return store.state.currentComp[0].name;
+	return store.state.currentComp.name;
 });
 const compInfo = computed(() => {
 	return store.state.currentComp;

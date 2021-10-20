@@ -51,18 +51,21 @@ const hideLine = () => {
 
 const showLine = (isDownward, isRightward) => {
 	let lines = {};
-	let aLines = lineRef.value.getElementsByClassName("line");
-	for (let i = 0; i < state.lines.length; i++) {
-		lines[state.lines[i]] = [aLines[i]];
+	let aLines = lineRef.value && lineRef.value.getElementsByClassName("line");
+	if (aLines) {
+		for (let i = 0; i < state.lines.length; i++) {
+			lines[state.lines[i]] = [aLines[i]];
+		}
 	}
+
 	const components = store.state.currentCompList;
-	const curComponentStyle = vm.$tool.getComponentRotatedStyle(store.state.currentComp[0]);
+	const curComponentStyle = vm.$tool.getComponentRotatedStyle(store.state.currentComp.style);
 	const curComponentHalfwidth = curComponentStyle.width / 2;
 	const curComponentHalfHeight = curComponentStyle.height / 2;
 	hideLine();
 	components.forEach(component => {
-		if (component == store.state.currentComp[0]) return;
-		const componentStyle = vm.$tool.getComponentRotatedStyle(component);
+		if (component.id == store.state.currentComp.id) return;
+		const componentStyle = vm.$tool.getComponentRotatedStyle(component.style);
 		const { top, left, bottom, right } = componentStyle;
 		const componentHalfwidth = componentStyle.width / 2;
 		const componentHalfHeight = componentStyle.height / 2;
@@ -146,13 +149,13 @@ const showLine = (isDownward, isRightward) => {
 		};
 
 		const needToShow = [];
-		const { rotate } = store.state.currentComp[0];
+		const { rotate } = store.state.currentComp.style;
 		Object.keys(conditions).forEach(key => {
 			// 遍历符合的条件并处理
 			conditions[key].forEach(condition => {
 				if (!condition.isNearly) return;
 				// 修改当前组件位移
-				store.state.currentComp[0][key] =
+				store.state.currentComp.style[key] =
 					rotate != 0 ? translatecurComponentShift(key, condition, curComponentStyle) : condition.dragShift;
 				store.commit("setCurrentComp", { compData: store.state.currentComp, index: store.state.curComponentIndex });
 				if (condition.lineNode) {
@@ -170,7 +173,7 @@ const showLine = (isDownward, isRightward) => {
 };
 
 const translatecurComponentShift = (key, condition, curComponentStyle) => {
-	const { width, height } = store.state.currentComp[0];
+	const { width, height } = store.state.currentComp.style;
 	if (key == "top") {
 		return Math.round(condition.dragShift - (height - curComponentStyle.height) / 2);
 	}

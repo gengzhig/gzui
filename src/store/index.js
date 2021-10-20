@@ -21,7 +21,7 @@ export default createStore({
 		menuTop: 0, // 右击菜单数据
 		menuLeft: 0,
 		menuShow: false,
-		currentComp: [],
+		currentComp: null,
 		copyData: null,
 		curComponentIndex: -1,
 		currentCompList: [],
@@ -50,15 +50,15 @@ export default createStore({
 					return {
 						id: c.id,
 						highLight: c.highLight,
-						label: c.name + "(" + c.zIndex + ")",
+						label: c.name + "(" + c.style.zIndex + ")",
 						children: [],
-						zIndex: c.zIndex,
+						zIndex: c.style.zIndex,
 					};
 				})
 				.reverse();
 		},
-		currentCompName: state => state.currentComp && state.currentComp.length > 0 && state.currentComp[0].name,
-		currentCompProperty: state => state.currentComp && state.currentComp.length > 0 && state.currentComp[0],
+		currentCompName: state => state.currentComp && state.currentComp && state.currentComp.name,
+		currentCompProperty: state => state.currentComp && state.currentComp && state.currentComp,
 	},
 	mutations: {
 		saveRouterMenu(state, payload) {
@@ -93,7 +93,7 @@ export default createStore({
 		// 重置当前选中组件
 		resetCurrentCompIndex(state, payload) {
 			state.curComponentIndex = -1;
-			state.currentComp = [];
+			state.currentComp = null;
 		},
 		// 新增组件
 		addComponent(state, { component, index }) {
@@ -106,6 +106,7 @@ export default createStore({
 		// 设置当前画布内所有组件
 		setCurrentCompList(state, payload) {
 			state.currentCompList = payload;
+			console.log(state.currentCompList, "当前画布内所有组件信息");
 			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 		},
 		// 设置圈选组件数据
@@ -190,7 +191,7 @@ export default createStore({
 		},
 		// 复制
 		copy(state) {
-			if (state.currentComp.length == 0) {
+			if (!state.currentComp) {
 				Message({
 					message: "请先选择画布中的组件！",
 					type: "error",
@@ -199,7 +200,7 @@ export default createStore({
 			}
 
 			state.copyData = tool.deepCopy(state.currentComp);
-			state.copyData[0].id = new Date().getTime();
+			state.copyData.id = new Date().getTime();
 			Message({
 				message: "复制成功！",
 				type: "success",
@@ -216,7 +217,7 @@ export default createStore({
 				return;
 			}
 
-			const data = state.copyData[0];
+			const data = state.copyData;
 
 			// if (isMouse) {
 			// 	data.top = state.menuTop;
@@ -225,8 +226,8 @@ export default createStore({
 			// 	data.top += 10;
 			// 	data.left += 10;
 			// }
-			data.top += 10;
-			data.left += 10;
+			data.style.top += 10;
+			data.style.left += 10;
 			// data.id = generateID();
 			// Group 的子组件根节点的 id 是通过组件的 id 生成的，必须重新生成 id，否则拆分 Group 的时候获取根节点不正确
 			// if (data.component === "Group") {
@@ -234,7 +235,7 @@ export default createStore({
 			// 		component.id = generateID();
 			// 	});
 			// }
-			data.zIndex = ++state.curComponentIndex + 1;
+			data.style.zIndex = ++state.curComponentIndex + 1;
 			state.currentCompList.push(tool.deepCopy(data));
 			if (state.isCut) {
 				state.copyData = null;
@@ -319,7 +320,7 @@ export default createStore({
 			if (state.curComponentIndex == -1) return false;
 			if (state.curComponentIndex < state.currentCompList.length - 1) {
 				state.currentCompList.splice(state.curComponentIndex, 1);
-				state.currentCompList.push(state.currentComp[0]);
+				state.currentCompList.push(state.currentComp);
 				tool.resetZindex(state.currentCompList);
 				let editorBlock = document.querySelectorAll(".canvas .editor-block");
 				tool.clearAllEditorBlock(editorBlock);
@@ -338,7 +339,7 @@ export default createStore({
 		bottomComponent(state, payload) {
 			if (state.curComponentIndex > 0) {
 				state.currentCompList.splice(state.curComponentIndex, 1);
-				state.currentCompList.unshift(state.currentComp[0]);
+				state.currentCompList.unshift(state.currentComp);
 				tool.resetZindex(state.currentCompList);
 				let editorBlock = document.querySelectorAll(".canvas .editor-block");
 				tool.clearAllEditorBlock(editorBlock);
@@ -364,7 +365,7 @@ export default createStore({
 					state.currentCompList.splice(state.curComponentIndex, 1);
 					tool.resetZindex(state.currentCompList);
 					state.curComponentIndex = -1;
-					state.currentComp = [];
+					state.currentComp = null;
 					localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 					Message({
 						type: "success",

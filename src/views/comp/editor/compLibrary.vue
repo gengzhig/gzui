@@ -73,13 +73,6 @@ const drop = e => {
 			id: new Date().getTime(),
 			name: currentComp.subLabel,
 			key: currentComp.key,
-			top: e.offsetY,
-			left: e.offsetX,
-			width: currentComp.style.width,
-			height: currentComp.style.height,
-			zIndex: 1,
-			opacity: 100,
-			rotate: 0,
 			isLock: false,
 			isGroup: false,
 			animations: [],
@@ -87,13 +80,13 @@ const drop = e => {
 			groupStyle: {},
 			group: [],
 			style: {
-				// top: e.offsetY,
-				// left: e.offsetX,
-				// width: currentComp.style.width,
-				// height: currentComp.style.height,
-				// zIndex: 1,
-				// opacity: 100,
-				// rotate: 0,
+				top: e.offsetY,
+				left: e.offsetX,
+				width: currentComp.style.width,
+				height: currentComp.style.height,
+				zIndex: 1,
+				opacity: 100,
+				rotate: 0,
 			},
 		},
 	];
@@ -114,7 +107,7 @@ const dragend = e => {
 const setZindex = data => {
 	console.log(data, "组件库");
 	data.map((c, i) => {
-		c.zIndex = i + 1;
+		c.style.zIndex = i + 1;
 	});
 	store.commit("setCurrentCompList", data);
 };

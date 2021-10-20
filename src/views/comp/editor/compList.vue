@@ -2,15 +2,16 @@
 	<div
 		draggable="true"
 		:class="['editor-block']"
-		:style="blockStyle"
-		:comp-id="blockStyle.id"
-		@mousedown="e => blockMouseDown(e)"
-		@mouseup="e => blockMouseUp(e)"
+		:style="$tool.getUnitStyle(blockStyle)"
+		:comp-id="block.id"
+		:id="block.id"
+		@mousedown="e => blockMouseDown(e, block)"
+		@mouseup="e => blockMouseUp(e, block)"
 		@click="hideMenu"
 		ref="blockRef"
 	>
 		<!-- 旋转图标 -->
-		<i class="el-icon-refresh-right" @mousedown="handleRotate"></i>
+		<i class="el-icon-refresh-right" @mousedown="e => handleRotate(e, block)"></i>
 		<!-- 锁定图标 -->
 		<!-- <i class="el-icon-lock"></i> -->
 		<!-- 8个坐标点 -->
@@ -18,18 +19,18 @@
 			class="shape-point"
 			v-for="item in state.pointList"
 			:key="item"
-			@mousedown="handleMouseDownOnPoint(item, $event)"
+			@mousedown="handleMouseDownOnPoint(item, $event, block)"
 			:style="getPointStyle(item)"
 		></i>
-		<component v-if="!block.isGroup" :is="compInfo.compMapList.get(blockStyle.key).render()"></component>
+		<component v-if="!block.isGroup" :is="compInfo.compMapList.get(block.key).render()"></component>
 		<component v-if="block.isGroup" :is="block.group"></component>
 		<!-- 防止触发组件上的事件，加的一层遮罩 -->
 		<div class="assistDom"></div>
 		<div class="navigator-line">
-			<div class="navigator-line-left" :style="{ width: blockStyle.left }"></div>
-			<div class="navigator-line-top" :style="{ height: blockStyle.top }"></div>
+			<div class="navigator-line-left" :style="{ width: $tool.getUnitStyle(blockStyle).left }"></div>
+			<div class="navigator-line-top" :style="{ height: $tool.getUnitStyle(blockStyle).top }"></div>
 			<div class="navigator-line-account" style="font-size: 16px; left: -15px; top: -15px">
-				{{ parseInt(blockStyle.left) }},{{ parseInt(blockStyle.top) }}
+				{{ blockStyle.left }},{{ blockStyle.top }}
 			</div>
 		</div>
 	</div>
@@ -81,42 +82,24 @@ const state = reactive({
 	],
 });
 const blockStyle = computed(() => ({
-	id: props.block.id,
-	key: props.block.key,
-	name: props.block.name,
-	top: `${props.block.top}px`,
-	left: `${props.block.left}px`,
-	width: `${props.block.width}px`,
-	height: `${props.block.height}px`,
-	zIndex: `${props.block.zIndex}`,
-	opacity: props.block.opacity / 100,
-	rotate: props.block.rotate,
-	transform: `rotate(${props.block.rotate}deg)`,
-	style: {
-		top: `${props.block.top}px`,
-		left: `${props.block.left}px`,
-		width: `${props.block.width}px`,
-		height: `${props.block.height}px`,
-		zIndex: `${props.block.zIndex}`,
-		opacity: props.block.opacity / 100,
-		rotate: props.block.rotate,
-	},
+	top: `${props.block.style.top}`,
+	left: `${props.block.style.left}`,
+	width: `${props.block.style.width}`,
+	height: `${props.block.style.height}`,
+	zIndex: `${props.block.style.zIndex}`,
+	opacity: props.block.style.opacity / 100,
+	rotate: props.block.style.rotate,
 }));
-onMounted(() => {
-	let { offsetWidth, offsetHeight } = blockRef.value;
-	blockStyle.value.width = offsetWidth + "px";
-	blockStyle.value.height = offsetHeight + "px";
-});
 
 // 处理旋转
-const handleRotate = e => {
+const handleRotate = (e, block) => {
 	e.preventDefault();
 	e.stopPropagation();
 	// 初始坐标和初始角度
 	const pos = blockStyle.value;
 	const startY = e.clientY;
 	const startX = e.clientX;
-	const startRotate = props.block.rotate;
+	const startRotate = props.block.style.rotate;
 
 	// 获取元素中心点位置
 	const rect = document.querySelector(".canvas").getBoundingClientRect();
@@ -136,9 +119,10 @@ const handleRotate = e => {
 		const rotateDegreeAfter = Math.atan2(curY - centerY, curX - centerX) / (Math.PI / 180);
 		// 获取旋转的角度值(精度设为0.1)
 		pos.rotate = vm.$tool.fomatFloat(startRotate + rotateDegreeAfter - rotateDegreeBefore, 1);
-		props.block.rotate = pos.rotate;
+		props.block.style.rotate = Number(pos.rotate);
 		// 修改当前组件样式
 		// this.$store.commit("setShapeStyle", pos);
+		store.commit("setCurrentComp", { compData: block, index: block.style.zIndex - 1 });
 	};
 
 	const up = () => {
@@ -190,11 +174,10 @@ const getPointStyle = point => {
 
 const getCursor = () => {
 	let { angleToCursor, initialAngle, pointList } = state;
-	const rotate = vm.$tool.mod360(
-		store.state.currentComp && store.state.currentComp.length > 0 && store.state.currentComp[0].rotate
-	); // 取余 360
-	// const rotate =
-	// 	(store.state.currentComp && store.state.currentComp.length > 0 && store.state.currentComp[0].rotate + 360) % 360; // 取余 360
+	let rotate = null;
+	if (store.state.currentComp) {
+		rotate = vm.$tool.mod360(store.state.currentComp?.style?.rotate); // 取余 360
+	}
 	const result = {};
 	let lastMatchIndex = -1; // 从上一个命中的角度的索引开始匹配下一个，降低时间复杂度
 
@@ -220,8 +203,8 @@ const getCursor = () => {
 	return result;
 };
 
-const handleMouseDownOnPoint = (point, e) => {
-	// store.commit("setCurrentComp", { compData: selectComp, index: selectCompIndex });
+const handleMouseDownOnPoint = (point, e, block) => {
+	store.commit("setCurrentComp", { compData: block, index: block.style.zIndex - 1 });
 	e.stopPropagation();
 	e.preventDefault();
 
@@ -282,15 +265,12 @@ const handleMouseDownOnPoint = (point, e) => {
 			symmetricPoint,
 		});
 
-		props.block.left = parseInt(style.left);
-		props.block.top = parseInt(style.top);
-		props.block.width = parseInt(style.width);
-		props.block.height = parseInt(style.height);
+		props.block.style.left = parseInt(style.left);
+		props.block.style.top = parseInt(style.top);
+		props.block.style.width = parseInt(style.width);
+		props.block.style.height = parseInt(style.height);
 
-		let selectCompId = e.target.parentElement.getAttribute("comp-id");
-		let selectComp = store.state.currentCompList.filter(c => c.id == selectCompId);
-		let selectCompIndex = store.state.currentCompList.findIndex(c => c.id == selectCompId);
-		store.commit("setCurrentComp", { compData: selectComp, index: selectCompIndex });
+		store.commit("setCurrentComp", { compData: block, index: block.style.zIndex - 1 });
 	};
 
 	const up = () => {
@@ -303,7 +283,7 @@ const handleMouseDownOnPoint = (point, e) => {
 	document.addEventListener("mouseup", up);
 };
 
-const blockMouseDown = e => {
+const blockMouseDown = (e, block) => {
 	try {
 		let editorBlock = blockRef.value.parentElement.querySelectorAll(".editor-block");
 		[...editorBlock].map(b => {
@@ -324,13 +304,9 @@ const blockMouseDown = e => {
 			const curY = moveEvent.clientY;
 			pos.top = curY - startY + startTop + "px";
 			pos.left = curX - startX + startLeft + "px";
-			props.block.left = parseInt(pos.left);
-			props.block.top = parseInt(pos.top);
-
-			let selectCompId = e.target.parentElement.getAttribute("comp-id");
-			let selectComp = store.state.currentCompList.filter(c => c.id == selectCompId);
-			let selectCompIndex = store.state.currentCompList.findIndex(c => c.id == selectCompId);
-			store.commit("setCurrentComp", { compData: selectComp, index: selectCompIndex });
+			props.block.style.left = parseInt(pos.left);
+			props.block.style.top = parseInt(pos.top);
+			store.commit("setCurrentComp", { compData: block, index: block.style.zIndex - 1 });
 
 			// 等更新完当前组件的样式并绘制到屏幕后再判断是否需要吸附
 			// 如果不使用 $nextTick，吸附后将无法移动
@@ -356,12 +332,13 @@ const blockMouseDown = e => {
 	}
 };
 
-const blockMouseUp = e => {
-	console.log("blockMouseUp");
-	let selectCompId = e.target.parentElement.getAttribute("comp-id");
-	let selectComp = store.state.currentCompList.filter(c => c.id == selectCompId);
-	let selectCompIndex = store.state.currentCompList.findIndex(c => c.id == selectCompId);
-	store.commit("setCurrentComp", { compData: selectComp, index: selectCompIndex });
+const blockMouseUp = (e, block) => {
+	// console.log("blockMouseUp");
+	// let selectCompId = e.target.parentElement.getAttribute("comp-id");
+	// let selectComp = store.state.currentCompList.filter(c => c.id == selectCompId);
+	// let selectCompIndex = store.state.currentCompList.findIndex(c => c.id == selectCompId);
+	// store.commit("setCurrentComp", { compData: selectComp, index: selectCompIndex });
+	store.commit("setCurrentComp", { compData: block, index: block.style.zIndex - 1 });
 };
 
 // 隐藏菜单

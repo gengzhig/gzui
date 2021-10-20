@@ -1,12 +1,16 @@
 <template>
 	<div class="contextmenu" v-show="menuShow" :style="{ top: menuTop + 'px', left: menuLeft + 'px' }">
 		<ul @mouseup="handleMouseUp">
-			<template v-if="currentComp.length > 0">
-				<template v-if="!currentComp[0].isLock">
-					<li @click="topComponent"><i class="el-icon-upload2"></i>置顶</li>
-					<li @click="bottomComponent"><i class="el-icon-download"></i>置底</li>
-					<li @click="upComponent"><i class="el-icon-top"></i>上移一层</li>
-					<li @click="downComponent"><i class="el-icon-bottom"></i>下移一层</li>
+			<template v-if="currentComp">
+				<template v-if="!currentComp.isLock">
+					<li @click="topComponent" v-if="curComponentIndex != currentCompList.length - 1">
+						<i class="el-icon-upload2"></i>置顶
+					</li>
+					<li @click="bottomComponent" v-if="curComponentIndex"><i class="el-icon-download"></i>置底</li>
+					<li @click="upComponent" v-if="curComponentIndex != currentCompList.length - 1">
+						<i class="el-icon-top"></i>上移一层
+					</li>
+					<li @click="downComponent" v-if="curComponentIndex"><i class="el-icon-bottom"></i>下移一层</li>
 					<li @click="createGroup"><i class="el-icon-suitcase"></i>成组</li>
 					<li @click="cancelCreateGroup"><i class="el-icon-suitcase-1"></i>取消成组</li>
 					<li @click="lock"><i class="el-icon-lock"></i>锁定</li>
@@ -30,7 +34,7 @@
 import { mapState } from "vuex";
 
 export default {
-	computed: mapState(["menuTop", "menuLeft", "menuShow", "currentComp"]),
+	computed: mapState(["menuTop", "menuLeft", "menuShow", "currentComp", "curComponentIndex", "currentCompList"]),
 };
 </script>
 <script setup>
@@ -145,6 +149,7 @@ const handleMouseUp = () => {
 	color: #bcc9d4;
 	position: absolute;
 	user-select: none;
+	min-width: 220px;
 
 	ul {
 		li {
