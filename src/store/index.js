@@ -57,6 +57,7 @@ export default createStore({
 				})
 				.reverse();
 		},
+		currentCompId: state => state?.currentComp?.id,
 		currentCompName: state => state.currentComp && state.currentComp && state.currentComp.name,
 		currentCompProperty: state => state.currentComp && state.currentComp && state.currentComp,
 	},
@@ -84,16 +85,14 @@ export default createStore({
 			state.curComponentIndex = index;
 			// 给选中组件加选中样式
 			let editorBlock = document.querySelectorAll(".canvas .editor-block");
-			tool.clearAllEditorBlock(editorBlock);
-			[...editorBlock][state.curComponentIndex] &&
-				[...editorBlock][state.curComponentIndex].classList &&
-				[...editorBlock][state.curComponentIndex].classList.add("editor-block-focus");
 			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 		},
 		// 重置当前选中组件
 		resetCurrentCompIndex(state, payload) {
 			state.curComponentIndex = -1;
-			state.currentComp = null;
+			// state.currentComp = {};
+			state.currentComp.id = 0;
+			console.log("resetCurrentCompIndex");
 		},
 		// 新增组件
 		addComponent(state, { component, index }) {
@@ -264,6 +263,22 @@ export default createStore({
 			this.commit("deleteComponent");
 			state.isCut = true;
 		},
+		// 锁定
+		lock(state) {
+			state.currentComp.isLock = true;
+			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
+		},
+		// 解锁
+		unlock(state) {
+			state.currentComp.isLock = false;
+			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
+		},
+		// 重命名
+		rename(state, payload) {
+			debugger;
+			state.currentComp.name = payload;
+			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
+		},
 		// 撤销组件
 		revocationComp(state, payload) {
 			state.currentCompList.pop();
@@ -277,9 +292,6 @@ export default createStore({
 			if (state.curComponentIndex < state.currentCompList.length - 1) {
 				swap(state.currentCompList, state.curComponentIndex, state.curComponentIndex + 1);
 				tool.resetZindex(state.currentCompList);
-				let editorBlock = document.querySelectorAll(".canvas .editor-block");
-				tool.clearAllEditorBlock(editorBlock);
-				[...editorBlock][state.curComponentIndex + 1].classList.add("editor-block-focus");
 				state.curComponentIndex += 1;
 				localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 			} else {
@@ -299,9 +311,6 @@ export default createStore({
 			if (state.curComponentIndex > 0) {
 				swap(state.currentCompList, state.curComponentIndex, state.curComponentIndex - 1);
 				tool.resetZindex(state.currentCompList);
-				let editorBlock = document.querySelectorAll(".canvas .editor-block");
-				tool.clearAllEditorBlock(editorBlock);
-				[...editorBlock][state.curComponentIndex - 1].classList.add("editor-block-focus");
 				state.curComponentIndex -= 1;
 				localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 			} else {
@@ -322,9 +331,6 @@ export default createStore({
 				state.currentCompList.splice(state.curComponentIndex, 1);
 				state.currentCompList.push(state.currentComp);
 				tool.resetZindex(state.currentCompList);
-				let editorBlock = document.querySelectorAll(".canvas .editor-block");
-				tool.clearAllEditorBlock(editorBlock);
-				[...editorBlock][state.currentCompList.length - 1].classList.add("editor-block-focus");
 				state.curComponentIndex = state.currentCompList.length - 1;
 				localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 			} else {
@@ -341,9 +347,6 @@ export default createStore({
 				state.currentCompList.splice(state.curComponentIndex, 1);
 				state.currentCompList.unshift(state.currentComp);
 				tool.resetZindex(state.currentCompList);
-				let editorBlock = document.querySelectorAll(".canvas .editor-block");
-				tool.clearAllEditorBlock(editorBlock);
-				[...editorBlock][0].classList.add("editor-block-focus");
 				state.curComponentIndex = 0;
 				localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 			} else {

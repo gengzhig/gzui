@@ -67,6 +67,11 @@
 </body>
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
+    let aa = null;
+    let bb = {}
+    console.log(typeof aa);
+    console.log(bb instanceof Object);
+    console.log(bb);
     let data = [{ id: 1, name: "zhangsan", left: "20px", top: "10px" }, { id: 1, name: "李思", left: "20px", top: "15px" }]
     let result = data.map(d => {
         return Object.assign(d, {

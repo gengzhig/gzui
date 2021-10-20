@@ -119,7 +119,9 @@ const area = reactive({
 	isShowArea: false,
 });
 const compInfo = inject("compInfo");
-
+const currentCompId = computed(() => {
+	return store.getters.currentCompId;
+});
 // 画布尺寸
 // const containerStyle = computed(() => ({
 // 	width: `${json.value.container?.width}px`,
@@ -160,7 +162,9 @@ const handleContextMenu = e => {
 		top += target.offsetTop;
 		target = target.parentNode;
 	}
-	store.commit("showContextMenu", { top, left });
+	if (currentCompId.value) {
+		store.commit("showContextMenu", { top, left });
+	}
 };
 
 const hideArea = () => {
@@ -178,7 +182,7 @@ const hideArea = () => {
 	});
 };
 const handleMouseDown = e => {
-	// 如果没有选中组件 在画布上点击时需要调用 e.preventDefault() 防止触发 drop 事件
+	// 如果没有选中组件 在画布上点击时调用 e.preventDefault() 防止触发 drop 事件
 	if (!store.state.currentComp) {
 		e.preventDefault();
 	}
@@ -296,17 +300,9 @@ const getSelectArea = () => {
 	return result;
 };
 const canvasClick = e => {
-	let canvasDom = e.path;
-	let isCompClickArea = canvasDom.some(c => {
-		return c.className && typeof c.className == "string" && c.className.indexOf("editor-block") > -1;
-	});
-	if (!isCompClickArea) {
-		// 将画布内所有组件的active 类清掉;同时将全局state组件索引置为-1
-		let editorBlock = document.querySelectorAll(".canvas .editor-block");
-		[...editorBlock].map(b => {
-			b.classList.remove("editor-block-focus");
-		});
+	if (currentCompId.value) {
 		store.commit("resetCurrentCompIndex");
+		store.commit("hideContextMenu");
 	}
 };
 const setZindex = data => {

@@ -78,13 +78,6 @@ let tools = {
 		}
 		return s;
 	},
-	// 清除画布内所有组件的选中样式
-	clearAllEditorBlock(editorBlock) {
-		// let editorBlock = document.querySelectorAll(".canvas .editor-block");
-		[...editorBlock].map(b => {
-			b.classList.remove("editor-block-focus");
-		});
-	},
 	mod360(deg) {
 		return (deg + 360) % 360;
 	},

@@ -1,19 +1,23 @@
 <template>
+	<h1>{{ isActive }}</h1>
+	<h2>全局选中id：{{ currentCompId }}--{{ block.id }}</h2>
 	<div
 		draggable="true"
-		:class="['editor-block']"
+		class="editor-block"
+		:class="{ lock: block.isLock, active: isActive }"
 		:style="$tool.getUnitStyle(blockStyle)"
 		:comp-id="block.id"
 		:id="block.id"
 		@mousedown="e => blockMouseDown(e, block)"
 		@mouseup="e => blockMouseUp(e, block)"
-		@click="hideMenu"
+		@click="e => hideMenu(e, block)"
 		ref="blockRef"
 	>
+		{{ state.currentComp }}
 		<!-- 旋转图标 -->
 		<i class="el-icon-refresh-right" @mousedown="e => handleRotate(e, block)"></i>
 		<!-- 锁定图标 -->
-		<!-- <i class="el-icon-lock"></i> -->
+		<i class="el-icon-lock" v-if="block.isLock"></i>
 		<!-- 8个坐标点 -->
 		<i
 			class="shape-point"
@@ -51,10 +55,11 @@ const props = defineProps({
 		type: Object,
 	},
 });
-console.log(props.block);
+
 const store = useStore();
 const compInfo = inject("compInfo");
 const blockRef = ref(null);
+
 const state = reactive({
 	rightClickItem: null,
 	pointList: ["lt", "t", "rt", "r", "rb", "b", "lb", "l"], // 八个方向
@@ -90,7 +95,12 @@ const blockStyle = computed(() => ({
 	opacity: props.block.style.opacity / 100,
 	rotate: props.block.style.rotate,
 }));
-
+const isActive = computed(() => {
+	return props.block.id == store.state?.currentComp?.id;
+});
+const currentCompId = computed(() => {
+	return store.state?.currentComp?.id;
+});
 // 处理旋转
 const handleRotate = (e, block) => {
 	e.preventDefault();
@@ -122,7 +132,7 @@ const handleRotate = (e, block) => {
 		props.block.style.rotate = Number(pos.rotate);
 		// 修改当前组件样式
 		// this.$store.commit("setShapeStyle", pos);
-		store.commit("setCurrentComp", { compData: block, index: block.style.zIndex - 1 });
+		store.commit("setCurrentComp", { compData: vm.$tool.deepCopy(block), index: block.style.zIndex - 1 });
 	};
 
 	const up = () => {
@@ -204,7 +214,7 @@ const getCursor = () => {
 };
 
 const handleMouseDownOnPoint = (point, e, block) => {
-	store.commit("setCurrentComp", { compData: block, index: block.style.zIndex - 1 });
+	store.commit("setCurrentComp", { compData: vm.$tool.deepCopy(block), index: block.style.zIndex - 1 });
 	e.stopPropagation();
 	e.preventDefault();
 
@@ -270,7 +280,7 @@ const handleMouseDownOnPoint = (point, e, block) => {
 		props.block.style.width = parseInt(style.width);
 		props.block.style.height = parseInt(style.height);
 
-		store.commit("setCurrentComp", { compData: block, index: block.style.zIndex - 1 });
+		store.commit("setCurrentComp", { compData: vm.$tool.deepCopy(block), index: block.style.zIndex - 1 });
 	};
 
 	const up = () => {
@@ -286,10 +296,10 @@ const handleMouseDownOnPoint = (point, e, block) => {
 const blockMouseDown = (e, block) => {
 	try {
 		let editorBlock = blockRef.value.parentElement.querySelectorAll(".editor-block");
-		[...editorBlock].map(b => {
-			b.classList.remove("editor-block-focus");
-		});
-		e.currentTarget.classList.add("editor-block-focus");
+		// [...editorBlock].map(b => {
+		// 	b.classList.remove("active");
+		// });
+		// e.currentTarget.classList.add("active");
 		e.preventDefault();
 		e.stopPropagation();
 		// e.target.cursor = "move";
@@ -306,7 +316,7 @@ const blockMouseDown = (e, block) => {
 			pos.left = curX - startX + startLeft + "px";
 			props.block.style.left = parseInt(pos.left);
 			props.block.style.top = parseInt(pos.top);
-			store.commit("setCurrentComp", { compData: block, index: block.style.zIndex - 1 });
+			store.commit("setCurrentComp", { compData: vm.$tool.deepCopy(block), index: block.style.zIndex - 1 });
 
 			// 等更新完当前组件的样式并绘制到屏幕后再判断是否需要吸附
 			// 如果不使用 $nextTick，吸附后将无法移动
@@ -337,16 +347,16 @@ const blockMouseUp = (e, block) => {
 	// let selectCompId = e.target.parentElement.getAttribute("comp-id");
 	// let selectComp = store.state.currentCompList.filter(c => c.id == selectCompId);
 	// let selectCompIndex = store.state.currentCompList.findIndex(c => c.id == selectCompId);
-	// store.commit("setCurrentComp", { compData: selectComp, index: selectCompIndex });
-	store.commit("setCurrentComp", { compData: block, index: block.style.zIndex - 1 });
+	store.commit("setCurrentComp", { compData: vm.$tool.deepCopy(block), index: block.style.zIndex - 1 });
 };
 
 // 隐藏菜单
-const hideMenu = e => {
+const hideMenu = (e, block) => {
 	// 阻止向父组件冒泡
 	e.stopPropagation();
 	e.preventDefault();
 	store.commit("hideContextMenu");
+	// store.commit("setCurrentComp", { compData: vm.$tool.deepCopy(block), index: block.style.zIndex - 1 });
 };
 </script>
 
@@ -363,9 +373,18 @@ const hideMenu = e => {
 	.navigator-line {
 		display: none;
 	}
+	.el-icon-lock {
+		display: block;
+		position: absolute;
+		top: 0;
+		right: 0;
+		color: #9e9e9ec4;
+		font-size: 20px;
+		font-weight: 600;
+	}
 }
 
-.editor-block-focus {
+.active {
 	border: 1px #70c0ff solid;
 	// outline: 1px solid #70c0ff;
 	.el-icon-refresh-right {

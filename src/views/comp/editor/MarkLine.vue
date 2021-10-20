@@ -8,10 +8,6 @@
 			v-show="state.lineStatus[line] || false"
 		></div>
 	</div>
-	<!-- <div class="navigator-line">
-			<div class="navigator-line-left" style="width: 1741.49px"></div>
-			<div class="navigator-line-top" style="width: 1741.49px"></div>
-		</div> -->
 </template>
 
 <script setup>

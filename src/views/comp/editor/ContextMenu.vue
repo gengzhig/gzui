@@ -3,18 +3,22 @@
 		<ul @mouseup="handleMouseUp">
 			<template v-if="currentComp">
 				<template v-if="!currentComp.isLock">
-					<li @click="topComponent" v-if="curComponentIndex != currentCompList.length - 1">
+					<li @click="topComponent" :class="[curComponentIndex == currentCompList.length - 1 ? 'disable' : '']">
 						<i class="el-icon-upload2"></i>置顶
 					</li>
-					<li @click="bottomComponent" v-if="curComponentIndex"><i class="el-icon-download"></i>置底</li>
-					<li @click="upComponent" v-if="curComponentIndex != currentCompList.length - 1">
+					<li @click="bottomComponent" :class="[curComponentIndex ? '' : 'disable']">
+						<i class="el-icon-download"></i>置底
+					</li>
+					<li @click="upComponent" :class="[curComponentIndex == currentCompList.length - 1 ? 'disable' : '']">
 						<i class="el-icon-top"></i>上移一层
 					</li>
-					<li @click="downComponent" v-if="curComponentIndex"><i class="el-icon-bottom"></i>下移一层</li>
+					<li @click="downComponent" :class="[curComponentIndex ? '' : 'disable']">
+						<i class="el-icon-bottom"></i>下移一层
+					</li>
 					<li @click="createGroup"><i class="el-icon-suitcase"></i>成组</li>
 					<li @click="cancelCreateGroup"><i class="el-icon-suitcase-1"></i>取消成组</li>
-					<li @click="lock"><i class="el-icon-lock"></i>锁定</li>
-					<li @click="unlock"><i class="el-icon-unlock"></i>解锁</li>
+					<li @click="lock" :class="[!currentComp.isLock ? '' : 'disable']"><i class="el-icon-lock"></i>锁定</li>
+					<li @click="unlock" :class="[currentComp.isLock ? '' : 'disable']"><i class="el-icon-unlock"></i>解锁</li>
 					<li @click="hide"><i class="el-icon-view"></i>隐藏</li>
 					<li @click="rename"><i class="el-icon-delete"></i>重命名</li>
 					<li @click="copy"><i class="el-icon-copy-document"></i>复制</li>
@@ -40,7 +44,7 @@ export default {
 <script setup>
 import { reactive, ref, computed } from "vue";
 import { useStore } from "vuex";
-import { Message } from "element3";
+import { Msgbox, Message } from "element3";
 const store = useStore();
 const state = reactive({
 	copyData: null,
@@ -81,24 +85,34 @@ const cancelCreateGroup = () => {
 };
 // 锁定
 const lock = () => {
-	Message({
-		message: "此功能尚未开放！",
-		type: "warning",
-	});
+	store.commit("lock");
 };
 // 解锁
 const unlock = () => {
-	Message({
-		message: "此功能尚未开放！",
-		type: "warning",
-	});
+	store.commit("unlock");
 };
 // 重命名
 const rename = () => {
-	Message({
-		message: "此功能尚未开放！",
-		type: "warning",
-	});
+	Msgbox.prompt("请输入组件名称", "提示", {
+		confirmButtonText: "确定",
+		cancelButtonText: "取消",
+		// inputPattern:
+		// 	/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+		// inputErrorMessage: "邮箱格式不正确",
+	})
+		.then(({ value }) => {
+			store.commit("rename", value);
+			Message({
+				type: "success",
+				message: "重命名成功！",
+			});
+		})
+		.catch(() => {
+			Message({
+				type: "info",
+				message: "取消重命名",
+			});
+		});
 };
 // 复制
 const copy = () => {
@@ -167,7 +181,7 @@ const handleMouseUp = () => {
 			}
 			&.disable {
 				color: #576369 !important;
-				cursor: auto;
+				pointer-events: none;
 			}
 			&:hover {
 				background-color: #1d262e;

@@ -1,6 +1,9 @@
 <template>
 	<div v-if="compName" class="comp-attrList">
 		<h3 class="comp-name">{{ compName }}</h3>
+		{{ compInfo }}
+		<br />
+		{{ state.compBaseInfo }}
 		<el-form label-width="80px" :model="state.compBaseInfo" class="demo-form-inline">
 			<el-form-item label="组件尺寸">
 				<el-col :span="11">
