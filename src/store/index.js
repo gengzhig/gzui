@@ -166,15 +166,12 @@ export default createStore({
 			this.commit("addComponent", {
 				component: groupComponent,
 			});
-
 			mitt.emit("hideArea");
-
 			this.commit("batchDeleteComponent", areaData.components);
 			this.commit("setCurrentComp", {
 				compData: currentCompList[currentCompList.length - 1],
 				index: currentCompList.length - 1,
 			});
-
 			areaData.components = [];
 		},
 		// 将已经放到 Group 组件数据删除，也就是在 componentData 中删除，因为它们已经放到 Group 组件中了
@@ -197,7 +194,6 @@ export default createStore({
 				});
 				return;
 			}
-
 			state.copyData = tool.deepCopy(state.currentComp);
 			state.copyData.id = new Date().getTime();
 			Message({
@@ -266,17 +262,25 @@ export default createStore({
 		// 锁定
 		lock(state) {
 			state.currentComp.isLock = true;
+			state.currentCompList.filter(c => {
+				return c.id == state.currentComp.id;
+			})[0].isLock = true;
 			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 		},
 		// 解锁
 		unlock(state) {
 			state.currentComp.isLock = false;
+			state.currentCompList.filter(c => {
+				return c.id == state.currentComp.id;
+			})[0].isLock = false;
 			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 		},
 		// 重命名
 		rename(state, payload) {
-			debugger;
 			state.currentComp.name = payload;
+			state.currentCompList.filter(c => {
+				return c.id == state.currentComp.id;
+			})[0].name = payload;
 			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 		},
 		// 撤销组件

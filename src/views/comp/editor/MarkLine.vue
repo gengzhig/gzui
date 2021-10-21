@@ -20,7 +20,7 @@ const lineRef = ref(null);
 const ctx = getCurrentInstance();
 const state = reactive({
 	lines: ["xt", "xc", "xb", "yl", "yc", "yr"], // 分别对应三条横线和三条竖线
-	diff: 5, // 相距 3 像素将自动吸附
+	diff: 3, // 相距 3 像素将自动吸附
 	lineStatus: {
 		xt: false,
 		xc: false,

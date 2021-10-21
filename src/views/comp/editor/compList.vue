@@ -1,10 +1,10 @@
 <template>
-	<h1>{{ isActive }}</h1>
-	<h2>全局选中id：{{ currentCompId }}--{{ block.id }}</h2>
+	<!-- <h1>{{ isActive }}</h1>
+	<h2>全局选中id：{{ currentCompId }}--{{ block.id }}</h2> -->
 	<div
 		draggable="true"
 		class="editor-block"
-		:class="{ lock: block.isLock, active: isActive }"
+		:class="{ lock: block.isLock, active: isActive && !block.isLock }"
 		:style="$tool.getUnitStyle(blockStyle)"
 		:comp-id="block.id"
 		:id="block.id"
@@ -13,19 +13,20 @@
 		@click="e => hideMenu(e, block)"
 		ref="blockRef"
 	>
-		{{ state.currentComp }}
-		<!-- 旋转图标 -->
-		<i class="el-icon-refresh-right" @mousedown="e => handleRotate(e, block)"></i>
+		<!-- 旋转图标 (选中且非锁定状态下显示)-->
+		<i class="el-icon-refresh-right" v-if="isActive && !block.isLock" @mousedown="e => handleRotate(e, block)"></i>
 		<!-- 锁定图标 -->
 		<i class="el-icon-lock" v-if="block.isLock"></i>
 		<!-- 8个坐标点 -->
-		<i
-			class="shape-point"
-			v-for="item in state.pointList"
-			:key="item"
-			@mousedown="handleMouseDownOnPoint(item, $event, block)"
-			:style="getPointStyle(item)"
-		></i>
+		<template v-if="isActive && !block.isLock">
+			<i
+				class="shape-point"
+				v-for="item in state.pointList"
+				:key="item"
+				@mousedown="handleMouseDownOnPoint(item, $event, block)"
+				:style="getPointStyle(item)"
+			></i>
+		</template>
 		<component v-if="!block.isGroup" :is="compInfo.compMapList.get(block.key).render()"></component>
 		<component v-if="block.isGroup" :is="block.group"></component>
 		<!-- 防止触发组件上的事件，加的一层遮罩 -->
@@ -96,7 +97,8 @@ const blockStyle = computed(() => ({
 	rotate: props.block.style.rotate,
 }));
 const isActive = computed(() => {
-	return props.block.id == store.state?.currentComp?.id;
+	// TODO：实现多选 需要让currentComp.id是多个选中的组件id
+	return [store.state?.currentComp?.id].includes(props.block.id);
 });
 const currentCompId = computed(() => {
 	return store.state?.currentComp?.id;
@@ -105,6 +107,7 @@ const currentCompId = computed(() => {
 const handleRotate = (e, block) => {
 	e.preventDefault();
 	e.stopPropagation();
+	if (block.isLock) return;
 	// 初始坐标和初始角度
 	const pos = blockStyle.value;
 	const startY = e.clientY;
@@ -302,6 +305,7 @@ const blockMouseDown = (e, block) => {
 		// e.currentTarget.classList.add("active");
 		e.preventDefault();
 		e.stopPropagation();
+		if (block.isLock) return;
 		// e.target.cursor = "move";
 		const pos = { ...blockStyle.value };
 		const startY = e.clientY;
@@ -366,6 +370,12 @@ const hideMenu = (e, block) => {
 	border: 1px transparent solid;
 	&:hover {
 		cursor: move;
+	}
+	&.lock {
+		// opacity: 0.5 !important;
+		&:hover {
+			cursor: not-allowed;
+		}
 	}
 	.el-icon-refresh-right {
 		display: none;

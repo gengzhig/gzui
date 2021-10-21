@@ -42,6 +42,38 @@
 					@contextmenu="handleContextMenu"
 				>
 					<comp-list v-for="(item, index) in store.state.currentCompList" :key="index" :block="item"></comp-list>
+					<!--页面组件列表展示-->
+					<!-- <Shape
+						v-for="(item, index) in store.state.currentCompList"
+						:defaultStyle="item.style"
+						:style="getShapeStyle(item.style)"
+						:key="item.id"
+						:active="item.id === (curComponent || {}).id"
+						:element="item"
+						:index="index"
+						:class="{ lock: item.isLock }"
+					>
+						<component
+							v-if="item.component != 'v-text'"
+							class="component"
+							:is="item.component"
+							:style="getComponentStyle(item.style)"
+							:propValue="item.propValue"
+							:element="item"
+							:id="'component' + item.id"
+						/>
+
+						<component
+							v-else
+							class="component"
+							:is="item.component"
+							:style="getComponentStyle(item.style)"
+							:propValue="item.propValue"
+							@input="handleInput"
+							:element="item"
+							:id="'component' + item.id"
+						/>
+					</Shape> -->
 					<!-- 网格线 -->
 					<Grid></Grid>
 					<!-- 右击菜单 -->
@@ -300,7 +332,7 @@ const getSelectArea = () => {
 	return result;
 };
 const canvasClick = e => {
-	if (currentCompId.value) {
+	if (currentCompId.value && e) {
 		store.commit("resetCurrentCompIndex");
 		store.commit("hideContextMenu");
 	}
