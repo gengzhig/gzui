@@ -1,9 +1,6 @@
 <template>
 	<div v-if="compName" class="comp-attrList">
 		<h3 class="comp-name">{{ compName }}</h3>
-		{{ compInfo }}
-		<br />
-		{{ state.compBaseInfo }}
 		<el-form label-width="80px" :model="state.compBaseInfo" class="demo-form-inline">
 			<el-form-item label="组件尺寸">
 				<el-col :span="11">
@@ -24,7 +21,7 @@
 				</el-col>
 			</el-form-item>
 			<el-form-item label="旋转角度">
-				<el-input-number v-model="compProperty.rotate" :step="0.1" controls-position="right" placeholder="旋转角度" />
+				<el-input-number v-model="compProperty.rotate" :step="1" controls-position="right" placeholder="旋转角度" />
 			</el-form-item>
 			<el-form-item label="不透明度">
 				<el-slider v-model="compProperty.opacity" show-input> </el-slider>

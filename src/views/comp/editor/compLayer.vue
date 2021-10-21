@@ -1,7 +1,7 @@
 <template>
 	<div class="compLayer">
 		<div class="compLayer-top">
-			<div class="layer-num">图层{{ store.state.curComponentIndex }}</div>
+			<div class="layer-num">图层{{ store.state?.currentComp?.style?.zIndex }}</div>
 		</div>
 		<div class="layer-toolbar layer-toolbar-top">
 			<el-tooltip class="item" effect="dark" content="上移一层" placement="bottom">
@@ -126,7 +126,7 @@ const highlightList = computed(() => {
 	}
 });
 const buttonStatus = computed(() => {
-	return !store.state.currentCompList.length || store.state.curComponentIndex == -1;
+	return !store.state.currentCompList.length || !store.state.currentComp;
 });
 const route = useRoute();
 const slots = useSlots();

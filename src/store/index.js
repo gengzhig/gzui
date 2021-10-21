@@ -367,6 +367,7 @@ export default createStore({
 		},
 		// 置顶
 		topComponent(state, payload) {
+			debugger;
 			if (state.curComponentIndex == -1) return false;
 			if (state.curComponentIndex < state.currentCompList.length - 1) {
 				state.currentCompList.splice(state.curComponentIndex, 1);

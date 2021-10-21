@@ -33,40 +33,15 @@
 						@selectItem="selectItem"
 					></gz-selector>
 				</div>
+				当前选择组件： {{ currentComp }}
 				<div
-					class="canvas"
-					ref="canvasRef"
-					:style="containerStyle"
-					@mouseup="deselectCurComponent"
+					class="wrap"
+					@drop="handleDrop"
+					@dragover="handleDragOver"
 					@mousedown="handleMouseDown"
-					@contextmenu="handleContextMenu"
+					@mouseup="deselectCurComponent"
 				>
-					<!--页面组件列表展示-->
-					<gz-drag-resize
-						v-for="(item, index) in store.state.currentCompList"
-						:key="item.id"
-						:element="item"
-						:index="index"
-						:style="getCompStyle(item.style, index)"
-						:defaultStyle="item.style"
-						:active="item.id == (currentComp || {}).id"
-						:class="{ lock: item.isLock }"
-					>
-						<component
-							:is="compInfo.compMapList.get(item.key).render()"
-							class="component1"
-							:style="getRotateStyle(item.style)"
-							:id="'component' + item.id"
-						></component>
-					</gz-drag-resize>
-					<!-- 网格线 -->
-					<Grid></Grid>
-					<!-- 右击菜单 -->
-					<ContextMenu />
-					<!-- 标线 -->
-					<MarkLine></MarkLine>
-					<!-- 选中区域 -->
-					<!-- <Area :start="area.start" :width="area.width" :height="area.height" v-show="area.isShowArea" /> -->
+					<Canvas></Canvas>
 				</div>
 			</div>
 			<div class="operateMain" :class="store.state.sidebar.operateMainArea ? '' : 'hide'">
@@ -96,7 +71,6 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 export default {
-	components: { compList },
 	name: "Editor",
 	computed: {
 		...mapGetters(["currentCompName"]),
@@ -110,32 +84,17 @@ import { useStore } from "vuex";
 
 import Navbar from "layouts/components/Navbar.vue";
 import compList from "./compList.vue";
+import Canvas from "./canvas.vue";
 import compLibrary from "./compLibrary.vue";
 import compLayer from "./compLayer.vue";
-import MarkLine from "./MarkLine.vue";
-import Grid from "./grid.vue";
-import Area from "./Area.vue";
-import ContextMenu from "./ContextMenu.vue";
 import AttrList from "@/components/attrList/index.vue";
-import gzDragResize from "./gzDragResize.vue";
 const store = useStore();
 const appMainRef = ref(null);
 const canvasRef = ref(null);
 const state = reactive({
 	activeName: "first",
 });
-const area = reactive({
-	editorX: 0,
-	editorY: 0,
-	// 选中区域的起点
-	start: {
-		x: 0,
-		y: 0,
-	},
-	width: 0,
-	height: 0,
-	isShowArea: false,
-});
+
 const compInfo = inject("compInfo");
 const currentCompId = computed(() => {
 	return store.getters.currentCompId;
@@ -163,50 +122,7 @@ watch(
 		}
 	}
 );
-const handleContextMenu = e => {
-	e.stopPropagation();
-	e.preventDefault();
-	// 计算菜单相对于编辑器的位移
-	let target = e.target;
-	let top = e.offsetY;
-	let left = e.offsetX;
 
-	while (target instanceof SVGElement) {
-		target = target.parentNode;
-	}
-
-	while (!target.className.includes("canvas")) {
-		left += target.offsetLeft;
-		top += target.offsetTop;
-		target = target.parentNode;
-	}
-	if (currentCompId.value) {
-		store.commit("showContextMenu", { top, left });
-	}
-};
-const getCompStyle = (style, index) => {
-	const result = {};
-	["width", "height", "top", "left", "z-index", "opacity"].forEach(attr => {
-		if (attr == "z-index") {
-			result["z-index"] = index + 1;
-		} else if (attr == "opacity") {
-			result[attr] = style[attr] / 100;
-		} else {
-			result[attr] = style[attr] + "px";
-		}
-	});
-	return result;
-};
-
-const getRotateStyle = style => {
-	const result = {};
-	["rotate"].forEach(attr => {
-		if (attr == "rotate") {
-			result.transform = "rotate(" + style[attr] + "deg)";
-		}
-	});
-	return result;
-};
 const hideArea = () => {
 	area.isShowArea = 0;
 	area.width = 0;
@@ -466,12 +382,6 @@ window.addEventListener("keydown", keyboardEvent());
 				button {
 					margin-right: 5px;
 				}
-			}
-			.canvas {
-				border: 1px solid rgb(124, 100, 100);
-				width: 100%;
-				height: calc(100vh - 160px);
-				position: relative;
 			}
 		}
 		.operateMain {

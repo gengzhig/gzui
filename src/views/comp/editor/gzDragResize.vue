@@ -2,14 +2,9 @@
 	<div class="dragResize" :class="{ active }" @click="selectCurComponent" @mousedown="handleMouseDownOnShape">
 		<span class="el-icon-refresh-right" v-show="isActive()" @mousedown="handleRotate"></span>
 		<span class="el-icon-lock" v-show="element.isLock"></span>
-		<div
-			class="dragResize-point"
-			v-for="item in isActive() ? state.pointList : []"
-			@mousedown="handleMouseDownOnPoint(item, $event)"
-			:key="item"
-			:style="getPointStyle(item)"
-		></div>
 		<div class="assistDom"></div>
+		<div class="baseDom" :style="baseDomStyle(defaultStyle)"></div>
+
 		<div class="navigator-line" v-if="active">
 			<div class="navigator-line-left" :style="{ width: defaultStyle.left + 'px' }"></div>
 			<div class="navigator-line-top" :style="{ height: defaultStyle.top + 'px' }"></div>
@@ -18,6 +13,13 @@
 			</div>
 		</div>
 		<slot></slot>
+		<i
+			class="dragResize-point"
+			v-for="item in isActive() ? state.pointList : []"
+			@mousedown="handleMouseDownOnPoint(item, $event)"
+			:key="item"
+			:style="getPointStyle(item)"
+		></i>
 	</div>
 </template>
 
@@ -81,8 +83,25 @@ const slots = useSlots();
 const curComponent = computed(() => {
 	return store.state.currentComp;
 });
+const baseDomStyle = (style, index) => {
+	const result = {};
+	console.log(style.rotate);
+	["width", "height", "rotate"].forEach(attr => {
+		if (attr == "rotate") {
+			if (style[attr] >= 0) {
+				result.transform = `rotate(-${style[attr]}deg)`;
+			} else {
+				style[attr] = Math.abs(style[attr]);
+				result.transform = `rotate(-${style[attr]}deg)`;
+			}
+			console.log(result);
+		} else {
+			result[attr] = style[attr] + "px";
+		}
+	});
+	return result;
+};
 onMounted(() => {});
-
 const isActive = () => {
 	return props.active && !props.element.isLock;
 };
@@ -114,7 +133,7 @@ const handleRotate = e => {
 		// 旋转后的角度
 		const rotateDegreeAfter = Math.atan2(curY - centerY, curX - centerX) / (Math.PI / 180);
 		// 获取旋转的角度值
-		pos.rotate = startRotate + rotateDegreeAfter - rotateDegreeBefore;
+		pos.rotate = parseInt(startRotate + rotateDegreeAfter - rotateDegreeBefore);
 		// 修改当前组件样式
 		store.commit("setCurrentCompStyle", pos);
 	};
@@ -369,7 +388,6 @@ const isNeedLockProportion = () => {
 	color: #59c7f9;
 	font-size: 20px;
 	font-weight: 600;
-
 	&:active {
 		cursor: grabbing;
 	}
@@ -418,5 +436,9 @@ const isNeedLockProportion = () => {
 		text-shadow: 1px 1px 1px #222;
 		white-space: nowrap;
 	}
+}
+.baseDom {
+	position: absolute;
+	border: 1px solid red;
 }
 </style>
