@@ -37,43 +37,28 @@
 					class="canvas"
 					ref="canvasRef"
 					:style="containerStyle"
-					@click="e => canvasClick(e)"
+					@mouseup="deselectCurComponent"
 					@mousedown="handleMouseDown"
 					@contextmenu="handleContextMenu"
 				>
-					<comp-list v-for="(item, index) in store.state.currentCompList" :key="index" :block="item"></comp-list>
 					<!--页面组件列表展示-->
-					<!-- <Shape
+					<gz-drag-resize
 						v-for="(item, index) in store.state.currentCompList"
-						:defaultStyle="item.style"
-						:style="getShapeStyle(item.style)"
 						:key="item.id"
-						:active="item.id === (curComponent || {}).id"
 						:element="item"
 						:index="index"
+						:style="getCompStyle(item.style, index)"
+						:defaultStyle="item.style"
+						:active="item.id == (currentComp || {}).id"
 						:class="{ lock: item.isLock }"
 					>
 						<component
-							v-if="item.component != 'v-text'"
-							class="component"
-							:is="item.component"
-							:style="getComponentStyle(item.style)"
-							:propValue="item.propValue"
-							:element="item"
+							:is="compInfo.compMapList.get(item.key).render()"
+							class="component1"
+							:style="getRotateStyle(item.style)"
 							:id="'component' + item.id"
-						/>
-
-						<component
-							v-else
-							class="component"
-							:is="item.component"
-							:style="getComponentStyle(item.style)"
-							:propValue="item.propValue"
-							@input="handleInput"
-							:element="item"
-							:id="'component' + item.id"
-						/>
-					</Shape> -->
+						></component>
+					</gz-drag-resize>
 					<!-- 网格线 -->
 					<Grid></Grid>
 					<!-- 右击菜单 -->
@@ -81,7 +66,7 @@
 					<!-- 标线 -->
 					<MarkLine></MarkLine>
 					<!-- 选中区域 -->
-					<Area :start="area.start" :width="area.width" :height="area.height" v-show="area.isShowArea" />
+					<!-- <Area :start="area.start" :width="area.width" :height="area.height" v-show="area.isShowArea" /> -->
 				</div>
 			</div>
 			<div class="operateMain" :class="store.state.sidebar.operateMainArea ? '' : 'hide'">
@@ -109,12 +94,13 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default {
 	components: { compList },
 	name: "Editor",
 	computed: {
 		...mapGetters(["currentCompName"]),
+		...mapState(["currentComp"]),
 	},
 };
 </script>
@@ -131,7 +117,7 @@ import Grid from "./grid.vue";
 import Area from "./Area.vue";
 import ContextMenu from "./ContextMenu.vue";
 import AttrList from "@/components/attrList/index.vue";
-
+import gzDragResize from "./gzDragResize.vue";
 const store = useStore();
 const appMainRef = ref(null);
 const canvasRef = ref(null);
@@ -198,7 +184,29 @@ const handleContextMenu = e => {
 		store.commit("showContextMenu", { top, left });
 	}
 };
+const getCompStyle = (style, index) => {
+	const result = {};
+	["width", "height", "top", "left", "z-index", "opacity"].forEach(attr => {
+		if (attr == "z-index") {
+			result["z-index"] = index + 1;
+		} else if (attr == "opacity") {
+			result[attr] = style[attr] / 100;
+		} else {
+			result[attr] = style[attr] + "px";
+		}
+	});
+	return result;
+};
 
+const getRotateStyle = style => {
+	const result = {};
+	["rotate"].forEach(attr => {
+		if (attr == "rotate") {
+			result.transform = "rotate(" + style[attr] + "deg)";
+		}
+	});
+	return result;
+};
 const hideArea = () => {
 	area.isShowArea = 0;
 	area.width = 0;
@@ -218,9 +226,9 @@ const handleMouseDown = e => {
 	if (!store.state.currentComp) {
 		e.preventDefault();
 	}
-
+	store.commit("setClickComponentStatus", false);
 	hideArea();
-	// 获取编辑器的位移信息，每次点击时都需要获取一次。主要是为了方便开发时调试用。
+	// 获取编辑器的位移信息，每次点击时都需要获取一次。
 	const rectInfo = canvasRef.value.getBoundingClientRect();
 	area.editorX = rectInfo.x;
 	area.editorY = rectInfo.y;
@@ -230,30 +238,25 @@ const handleMouseDown = e => {
 	area.start.y = startY - area.editorY;
 	// 展示选中区域
 	area.isShowArea = true;
-
 	const move = moveEvent => {
 		area.width = Math.abs(moveEvent.clientX - startX);
 		area.height = Math.abs(moveEvent.clientY - startY);
 		if (moveEvent.clientX < startX) {
 			area.start.x = moveEvent.clientX - area.editorX;
 		}
-
 		if (moveEvent.clientY < startY) {
 			area.start.y = moveEvent.clientY - area.editorY;
 		}
 	};
-
 	const up = e => {
 		document.removeEventListener("mousemove", move);
 		document.removeEventListener("mouseup", up);
-
 		if (e.clientX == startX && e.clientY == startY) {
 			hideArea();
 			return;
 		}
 		createGroup();
 	};
-
 	document.addEventListener("mousemove", move);
 	document.addEventListener("mouseup", up);
 };
@@ -331,9 +334,15 @@ const getSelectArea = () => {
 	// 返回在选中区域内的所有组件
 	return result;
 };
-const canvasClick = e => {
-	if (currentCompId.value && e) {
-		store.commit("resetCurrentCompIndex");
+
+const deselectCurComponent = e => {
+	console.log(store);
+	if (!store.state.isClickComponent) {
+		store.commit("setCurrentComp", { compData: null, index: null });
+	}
+
+	// 0 左击 1 滚轮 2 右击
+	if (e.button != 2) {
 		store.commit("hideContextMenu");
 	}
 };

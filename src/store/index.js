@@ -42,6 +42,10 @@ export default createStore({
 			components: [],
 		},
 		editor: null,
+		// 如果没点中组件，并且在画布空白处弹起鼠标，则取消当前组件的选中状态
+		isClickComponent: false,
+		snapshotData: [], // 编辑器快照数据
+		snapshotIndex: -1, // 快照索引
 	},
 	getters: {
 		currentCompLayerTreeList: state => {
@@ -78,6 +82,17 @@ export default createStore({
 
 		hideContextMenu(state) {
 			state.menuShow = false;
+		},
+		setClickComponentStatus(state, status) {
+			state.isClickComponent = status;
+		},
+		// 设置选中组件样式
+		setCurrentCompStyle({ currentComp }, { top, left, width, height, rotate }) {
+			if (top) currentComp.style.top = top;
+			if (left) currentComp.style.left = left;
+			if (width) currentComp.style.width = width;
+			if (height) currentComp.style.height = height;
+			if (rotate) currentComp.style.rotate = rotate;
 		},
 		// 设置当前选中组件
 		setCurrentComp(state, { compData, index }) {
@@ -185,6 +200,14 @@ export default createStore({
 				}
 			});
 		},
+		recordSnapshot(state) {
+			// 添加新的快照
+			state.snapshotData[++state.snapshotIndex] = tool.deepCopy(state.currentCompList);
+			// 在 undo 过程中，添加新的快照时，要将它后面的快照清理掉
+			if (state.snapshotIndex < state.snapshotData.length - 1) {
+				state.snapshotData = state.snapshotData.slice(0, state.snapshotIndex + 1);
+			}
+		},
 		// 复制
 		copy(state) {
 			if (!state.currentComp) {
@@ -244,7 +267,7 @@ export default createStore({
 			}
 
 			if (state.copyData) {
-				const data = deepCopy(state.copyData.data);
+				const data = tool.deepCopy(state.copyData.data);
 				const index = state.copyData.index;
 				data.id = generateID();
 
@@ -285,8 +308,22 @@ export default createStore({
 		},
 		// 撤销组件
 		revocationComp(state, payload) {
-			state.currentCompList.pop();
-			state.currentComp = null;
+			if (state.snapshotIndex >= 0) {
+				state.snapshotIndex--;
+				const currentCompList = tool.deepCopy(state.snapshotData[state.snapshotIndex]) || [];
+				if (state.currentComp) {
+					// 如果当前组件不在 currentCompList 中，则置空
+					let needClean = !currentCompList.find(component => state.currentComp.id === component.id);
+
+					if (needClean) {
+						this.commit("setCurrentComp", {
+							compData: null,
+							index: null,
+						});
+					}
+				}
+				this.commit("setCurrentCompList", currentCompList);
+			}
 			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 		},
 		// 上移
