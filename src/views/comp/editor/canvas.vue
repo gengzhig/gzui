@@ -201,15 +201,15 @@ const createGroup = () => {
 			style = vm.$tool.getComponentRotatedStyle(component.style);
 		}
 
-		if (style.left < left) left = style.left;
-		if (style.top < top) top = style.top;
+		if (style.left < left) left = parseInt(style.left);
+		if (style.top < top) top = parseInt(style.top);
 		if (style.right > right) right = style.right;
 		if (style.bottom > bottom) bottom = style.bottom;
 	});
 	area.start.x = left;
 	area.start.y = top;
-	area.width = right - left;
-	area.height = bottom - top;
+	area.width = parseInt(right - left);
+	area.height = parseInt(bottom - top);
 
 	// 设置选中区域位移大小信息和区域内的组件数据
 	store.commit("setAreaData", {

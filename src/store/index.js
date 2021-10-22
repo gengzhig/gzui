@@ -138,12 +138,6 @@ export default createStore({
 		compose({ currentCompList, areaData }) {
 			const components = [];
 			areaData.components.forEach(component => {
-				// component.style = {
-				// 	left: component.left,
-				// 	top: component.top,
-				// 	width: component.width,
-				// 	height: component.height,
-				// };
 				if (!component.isGroup) {
 					components.push(component);
 				} else {
