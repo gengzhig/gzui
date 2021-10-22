@@ -7,11 +7,10 @@
 				{{ defaultStyle.left }},{{ defaultStyle.top }}
 			</div>
 		</div>
-		<div class="datav-scale" :style="baseDomStyle(defaultStyle)">
+		<div class="datav-scale" :style="baseDomStyle(defaultStyle, index, element.isGroup)">
 			<span class="el-icon-refresh-right" v-show="isActive()" @mousedown="handleRotate"></span>
 			<span class="el-icon-lock" v-show="element.isLock"></span>
 			<div class="assistDom"></div>
-			<!-- <div class="baseDom" :style="baseDomStyle(defaultStyle)"></div> -->
 			<slot></slot>
 			<i
 				class="dragResize-point"
@@ -84,13 +83,13 @@ const slots = useSlots();
 const curComponent = computed(() => {
 	return store.state.currentComp;
 });
-const baseDomStyle = (style, index) => {
+const baseDomStyle = (style, index, isGroup) => {
 	const result = {};
-	["width", "height", "top", "left", "rotate", "z-index"].forEach(attr => {
+	["width", "height", "top", "left", "rotate", "z-index", "opacity"].forEach(attr => {
 		if (attr == "z-index") {
 			result["z-index"] = index + 1;
 		} else if (attr == "opacity") {
-			result[attr] = style[attr] / 100;
+			result[attr] = isGroup ? style[attr] : style[attr] / 100;
 		} else if (attr == "rotate") {
 			result.transform = "rotate(" + style[attr] + "deg)";
 		} else {
@@ -219,16 +218,12 @@ const handleMouseDownOnShape = e => {
 	e.stopPropagation();
 	store.commit("setCurrentComp", { compData: props.element, index: props.index });
 	if (props.element.isLock) return;
-
 	state.cursors = getCursor(); // 根据旋转角度获取光标位置
-
 	const pos = { ...props.defaultStyle };
 	const startY = e.clientY;
 	const startX = e.clientX;
-	// 如果直接修改属性，值的类型会变为字符串，所以要转为数值型
 	const startTop = Number(pos.top);
 	const startLeft = Number(pos.left);
-
 	// 如果元素没有移动，则不保存快照
 	let hasMove = false;
 	const move = moveEvent => {
@@ -239,12 +234,10 @@ const handleMouseDownOnShape = e => {
 		pos.left = curX - startX + startLeft;
 		// 修改当前组件样式
 		store.commit("setCurrentCompStyle", pos);
-		// 等更新完当前组件的样式并绘制到屏幕后再判断是否需要吸附
-		// 如果不使用 $nextTick，吸附后将无法移动
+		// 更新完当前组件的样式后 吸附
 		nextTick(() => {
-			// 触发元素移动事件，用于显示标线、吸附功能；后面两个参数代表鼠标移动方向
-			// curY - startY > 0 true 表示向下移动 false 表示向上移动
-			// curX - startX > 0 true 表示向右移动 false 表示向左移动
+			// 触发元素移动，用于显示标线、吸附功能；后面两个参数代表鼠标移动方向
+			// curY - startY > 0 true 表示向下移动 false 表示向上移动;curX - startX > 0 true 表示向右移动 false 表示向左移动
 			mitt.emit("move", curY - startY > 0, curX - startX > 0);
 		});
 	};
@@ -434,9 +427,5 @@ const isNeedLockProportion = () => {
 		text-shadow: 1px 1px 1px #222;
 		white-space: nowrap;
 	}
-}
-.baseDom {
-	position: absolute;
-	border: 1px solid red;
 }
 </style>

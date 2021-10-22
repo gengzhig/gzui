@@ -9,6 +9,7 @@
 <template>
 	<div class="layouts">
 		<Navbar></Navbar>
+
 		<div class="container">
 			<div class="sidebar">
 				<div class="layer-panel" :class="store.state.sidebar.layerArea ? '' : 'hide'">

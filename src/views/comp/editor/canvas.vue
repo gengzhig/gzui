@@ -270,7 +270,7 @@ const getCompStyle = (style, index, isGroup) => {
 	.group {
 		width: 100%;
 		height: 100%;
-		position: relativei;
+		position: relative;
 		.singleGroup {
 			position: absolute;
 		}
