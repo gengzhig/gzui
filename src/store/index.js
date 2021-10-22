@@ -54,7 +54,16 @@ export default createStore({
 						id: c.id,
 						highLight: c.highLight,
 						label: c.name,
-						children: [],
+						children: c.isGroup
+							? c.group.map(g => {
+									return {
+										id: g.id,
+										label: g.name,
+										children: [],
+										zIndex: g.style?.zIndex,
+									};
+							  })
+							: [],
 						zIndex: c.style?.zIndex,
 					};
 				})
@@ -139,16 +148,16 @@ export default createStore({
 					components.push(component);
 				} else {
 					// 如果要组合的组件中，已经存在组合数据，则需要提前拆分
-					// const parentStyle = { ...component.style };
-					// const subComponents = component.propValue;
+					const parentStyle = { ...component.style };
+					const subComponents = component.group;
 					const editorRect = document.querySelector(".canvas").getBoundingClientRect();
-					// this.commit("deleteComponent");
-					// subComponents.forEach(component => {
-					// 	decomposeComponent(component, editorRect, parentStyle);
-					// 	this.commit("addComponent", { component });
-					// });
-					// components.push(...component.propValue);
-					// this.commit("batchDeleteComponent", component.propValue);
+					this.commit("deleteComponent", "decompose");
+					subComponents.forEach(component => {
+						tool.decomposeComponent(component, editorRect, parentStyle);
+						this.commit("addComponent", { component });
+					});
+					components.push(...component.group);
+					this.commit("batchDeleteComponent", component.group);
 				}
 			});
 
