@@ -56,13 +56,6 @@ const compInfo = computed(() => {
 const state = reactive({
 	compBaseInfo: compProperty.value,
 });
-// watch(
-// 	compProperty.value,
-// 	value => {
-// 		console.log(value);
-// 	},
-// 	{ deep: true }
-// );
 </script>
 
 <style scoped lang="scss">

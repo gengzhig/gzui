@@ -23,6 +23,7 @@
 				<div class="operateGroup">
 					<gz-button type="primary" @click="revocation">撤销</gz-button>
 					<gz-button type="primary" @click="compose">成组</gz-button>
+					<gz-button type="primary" @click="decompose">解组</gz-button>
 					<gz-selector
 						:width="200"
 						:height="40"
@@ -33,7 +34,6 @@
 						@selectItem="selectItem"
 					></gz-selector>
 				</div>
-				当前选择组件： {{ currentComp }}
 				<div
 					class="wrap"
 					@drop="handleDrop"
@@ -99,6 +99,9 @@ const compInfo = inject("compInfo");
 const currentCompId = computed(() => {
 	return store.getters.currentCompId;
 });
+const currentCompList = computed(() => {
+	return store.state.currentCompList;
+});
 // 画布尺寸
 // const containerStyle = computed(() => ({
 // 	width: `${json.value.container?.width}px`,
@@ -123,151 +126,26 @@ watch(
 	}
 );
 
-const hideArea = () => {
-	area.isShowArea = 0;
-	area.width = 0;
-	area.height = 0;
-	store.commit("setAreaData", {
-		style: {
-			left: 0,
-			top: 0,
-			width: 0,
-			height: 0,
-		},
-		components: [],
-	});
+const handleDrop = e => {
+	e.preventDefault();
+	e.stopPropagation();
+};
+const handleDragOver = e => {
+	e.preventDefault();
+	e.dataTransfer.dropEffect = "copy";
 };
 const handleMouseDown = e => {
-	// 如果没有选中组件 在画布上点击时调用 e.preventDefault() 防止触发 drop 事件
-	if (!store.state.currentComp) {
-		e.preventDefault();
-	}
 	store.commit("setClickComponentStatus", false);
-	hideArea();
-	// 获取编辑器的位移信息，每次点击时都需要获取一次。
-	const rectInfo = canvasRef.value.getBoundingClientRect();
-	area.editorX = rectInfo.x;
-	area.editorY = rectInfo.y;
-	const startX = e.clientX;
-	const startY = e.clientY;
-	area.start.x = startX - area.editorX;
-	area.start.y = startY - area.editorY;
-	// 展示选中区域
-	area.isShowArea = true;
-	const move = moveEvent => {
-		area.width = Math.abs(moveEvent.clientX - startX);
-		area.height = Math.abs(moveEvent.clientY - startY);
-		if (moveEvent.clientX < startX) {
-			area.start.x = moveEvent.clientX - area.editorX;
-		}
-		if (moveEvent.clientY < startY) {
-			area.start.y = moveEvent.clientY - area.editorY;
-		}
-	};
-	const up = e => {
-		document.removeEventListener("mousemove", move);
-		document.removeEventListener("mouseup", up);
-		if (e.clientX == startX && e.clientY == startY) {
-			hideArea();
-			return;
-		}
-		createGroup();
-	};
-	document.addEventListener("mousemove", move);
-	document.addEventListener("mouseup", up);
-};
-
-const createGroup = () => {
-	// 获取选中区域的组件数据
-	const areaData = getSelectArea();
-	// 圈选区域组件个数小于1个时隐藏Area组件
-	if (areaData.length < 1) {
-		hideArea();
-		return;
-	}
-
-	// 根据选中区域和区域中每个组件的位移信息来创建 Group 组件
-	// 要遍历选择区域的每个组件，获取它们的 left top right bottom 信息来进行比较
-	let top = Infinity,
-		left = Infinity;
-	let right = -Infinity,
-		bottom = -Infinity;
-	areaData.forEach(component => {
-		let style = {};
-		console.log(component);
-		if (component.isGroup) {
-			component.group.forEach(item => {
-				const rectInfo = $(`#${item.id}`).getBoundingClientRect();
-				style.left = rectInfo.left - area.editorX;
-				style.top = rectInfo.top - area.editorY;
-				style.right = rectInfo.right - area.editorX;
-				style.bottom = rectInfo.bottom - area.editorY;
-
-				if (style.left < left) left = style.left;
-				if (style.top < top) top = style.top;
-				if (style.right > right) right = style.right;
-				if (style.bottom > bottom) bottom = style.bottom;
-			});
-		} else {
-			style = vm.$tool.getComponentRotatedStyle(component.style);
-		}
-
-		if (style.left < left) left = style.left;
-		if (style.top < top) top = style.top;
-		if (style.right > right) right = style.right;
-		if (style.bottom > bottom) bottom = style.bottom;
-	});
-	area.start.x = left;
-	area.start.y = top;
-	area.width = right - left;
-	area.height = bottom - top;
-
-	// 设置选中区域位移大小信息和区域内的组件数据
-	store.commit("setAreaData", {
-		style: {
-			left,
-			top,
-			width: area.width,
-			height: area.height,
-		},
-		components: areaData,
-	});
-};
-
-const getSelectArea = () => {
-	const result = [];
-	// 区域起点坐标
-	const { x, y } = area.start;
-	// 计算所有的组件数据，判断是否在选中区域内
-	store.state.currentCompList.forEach(component => {
-		if (component.isLock) return;
-		const { left, top, width, height } = vm.$tool.getComponentRotatedStyle(component.style);
-		if (x <= left && y <= top && left + width <= x + area.width && top + height <= y + area.height) {
-			result.push(component);
-		}
-	});
-
-	// 返回在选中区域内的所有组件
-	return result;
 };
 
 const deselectCurComponent = e => {
-	console.log(store);
 	if (!store.state.isClickComponent) {
 		store.commit("setCurrentComp", { compData: null, index: null });
 	}
-
 	// 0 左击 1 滚轮 2 右击
 	if (e.button != 2) {
 		store.commit("hideContextMenu");
 	}
-};
-const setZindex = data => {
-	data.map((c, i) => {
-		c.zIndex = i + 1;
-		c.style.zIndex = i + 1;
-	});
-	store.commit("setCurrentCompList", data);
 };
 
 // 撤销
@@ -277,6 +155,12 @@ const revocation = () => {
 // 成组
 const compose = () => {
 	store.commit("compose");
+	store.commit("recordSnapshot");
+};
+// 解组
+const decompose = () => {
+	store.commit("decompose");
+	store.commit("recordSnapshot");
 };
 // 复制
 const copy = () => {
@@ -285,6 +169,7 @@ const copy = () => {
 // 粘贴
 const paste = () => {
 	store.commit("paste", true);
+	store.commit("recordSnapshot");
 };
 // ctrl快捷键操作
 const keyboardEvent = () => {

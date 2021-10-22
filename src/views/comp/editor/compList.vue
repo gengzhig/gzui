@@ -347,10 +347,6 @@ const blockMouseDown = (e, block) => {
 };
 
 const blockMouseUp = (e, block) => {
-	// console.log("blockMouseUp");
-	// let selectCompId = e.target.parentElement.getAttribute("comp-id");
-	// let selectComp = store.state.currentCompList.filter(c => c.id == selectCompId);
-	// let selectCompIndex = store.state.currentCompList.findIndex(c => c.id == selectCompId);
 	store.commit("setCurrentComp", { compData: vm.$tool.deepCopy(block), index: block.style.zIndex - 1 });
 };
 
@@ -360,7 +356,6 @@ const hideMenu = (e, block) => {
 	e.stopPropagation();
 	e.preventDefault();
 	store.commit("hideContextMenu");
-	// store.commit("setCurrentComp", { compData: vm.$tool.deepCopy(block), index: block.style.zIndex - 1 });
 };
 </script>
 

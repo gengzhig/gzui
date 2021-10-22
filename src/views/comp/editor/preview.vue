@@ -1,7 +1,24 @@
 <template>
 	<div class="preview">
-		<div v-for="(item, index) in compData" :key="index" class="comp" :style="getCompStyle(item.style, index)">
-			<component :is="compInfo.compMapList.get(item.key).render()"></component>
+		<div
+			v-for="(item, index) in compData"
+			:key="index"
+			class="comp"
+			:style="getCompStyle(item.style, index, item.isGroup)"
+		>
+			<component v-if="!item.isGroup" :is="compInfo.compMapList.get(item.key).render()"></component>
+			<template v-else>
+				<div class="group">
+					<template v-for="gItem in item.group">
+						<component
+							class="singleGroup"
+							:is="compInfo.compMapList.get(gItem.key).render()"
+							:style="gItem.groupStyle"
+							:id="'component' + gItem.id"
+						/>
+					</template>
+				</div>
+			</template>
 		</div>
 	</div>
 </template>
@@ -28,33 +45,15 @@ const compInfo = inject("compInfo");
 const compData = ref([]);
 onMounted(() => {
 	let compList = JSON.parse(localStorage.getItem("currentCompList"));
-	if (compList.length) {
-		// compList = compList.map(c => {
-		// 	return {
-		// 		id: c.id,
-		// 		key: c.key,
-		// 		name: c.name,
-		// 		style: {
-		// 			top: `${c.top}px`,
-		// 			left: `${c.left}px`,
-		// 			width: `${c.width}px`,
-		// 			height: `${c.height}px`,
-		// 			zIndex: `${c.zIndex}`,
-		// 			opacity: c.opacity,
-		// 			transform: `rotate(${c.rotate}deg)`,
-		// 		},
-		// 	};
-		// });
-	}
 	compData.value = compList;
 });
-const getCompStyle = (style, index) => {
+const getCompStyle = (style, index, isGroup) => {
 	const result = {};
 	["width", "height", "top", "left", "rotate", "z-index", "opacity"].forEach(attr => {
 		if (attr == "z-index") {
 			result["z-index"] = index + 1;
 		} else if (attr == "opacity") {
-			result[attr] = style[attr] / 100;
+			result[attr] = isGroup ? style[attr] : style[attr] / 100;
 		} else if (attr == "rotate") {
 			result.transform = "rotate(" + style[attr] + "deg)";
 		} else {
@@ -72,6 +71,14 @@ const getCompStyle = (style, index) => {
 	position: relative;
 	.comp {
 		position: absolute;
+		.group {
+			width: 100%;
+			height: 100%;
+			position: relativei;
+			.singleGroup {
+				position: absolute;
+			}
+		}
 	}
 }
 </style>

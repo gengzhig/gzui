@@ -1,10 +1,5 @@
 <template>
 	<div class="dragResize" :class="{ active }" @click="selectCurComponent" @mousedown="handleMouseDownOnShape">
-		<span class="el-icon-refresh-right" v-show="isActive()" @mousedown="handleRotate"></span>
-		<span class="el-icon-lock" v-show="element.isLock"></span>
-		<div class="assistDom"></div>
-		<div class="baseDom" :style="baseDomStyle(defaultStyle)"></div>
-
 		<div class="navigator-line" v-if="active">
 			<div class="navigator-line-left" :style="{ width: defaultStyle.left + 'px' }"></div>
 			<div class="navigator-line-top" :style="{ height: defaultStyle.top + 'px' }"></div>
@@ -12,14 +7,20 @@
 				{{ defaultStyle.left }},{{ defaultStyle.top }}
 			</div>
 		</div>
-		<slot></slot>
-		<i
-			class="dragResize-point"
-			v-for="item in isActive() ? state.pointList : []"
-			@mousedown="handleMouseDownOnPoint(item, $event)"
-			:key="item"
-			:style="getPointStyle(item)"
-		></i>
+		<div class="datav-scale" :style="baseDomStyle(defaultStyle)">
+			<span class="el-icon-refresh-right" v-show="isActive()" @mousedown="handleRotate"></span>
+			<span class="el-icon-lock" v-show="element.isLock"></span>
+			<div class="assistDom"></div>
+			<!-- <div class="baseDom" :style="baseDomStyle(defaultStyle)"></div> -->
+			<slot></slot>
+			<i
+				class="dragResize-point"
+				v-for="item in isActive() ? state.pointList : []"
+				@mousedown="handleMouseDownOnPoint(item, $event)"
+				:key="item"
+				:style="getPointStyle(item)"
+			></i>
+		</div>
 	</div>
 </template>
 
@@ -85,16 +86,13 @@ const curComponent = computed(() => {
 });
 const baseDomStyle = (style, index) => {
 	const result = {};
-	console.log(style.rotate);
-	["width", "height", "rotate"].forEach(attr => {
-		if (attr == "rotate") {
-			if (style[attr] >= 0) {
-				result.transform = `rotate(-${style[attr]}deg)`;
-			} else {
-				style[attr] = Math.abs(style[attr]);
-				result.transform = `rotate(-${style[attr]}deg)`;
-			}
-			console.log(result);
+	["width", "height", "top", "left", "rotate", "z-index"].forEach(attr => {
+		if (attr == "z-index") {
+			result["z-index"] = index + 1;
+		} else if (attr == "opacity") {
+			result[attr] = style[attr] / 100;
+		} else if (attr == "rotate") {
+			result.transform = "rotate(" + style[attr] + "deg)";
 		} else {
 			result[attr] = style[attr] + "px";
 		}
@@ -143,7 +141,6 @@ const handleRotate = e => {
 		document.removeEventListener("mousemove", move);
 		document.removeEventListener("mouseup", up);
 		state.cursors = getCursor(); // 根据旋转角度获取光标位置
-		console.log(state.cursors);
 	};
 
 	document.addEventListener("mousemove", move);
@@ -189,7 +186,6 @@ const getPointStyle = point => {
 
 const getCursor = () => {
 	const { angleToCursor, initialAngle, pointList } = state;
-	console.log(curComponent.value);
 	const rotate = vm.$tool.mod360(curComponent.value.style.rotate); // 取余 360
 	const result = {};
 	let lastMatchIndex = -1; // 从上一个命中的角度的索引开始匹配下一个，降低时间复杂度
@@ -274,7 +270,6 @@ const selectCurComponent = e => {
 };
 
 const handleMouseDownOnPoint = (point, e) => {
-	console.log("handleMouseDownOnPoint");
 	store.commit("setClickComponentStatus", true);
 	e.stopPropagation();
 	e.preventDefault();
@@ -362,6 +357,9 @@ const isNeedLockProportion = () => {
 
 	&:hover {
 		cursor: move;
+	}
+	&.active .datav-scale {
+		outline: rgb(112, 192, 255) solid 1px;
 	}
 }
 .active {

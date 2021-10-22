@@ -9,6 +9,7 @@
 				class="compItem"
 				v-for="(item, index) in compInfo.compList"
 				:key="index"
+				:data-index="index"
 				draggable="true"
 				@dragstart="e => dragstart(e, item)"
 				@dragend="e => dragend(e)"
@@ -43,6 +44,7 @@ let currentComp = null; // 当前组件
 
 const dragstart = (e, comp) => {
 	let canvas = document.querySelector(".canvas");
+	e.dataTransfer.setData("index", e.target.dataset.index);
 	// dragenter 进入元素中，标识改为移动标识
 	// dragover 在目标元素经过，阻止默认行为，否则无法触发drop
 	// dragleave 离开元素时，增加一个禁用标识
@@ -105,7 +107,6 @@ const dragend = e => {
 };
 
 const setZindex = data => {
-	console.log(data, "组件库");
 	data.map((c, i) => {
 		c.style.zIndex = i + 1;
 	});

@@ -41,7 +41,6 @@ export default createStore({
 			},
 			components: [],
 		},
-		editor: null,
 		// 如果没点中组件，并且在画布空白处弹起鼠标，则取消当前组件的选中状态
 		isClickComponent: false,
 		snapshotData: [], // 编辑器快照数据
@@ -54,9 +53,9 @@ export default createStore({
 					return {
 						id: c.id,
 						highLight: c.highLight,
-						label: c.name + "(" + c.style.zIndex + ")",
+						label: c.name,
 						children: [],
-						zIndex: c.style.zIndex,
+						zIndex: c.style?.zIndex,
 					};
 				})
 				.reverse();
@@ -120,7 +119,6 @@ export default createStore({
 		// 设置当前画布内所有组件
 		setCurrentCompList(state, payload) {
 			state.currentCompList = payload;
-			console.log(state.currentCompList, "当前画布内所有组件信息");
 			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 		},
 		// 设置圈选组件数据
@@ -128,23 +126,22 @@ export default createStore({
 			state.areaData = data;
 		},
 		// 成组
-		compose({ currentCompList, areaData, editor }) {
+		compose({ currentCompList, areaData }) {
 			const components = [];
-
 			areaData.components.forEach(component => {
-				component.style = {
-					left: component.left,
-					top: component.top,
-					width: component.width,
-					height: component.height,
-				};
+				// component.style = {
+				// 	left: component.left,
+				// 	top: component.top,
+				// 	width: component.width,
+				// 	height: component.height,
+				// };
 				if (!component.isGroup) {
 					components.push(component);
 				} else {
 					// 如果要组合的组件中，已经存在组合数据，则需要提前拆分
 					// const parentStyle = { ...component.style };
 					// const subComponents = component.propValue;
-					// const editorRect = editor.getBoundingClientRect();
+					const editorRect = document.querySelector(".canvas").getBoundingClientRect();
 					// this.commit("deleteComponent");
 					// subComponents.forEach(component => {
 					// 	decomposeComponent(component, editorRect, parentStyle);
@@ -158,13 +155,6 @@ export default createStore({
 			const groupComponent = {
 				id: new Date().getTime(),
 				name: "成组组件",
-				top: areaData.style.top,
-				left: areaData.style.left,
-				width: areaData.style.width,
-				height: areaData.style.height,
-				zIndex: 1,
-				opacity: 100,
-				rotate: 0,
 				isLock: false,
 				isGroup: true,
 				animations: [],
@@ -188,6 +178,20 @@ export default createStore({
 				index: currentCompList.length - 1,
 			});
 			areaData.components = [];
+		},
+		// 解组
+		decompose({ currentComp }) {
+			if (currentComp) {
+				const parentStyle = { ...currentComp.style };
+				const components = currentComp.group;
+				const editorRect = document.querySelector(".canvas").getBoundingClientRect();
+
+				this.commit("deleteComponent", "decompose");
+				components.forEach(component => {
+					tool.decomposeComponent(component, editorRect, parentStyle);
+					this.commit("addComponent", { component });
+				});
+			}
 		},
 		// 将已经放到 Group 组件数据删除，也就是在 componentData 中删除，因为它们已经放到 Group 组件中了
 		batchDeleteComponent({ currentCompList }, deleteData) {
@@ -367,7 +371,6 @@ export default createStore({
 		},
 		// 置顶
 		topComponent(state, payload) {
-			debugger;
 			if (state.curComponentIndex == -1) return false;
 			if (state.curComponentIndex < state.currentCompList.length - 1) {
 				state.currentCompList.splice(state.curComponentIndex, 1);
@@ -401,28 +404,36 @@ export default createStore({
 		},
 		// 删除
 		deleteComponent(state, payload) {
-			Msgbox.confirm("此操作将永久删除该组件, 是否继续?", "提示", {
-				confirmButtonText: "确定",
-				cancelButtonText: "取消",
-				type: "warning",
-			})
-				.then(() => {
-					state.currentCompList.splice(state.curComponentIndex, 1);
-					tool.resetZindex(state.currentCompList);
-					state.curComponentIndex = -1;
-					state.currentComp = null;
-					localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
-					Message({
-						type: "success",
-						message: "删除成功!",
-					});
+			if (payload == "decompose") {
+				state.currentCompList.splice(state.curComponentIndex, 1);
+				tool.resetZindex(state.currentCompList);
+				state.curComponentIndex = -1;
+				state.currentComp = null;
+				localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
+			} else {
+				Msgbox.confirm("此操作将永久删除该组件, 是否继续?", "提示", {
+					confirmButtonText: "确定",
+					cancelButtonText: "取消",
+					type: "warning",
 				})
-				.catch(() => {
-					Message({
-						type: "info",
-						message: "已取消删除",
+					.then(() => {
+						state.currentCompList.splice(state.curComponentIndex, 1);
+						tool.resetZindex(state.currentCompList);
+						state.curComponentIndex = -1;
+						state.currentComp = null;
+						localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
+						Message({
+							type: "success",
+							message: "删除成功!",
+						});
+					})
+					.catch(() => {
+						Message({
+							type: "info",
+							message: "已取消删除",
+						});
 					});
-				});
+			}
 		},
 		hide(state, payload) {},
 	},

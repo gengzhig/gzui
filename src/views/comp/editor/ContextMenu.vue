@@ -15,8 +15,12 @@
 					<li @click="downComponent" :class="[curComponentIndex ? '' : 'disable']">
 						<i class="el-icon-bottom"></i>下移一层
 					</li>
-					<li @click="createGroup"><i class="el-icon-suitcase"></i>成组</li>
-					<li @click="cancelCreateGroup"><i class="el-icon-suitcase-1"></i>取消成组</li>
+					<li @click="createGroup" :class="[!currentComp.isGroup ? '' : 'disable']">
+						<i class="el-icon-suitcase"></i>成组
+					</li>
+					<li @click="cancelCreateGroup" :class="[currentComp.isGroup ? '' : 'disable']">
+						<i class="el-icon-suitcase-1"></i>取消成组
+					</li>
 					<li @click="lock" :class="[!currentComp.isLock ? '' : 'disable']"><i class="el-icon-lock"></i>锁定</li>
 					<li @click="unlock" :class="[currentComp.isLock ? '' : 'disable']"><i class="el-icon-unlock"></i>解锁</li>
 					<li @click="hide"><i class="el-icon-view"></i>隐藏</li>
@@ -52,36 +56,32 @@ const state = reactive({
 // 置顶
 const topComponent = () => {
 	store.commit("topComponent");
-	// store.commit("recordSnapshot");
+	store.commit("recordSnapshot");
 };
 // 置底
 const bottomComponent = () => {
 	store.commit("bottomComponent");
-	// store.commit("recordSnapshot");
+	store.commit("recordSnapshot");
 };
 // 上移一层
 const upComponent = () => {
 	store.commit("upComponent");
-	// store.commit("recordSnapshot");
+	store.commit("recordSnapshot");
 };
 // 下移一层
 const downComponent = () => {
 	store.commit("downComponent");
-	// store.commit("recordSnapshot");
+	store.commit("recordSnapshot");
 };
 // 成组
 const createGroup = () => {
-	Message({
-		message: "此功能尚未开放！",
-		type: "warning",
-	});
+	store.commit("compose");
+	store.commit("recordSnapshot");
 };
 // 取消成组
 const cancelCreateGroup = () => {
-	Message({
-		message: "此功能尚未开放！",
-		type: "warning",
-	});
+	store.commit("decompose");
+	store.commit("recordSnapshot");
 };
 // 锁定
 const lock = () => {
@@ -121,7 +121,7 @@ const copy = () => {
 // 粘贴
 const paste = () => {
 	store.commit("paste", true);
-	// store.commit("recordSnapshot");
+	store.commit("recordSnapshot");
 };
 // 剪切
 const cut = () => {
@@ -134,7 +134,7 @@ const cut = () => {
 // 删除
 const deleteComponent = () => {
 	store.commit("deleteComponent");
-	// store.commit("recordSnapshot");
+	store.commit("recordSnapshot");
 };
 
 // 收藏
@@ -147,12 +147,14 @@ const collect = () => {
 
 // 在蓝图编辑器中定位
 const locateInBlueprint = () => {
-	store.commit("deleteComponent");
-	// store.commit("recordSnapshot");
+	Message({
+		message: "此功能尚未开放！",
+		type: "warning",
+	});
 };
 // 点击菜单时不取消当前组件的选中状态
 const handleMouseUp = () => {
-	// store.commit("setClickComponentStatus", true);
+	store.commit("setClickComponentStatus", true);
 };
 </script>
 
