@@ -22,7 +22,6 @@
 
 			<div class="appMain" ref="appMainRef">
 				<div class="operateGroup">
-					<gz-button type="primary" @click="revocation">撤销</gz-button>
 					<gz-button type="primary" @click="compose">成组</gz-button>
 					<gz-button type="primary" @click="decompose">解组</gz-button>
 					<gz-selector
@@ -34,6 +33,8 @@
 						placeholder="搜索画布中的组件"
 						@selectItem="selectItem"
 					></gz-selector>
+					<gz-input v-model:inputValue="state.canvas.width" placeholder="画布大小"></gz-input>
+					<gz-input v-model:inputValue="state.canvas.height" placeholder="画布大小"></gz-input>
 				</div>
 				<div
 					class="wrap"
@@ -42,7 +43,7 @@
 					@mousedown="handleMouseDown"
 					@mouseup="deselectCurComponent"
 				>
-					<Canvas></Canvas>
+					<CanvasArea :canvasStyle="state.canvas"></CanvasArea>
 				</div>
 			</div>
 			<div class="operateMain" :class="store.state.sidebar.operateMainArea ? '' : 'hide'">
@@ -85,7 +86,7 @@ import { useStore } from "vuex";
 
 import Navbar from "layouts/components/Navbar.vue";
 import compList from "./compList.vue";
-import Canvas from "./canvas.vue";
+import CanvasArea from "./canvas.vue";
 import compLibrary from "./compLibrary.vue";
 import compLayer from "./compLayer.vue";
 import AttrList from "@/components/attrList/index.vue";
@@ -94,6 +95,10 @@ const appMainRef = ref(null);
 const canvasRef = ref(null);
 const state = reactive({
 	activeName: "first",
+	canvas: {
+		width: 1920,
+		height: 1080,
+	},
 });
 
 const compInfo = inject("compInfo");
@@ -268,6 +273,12 @@ window.addEventListener("keydown", keyboardEvent());
 				button {
 					margin-right: 5px;
 				}
+			}
+			.wrap {
+				width: 100%;
+				height: calc(100vh - 160px);
+				overflow: auto;
+				background: #443e3e;
 			}
 		}
 		.operateMain {

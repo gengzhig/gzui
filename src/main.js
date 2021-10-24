@@ -13,7 +13,7 @@ import store from "./store";
 import axios from "axios";
 // 全局样式
 import "styles/index.scss";
-
+import "animate.css";
 // 全局引入element3
 import element3 from "plugins/element3";
 

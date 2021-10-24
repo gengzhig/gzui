@@ -75,6 +75,18 @@ const downComponent = () => {
 };
 // 成组
 const createGroup = () => {
+	// 单个组件未圈选时直接打组
+	if (store.state.areaData.components.length == 0) {
+		store.commit("setAreaData", {
+			style: {
+				height: store.state.currentComp.style.height,
+				left: store.state.currentComp.style.left,
+				top: store.state.currentComp.style.top,
+				width: store.state.currentComp.style.width,
+			},
+			components: [store.state.currentComp],
+		});
+	}
 	store.commit("compose");
 	store.commit("recordSnapshot");
 };

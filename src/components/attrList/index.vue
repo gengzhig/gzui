@@ -27,6 +27,39 @@
 				<el-slider v-model="compProperty.opacity" show-input> </el-slider>
 			</el-form-item>
 		</el-form>
+		<gz-button @click="state.isShowAnimation = true">添加动画</gz-button>
+		<gz-button @click="previewAnimate">预览动画</gz-button>
+		<div>
+			<el-tag
+				v-for="(tag, index) in store.state.currentComp.animations"
+				:key="index"
+				closable
+				@close="removeAnimation(index)"
+			>
+				{{ tag.label }}
+			</el-tag>
+		</div>
+		<!-- 选择动画 -->
+		{{ state.isShowAnimation }}
+		<Modal v-model="state.isShowAnimation">
+			<el-tabs v-model="state.animationActiveName">
+				<el-tab-pane v-for="item in animationClassData" :key="item.label" :label="item.label" :name="item.label">
+					<el-scrollbar class="animate-container">
+						<div
+							class="animate"
+							v-for="(animate, index) in item.children"
+							:key="index"
+							@mouseover="state.hoverPreviewAnimate = animate.value"
+							@click="addAnimation(animate)"
+						>
+							<div :class="[state.hoverPreviewAnimate === animate.value && animate.value + ' animated']">
+								{{ animate.label }}
+							</div>
+						</div>
+					</el-scrollbar>
+				</el-tab-pane>
+			</el-tabs>
+		</Modal>
 	</div>
 </template>
 
@@ -37,6 +70,8 @@ export default {
 </script>
 
 <script setup>
+import Modal from "@/components/Modal.vue";
+import animationClassData from "@/assets/js/animationClassData";
 import { reactive, ref, onMounted, watch, computed, getCurrentInstance, useSlots, nextTick } from "vue";
 import { useStore } from "vuex";
 const props = defineProps({});
@@ -55,6 +90,11 @@ const compInfo = computed(() => {
 });
 const state = reactive({
 	compBaseInfo: compProperty.value,
+	isShowAnimation: false,
+	hoverPreviewAnimate: "",
+	animationActiveName: "进入",
+	animationClassData,
+	showAnimatePanel: false,
 });
 </script>
 
@@ -66,6 +106,28 @@ const state = reactive({
 	}
 	.el-col.el-col-2.line {
 		text-align: center;
+	}
+}
+.el-scrollbar__view {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	padding-left: 10px;
+
+	.animate > div {
+		width: 100px;
+		height: 60px;
+		background: #f5f8fb;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0 12px;
+		margin-bottom: 10px;
+		font-size: 12px;
+		color: #333;
+		border-radius: 3px;
+		user-select: none;
+		cursor: pointer;
 	}
 }
 </style>

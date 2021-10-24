@@ -2,7 +2,7 @@
 	<div
 		class="canvas"
 		ref="canvasRef"
-		:style="containerStyle"
+		:style="getCanvasStyle(canvasStyle)"
 		@contextmenu="handleContextMenu"
 		@mousedown="handleMouseDown"
 	>
@@ -69,7 +69,9 @@ import Grid from "./grid.vue";
 import Area from "./Area.vue";
 import ContextMenu from "./ContextMenu.vue";
 import mitt from "../../../mitt";
-const props = defineProps({});
+const props = defineProps({
+	canvasStyle: {},
+});
 const ctx = getCurrentInstance();
 const state = reactive({});
 const store = useStore();
@@ -149,7 +151,13 @@ const handleMouseDown = e => {
 	document.addEventListener("mousemove", move);
 	document.addEventListener("mouseup", up);
 };
-
+const getCanvasStyle = style => {
+	const result = {};
+	["width", "height"].forEach(attr => {
+		result[attr] = style[attr] + "px";
+	});
+	return result;
+};
 const getSelectArea = () => {
 	const result = [];
 	// 区域起点坐标
