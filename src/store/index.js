@@ -91,6 +91,13 @@ export default createStore({
 		hideContextMenu(state) {
 			state.menuShow = false;
 		},
+		addAnimation(state, animation, rootState) {
+			state.currentComp.animations = animation;
+			console.log(state);
+		},
+		removeAnimation(state) {
+			state.currentComp.animations = [];
+		},
 		setClickComponentStatus(state, status) {
 			state.isClickComponent = status;
 		},

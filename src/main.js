@@ -13,7 +13,8 @@ import store from "./store";
 import axios from "axios";
 // 全局样式
 import "styles/index.scss";
-import "animate.css";
+// import animated from "animate.css";
+import "@/styles/animate.css";
 // 全局引入element3
 import element3 from "plugins/element3";
 
@@ -28,7 +29,6 @@ app.use(router);
 app.use(store);
 app.use(element3);
 app.use(ui.gzUI);
-
 router.beforeEach((to, from, next) => {
 	if (to.path == "/editor") {
 		store.commit("navbar/toggleEditScreen", true);

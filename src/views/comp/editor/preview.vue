@@ -6,19 +6,7 @@
 			class="comp"
 			:style="getCompStyle(item.style, index, item.isGroup)"
 		>
-			<component v-if="!item.isGroup" :is="compInfo.compMapList.get(item.key).render()"></component>
-			<template v-else>
-				<div class="group">
-					<template v-for="gItem in item.group">
-						<component
-							class="singleGroup"
-							:is="compInfo.compMapList.get(gItem.key).render()"
-							:style="gItem.groupStyle"
-							:id="'component' + gItem.id"
-						/>
-					</template>
-				</div>
-			</template>
+			<component-preview :item="item" :index="index"></component-preview>
 		</div>
 	</div>
 </template>
@@ -33,6 +21,7 @@ export default {
 import { reactive, ref, onMounted, inject, watch, computed, getCurrentInstance, useSlots, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
+import componentPreview from "./componentPreview.vue";
 const props = defineProps({});
 const ctx = getCurrentInstance();
 const emit = defineEmits();

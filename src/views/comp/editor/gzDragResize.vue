@@ -98,7 +98,13 @@ const baseDomStyle = (style, index, isGroup) => {
 	});
 	return result;
 };
-onMounted(() => {});
+onMounted(() => {
+	mitt.on("runAnimation", () => {
+		// if (this.element == this.curComponent) {
+		vm.$tool.runAnimation(ctx.ctx.$el, ctx.ctx.curComponent.animations);
+		// }
+	});
+});
 const isActive = () => {
 	return props.active && !props.element.isLock;
 };

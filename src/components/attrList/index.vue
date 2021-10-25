@@ -26,40 +26,15 @@
 			<el-form-item label="不透明度">
 				<el-slider v-model="compProperty.opacity" show-input> </el-slider>
 			</el-form-item>
+			<el-form-item label="动画系列">
+				<el-select v-model="state.animationGroup" multiple collapse-tags placeholder="请选择" @change="changeAnimation">
+					<el-option-group v-for="group in state.animationClassData" :key="group.label" :label="group.label">
+						<el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item"> </el-option>
+					</el-option-group>
+				</el-select>
+				<el-button @click="previewAnimate">预览动画</el-button>
+			</el-form-item>
 		</el-form>
-		<gz-button @click="state.isShowAnimation = true">添加动画</gz-button>
-		<gz-button @click="previewAnimate">预览动画</gz-button>
-		<div>
-			<el-tag
-				v-for="(tag, index) in store.state.currentComp.animations"
-				:key="index"
-				closable
-				@close="removeAnimation(index)"
-			>
-				{{ tag.label }}
-			</el-tag>
-		</div>
-		<!-- 选择动画 -->
-		{{ state.isShowAnimation }}
-		<Modal v-model="state.isShowAnimation">
-			<el-tabs v-model="state.animationActiveName">
-				<el-tab-pane v-for="item in animationClassData" :key="item.label" :label="item.label" :name="item.label">
-					<el-scrollbar class="animate-container">
-						<div
-							class="animate"
-							v-for="(animate, index) in item.children"
-							:key="index"
-							@mouseover="state.hoverPreviewAnimate = animate.value"
-							@click="addAnimation(animate)"
-						>
-							<div :class="[state.hoverPreviewAnimate === animate.value && animate.value + ' animated']">
-								{{ animate.label }}
-							</div>
-						</div>
-					</el-scrollbar>
-				</el-tab-pane>
-			</el-tabs>
-		</Modal>
 	</div>
 </template>
 
@@ -70,7 +45,7 @@ export default {
 </script>
 
 <script setup>
-import Modal from "@/components/Modal.vue";
+import mitt from "@/mitt.js";
 import animationClassData from "@/assets/js/animationClassData";
 import { reactive, ref, onMounted, watch, computed, getCurrentInstance, useSlots, nextTick } from "vue";
 import { useStore } from "vuex";
@@ -90,12 +65,17 @@ const compInfo = computed(() => {
 });
 const state = reactive({
 	compBaseInfo: compProperty.value,
-	isShowAnimation: false,
-	hoverPreviewAnimate: "",
-	animationActiveName: "进入",
 	animationClassData,
-	showAnimatePanel: false,
+	animationGroup: "",
 });
+
+const changeAnimation = value => {
+	store.commit("addAnimation", value);
+};
+
+const previewAnimate = () => {
+	mitt.emit("runAnimation");
+};
 </script>
 
 <style scoped lang="scss">
