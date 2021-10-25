@@ -102,7 +102,7 @@ const baseDomStyle = (style, index, isGroup) => {
 onMounted(() => {
 	mitt.on("runAnimation", () => {
 		// if (this.element == this.curComponent) {
-		$tool.runAnimation(ctx.ctx.$el, store.state.curComponent.animations);
+		$tool.runAnimation(ctx.ctx.$el, store.state.currentComp.animations);
 		// }
 	});
 });
