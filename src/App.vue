@@ -12,6 +12,8 @@
 
 <script setup>
 import ui from "@/libs/gz-ui/index.jsx";
+import tool from "@/assets/js/tool.js";
 import { provide } from "vue";
 provide("compInfo", ui.compInfo);
+provide("$tool", tool);
 </script>

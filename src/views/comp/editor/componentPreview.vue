@@ -27,6 +27,7 @@ import { reactive, ref, onMounted, watch, computed, getCurrentInstance, useSlots
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 const compInfo = inject("compInfo");
+const $tool = inject("$tool");
 const props = defineProps({
 	item: {},
 	index: {
@@ -44,7 +45,7 @@ const router = useRouter();
 const fn = val => {};
 onMounted(() => {
 	let compList = JSON.parse(localStorage.getItem("currentCompList"));
-	vm.$tool.runAnimation(ctx.ctx.$el, compList[props.index].animations);
+	$tool.runAnimation(ctx.ctx.$el, compList[props.index].animations);
 });
 </script>
 

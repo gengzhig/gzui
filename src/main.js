@@ -44,3 +44,4 @@ app.config.errorHandler = (err, vm, info) => {
 };
 
 window.vm = app.mount("#app");
+console.log(vm);

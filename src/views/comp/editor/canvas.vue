@@ -79,6 +79,7 @@ const currentCompId = computed(() => {
 	return store.getters.currentCompId;
 });
 const compInfo = inject("compInfo");
+const $tool = inject("$tool");
 const canvasRef = ref(null);
 const area = reactive({
 	editorX: 0,
@@ -165,7 +166,7 @@ const getSelectArea = () => {
 	// 计算所有的组件数据，判断是否在选中区域内
 	store.state.currentCompList.forEach(component => {
 		if (component.isLock) return;
-		const { left, top, width, height } = vm.$tool.getComponentRotatedStyle(component.style);
+		const { left, top, width, height } = $tool.getComponentRotatedStyle(component.style);
 		if (x <= left && y <= top && left + width <= x + area.width && top + height <= y + area.height) {
 			result.push(component);
 		}
@@ -206,7 +207,7 @@ const createGroup = () => {
 				if (style.bottom > bottom) bottom = style.bottom;
 			});
 		} else {
-			style = vm.$tool.getComponentRotatedStyle(component.style);
+			style = $tool.getComponentRotatedStyle(component.style);
 		}
 
 		if (style.left < left) left = parseInt(style.left);

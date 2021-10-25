@@ -18,7 +18,7 @@
         .aaa.play {
             width: 50px;
             height: 50px;
-            background: url(shengyinkai.png) no-repeat;
+            background: url(shengyinguan.png) no-repeat;
             background-size: 100% 100%;
             background-color: #333;
         }
@@ -26,65 +26,16 @@
         .aaa.pause {
             width: 50px;
             height: 50px;
-            background: url(shengyinguan.png) no-repeat;
+            background: url(shengyinkai.png) no-repeat;
             background-size: 100% 100%;
             background-color: #333;
         }
-
-        /* .container {
-            width: 300px;
-            height: 500px;
-            margin: 50px auto;
-            border: 1px solid;
-        }
-
-        .line {
-            display: flex;
-            justify-content: flex-start;
-        }
-
-        .label {
-            width: 80px;
-            text-align: justify;
-        }
-
-        .label::after {
-            content: '';
-            display: inline-block;
-            padding-left: 100%;
-        }
-
-        .content {
-            margin-left: 10px;
-        } */
     </style>
 </head>
 
 <body>
-    <!-- <button id="qp">全屏</button>
-    <button id="sx">刷新</button>
-    <div class="container">
-        <div class="line">
-            <div class="label">姓名</div>
-            <div class="content">111111111</div>
-        </div>
-        <div class="line">
-            <div class="label">家庭住址</div>
-            <div class="content">水电费水电费是发是</div>
-        </div>
-        <div class="line">
-            <div class="label">超常用的信息</div>
-            <div class="content">大范甘迪个大概的风格</div>
-        </div>
-    </div>
-    <div class="footer">
-        <h1>家庭住址</h1>
-        <h1>家庭住址</h1>
-    </div> -->
 
 
-    <button id="bofang">播放</button>
-    <button id="zanting">暂停</button>
     <div class="aaa play">
     </div>
     <audio id="audio1">
@@ -93,7 +44,8 @@
 </body>
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-    var myAudio = document.getElementById('audio1');
+    var myAudio = $('#audio1')[0];
+
     function playPause() {
         if (myAudio.paused) {
             myAudio.play();
@@ -101,12 +53,7 @@
             myAudio.pause();
         }
     }
-    $("#bofang").click(function () {
-        playPause()
-    })
-    $("#zanting").click(function () {
-        playPause()
-    })
+
     $(".aaa").click(function () {
         console.log($(".aaa")[0].className);
         if ($(".aaa")[0].className.indexOf("play") > -1) {
@@ -114,6 +61,7 @@
         } else {
             $(".aaa").attr("class", "aaa play");
         }
+        playPause()
     })
 
     // let aa = null;

@@ -14,7 +14,7 @@
 import { computed, inject, ref, onMounted, reactive, watch, getCurrentInstance } from "vue";
 import { useStore } from "vuex";
 import mitt from "@/mitt.js";
-
+const $tool = inject("$tool");
 const store = useStore();
 const lineRef = ref(null);
 const ctx = getCurrentInstance();
@@ -55,13 +55,13 @@ const showLine = (isDownward, isRightward) => {
 	}
 
 	const components = store.state.currentCompList;
-	const curComponentStyle = vm.$tool.getComponentRotatedStyle(store.state.currentComp.style);
+	const curComponentStyle = $tool.getComponentRotatedStyle(store.state.currentComp.style);
 	const curComponentHalfwidth = curComponentStyle.width / 2;
 	const curComponentHalfHeight = curComponentStyle.height / 2;
 	hideLine();
 	components.forEach(component => {
 		if (component.id == store.state.currentComp.id) return;
-		const componentStyle = vm.$tool.getComponentRotatedStyle(component.style);
+		const componentStyle = $tool.getComponentRotatedStyle(component.style);
 		const { top, left, bottom, right } = componentStyle;
 		const componentHalfwidth = componentStyle.width / 2;
 		const componentHalfHeight = componentStyle.height / 2;

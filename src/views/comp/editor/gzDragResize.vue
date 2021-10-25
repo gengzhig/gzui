@@ -30,9 +30,10 @@ export default {
 </script>
 
 <script setup>
-import { reactive, ref, onMounted, watch, computed, useSlots, nextTick, getCurrentInstance } from "vue";
+import { reactive, ref, onMounted, watch, computed, useSlots, nextTick, getCurrentInstance, inject } from "vue";
 import { useStore } from "vuex";
 import mitt from "@/mitt.js";
+const $tool = inject("$tool");
 const props = defineProps({
 	active: {
 		type: Boolean,
@@ -101,7 +102,7 @@ const baseDomStyle = (style, index, isGroup) => {
 onMounted(() => {
 	mitt.on("runAnimation", () => {
 		// if (this.element == this.curComponent) {
-		vm.$tool.runAnimation(ctx.ctx.$el, ctx.ctx.curComponent.animations);
+		$tool.runAnimation(ctx.ctx.$el, ctx.ctx.curComponent.animations);
 		// }
 	});
 });
@@ -191,12 +192,13 @@ const getPointStyle = point => {
 
 const getCursor = () => {
 	const { angleToCursor, initialAngle, pointList } = state;
-	const rotate = vm.$tool.mod360(curComponent.value.style.rotate); // 取余 360
+
+	const rotate = $tool.mod360(curComponent.value.style.rotate); // 取余 360
 	const result = {};
 	let lastMatchIndex = -1; // 从上一个命中的角度的索引开始匹配下一个，降低时间复杂度
 
 	pointList.forEach(point => {
-		const angle = vm.$tool.mod360(initialAngle[point] + rotate);
+		const angle = $tool.mod360(initialAngle[point] + rotate);
 		const len = angleToCursor.length;
 		while (true) {
 			lastMatchIndex = (lastMatchIndex + 1) % len;
@@ -319,7 +321,7 @@ const handleMouseDownOnPoint = (point, e) => {
 			x: moveEvent.clientX - editorRectInfo.left,
 			y: moveEvent.clientY - editorRectInfo.top,
 		};
-		vm.$tool.calculateComponentPositonAndSize(point, style, curPositon, proportion, needLockProportion, {
+		$tool.calculateComponentPositonAndSize(point, style, curPositon, proportion, needLockProportion, {
 			center,
 			curPoint,
 			symmetricPoint,
@@ -341,7 +343,7 @@ const isNeedLockProportion = () => {
 	if (props.element.component != "Group") return false;
 	const ratates = [0, 90, 180, 360];
 	for (const component of props.element.propValue) {
-		if (!ratates.includes(vm.$tool.mod360(parseInt(component.style.rotate)))) {
+		if (!ratates.includes($tool.mod360(parseInt(component.style.rotate)))) {
 			return true;
 		}
 	}
