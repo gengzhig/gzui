@@ -1,5 +1,5 @@
 <template>
-	<div class="preview">
+	<div class="preview" :style="{ width: canvasStyle.width + 'px', height: canvasStyle.height + 'px' }">
 		<div
 			v-for="(item, index) in compData"
 			:key="index"
@@ -32,9 +32,15 @@ const slots = useSlots();
 const router = useRouter();
 const compInfo = inject("compInfo");
 const compData = ref([]);
+const canvasStyle = ref(null);
 onMounted(() => {
 	let compList = JSON.parse(localStorage.getItem("currentCompList"));
+	let canvas = JSON.parse(localStorage.getItem("canvasStyle"));
+	if (!canvas) {
+		canvas = { width: 1920, height: 1080 };
+	}
 	compData.value = compList;
+	canvasStyle.value = canvas;
 });
 const getCompStyle = (style, index, isGroup) => {
 	const result = {};
@@ -55,9 +61,8 @@ const getCompStyle = (style, index, isGroup) => {
 
 <style scoped lang="scss">
 .preview {
-	width: 100vw;
-	height: 100vh;
 	position: relative;
+	overflow: hidden;
 	.comp {
 		position: absolute;
 		.group {

@@ -85,7 +85,6 @@ import { ref, inject, computed, reactive, toRef, watch } from "vue";
 import { useStore } from "vuex";
 
 import Navbar from "layouts/components/Navbar.vue";
-import compList from "./compList.vue";
 import CanvasArea from "./canvas.vue";
 import compLibrary from "./compLibrary.vue";
 import compLayer from "./compLayer.vue";
@@ -108,11 +107,6 @@ const currentCompId = computed(() => {
 const currentCompList = computed(() => {
 	return store.state.currentCompList;
 });
-// 画布尺寸
-// const containerStyle = computed(() => ({
-// 	width: `${json.value.container?.width}px`,
-// 	height: `${json.value.container?.height}px`,
-// }));
 watch(
 	() => [store.state.sidebar.layerArea, store.state.sidebar.compLibraryArea, store.state.sidebar.operateMainArea],
 	value => {
@@ -131,7 +125,23 @@ watch(
 		}
 	}
 );
-
+watch(
+	() => {
+		return [state.canvas.width, state.canvas.height];
+	},
+	value => {
+		let [width, height] = value;
+		width = parseInt(width);
+		height = parseInt(height);
+		localStorage.setItem(
+			"canvasStyle",
+			JSON.stringify({
+				width,
+				height,
+			})
+		);
+	}
+);
 const handleDrop = e => {
 	e.preventDefault();
 	e.stopPropagation();

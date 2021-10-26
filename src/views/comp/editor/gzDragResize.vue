@@ -1,5 +1,11 @@
 <template>
-	<div class="dragResize" :class="{ active }" @click="selectCurComponent" @mousedown="handleMouseDownOnShape">
+	<div
+		class="dragResize"
+		:class="{ active }"
+		@click="selectCurComponent"
+		@mousedown="handleMouseDownOnShape"
+		ref="dragItemRef"
+	>
 		<div class="navigator-line" v-if="active">
 			<div class="navigator-line-left" :style="{ width: defaultStyle.left + 'px' }"></div>
 			<div class="navigator-line-top" :style="{ height: defaultStyle.top + 'px' }"></div>
@@ -78,6 +84,7 @@ const state = reactive({
 	],
 	cursors: {},
 });
+const dragItemRef = ref(null);
 const ctx = getCurrentInstance();
 const store = useStore();
 const slots = useSlots();
@@ -101,9 +108,9 @@ const baseDomStyle = (style, index, isGroup) => {
 };
 onMounted(() => {
 	mitt.on("runAnimation", () => {
-		// if (this.element == this.curComponent) {
-		$tool.runAnimation(ctx.ctx.$el, store.state.currentComp.animations);
-		// }
+		if (props.element.id == store.state.currentComp.id) {
+			$tool.runAnimation(ctx.ctx.$el, store.state.currentComp.animations);
+		}
 	});
 });
 const isActive = () => {

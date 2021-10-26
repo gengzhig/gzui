@@ -27,7 +27,13 @@
 				<el-slider v-model="compProperty.opacity" show-input> </el-slider>
 			</el-form-item>
 			<el-form-item label="动画系列">
-				<el-select v-model="state.animationGroup" multiple collapse-tags placeholder="请选择" @change="changeAnimation">
+				<el-select
+					v-model="compProperty.animationGroup"
+					multiple
+					collapse-tags
+					placeholder="请选择"
+					@change="changeAnimation"
+				>
 					<el-option-group v-for="group in state.animationClassData" :key="group.label" :label="group.label">
 						<el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item"> </el-option>
 					</el-option-group>
