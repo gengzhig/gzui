@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
+
+        app {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <canvas id="canvas" width="600" height="300"></canvas>
+        <img id="img" />
+        <div>
+            <button type="button" onClick="app.clear()">清除画板</button>
+            <button type="button" onClick="app.screenshot.call(app)">截图</button>
+        </div>
+    </div>
+    <script src="./3.js">
+
+    </script>
+    <script>
+        const app = new Draw("#canvas");
+        console.log(app);
+        app.run();
+    </script>
+</body>
+
+</html>
