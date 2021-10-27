@@ -1,28 +1,26 @@
 {
-  "name": "gengzhiui",
-  "version": "1.0.0",
-  "description": "耿智开发的一套基于vue3的前端组件库",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "test-e2e": "cypress open"
-  },
-  "dependencies": {
-    "axios": "^0.21.1",
-    "cypress": "^8.3.1",
-    "echarts": "^5.1.2",
-    "element-plus": "^1.1.0-beta.19",
-    "element3": "^0.0.39",
-    "monaco-editor": "^0.29.1",
-    "vue": "^3.0.5",
-    "vue-router": "^4.0.3",
-    "vuex": "^4.0.0-rc.2"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^1.4.0",
-    "@vitejs/plugin-vue-jsx": "^1.0.2",
-    "@vue/compiler-sfc": "3.1.5",
-    "sass": "^1.32.5",
-    "vite": "^2.0.0-beta.12"
-  }
+	"name": "gengzhiui",
+	"version": "1.0.0",
+	"description": "耿智开发的一套基于vue3的前端组件库",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"test-e2e": "cypress open"
+	},
+	"dependencies": {
+		"axios": "^0.21.1",
+		"echarts": "^5.1.2",
+		"element3": "^0.0.39",
+		"monaco-editor": "^0.29.1",
+		"vue": "^3.0.5",
+		"vue-router": "^4.0.3",
+		"vuex": "^4.0.0-rc.2"
+	},
+	"devDependencies": {
+		"@vitejs/plugin-vue": "^1.4.0",
+		"@vitejs/plugin-vue-jsx": "^1.0.2",
+		"@vue/compiler-sfc": "3.1.5",
+		"sass": "^1.32.5",
+		"vite": "^2.0.0-beta.12"
+	}
 }

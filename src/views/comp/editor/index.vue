@@ -47,7 +47,20 @@
 				</div>
 			</div>
 			<div class="operateMain" :class="store.state.sidebar.operateMainArea ? '' : 'hide'">
-				<gz-tabs
+				<el-tabs v-model="state.activeName" @tab-click="handleClick">
+					<el-tab-pane label="属性" name="first">
+						<AttrList v-if="currentCompName" />
+						<p v-else class="placeholder">请选择组件(属性)</p>
+					</el-tab-pane>
+					<el-tab-pane label="数据" name="second">
+						<DataList v-if="currentCompName" />
+						<p v-else class="placeholder">请选择组件(数据)</p>
+					</el-tab-pane>
+					<el-tab-pane label="交互" name="third">
+						<p class="placeholder">请选择组件(交互)</p>
+					</el-tab-pane>
+				</el-tabs>
+				<!-- <gz-tabs
 					v-model:activeName="state.activeName"
 					:width="500"
 					:headerHeight="60"
@@ -65,7 +78,7 @@
 					<gz-tabs-pane label="交互" name="third" class="tab-pane">
 						<p class="placeholder">请选择组件(交互)</p>
 					</gz-tabs-pane>
-				</gz-tabs>
+				</gz-tabs> -->
 			</div>
 		</div>
 	</div>
@@ -294,7 +307,7 @@ window.addEventListener("keydown", keyboardEvent());
 			}
 		}
 		.operateMain {
-			width: 500px;
+			width: 350px;
 			height: calc(100vh - 60px);
 			color: #fff;
 			background-color: #1d2127;

@@ -27,7 +27,7 @@
 			<!-- 成组组件 -->
 			<template v-else>
 				<div class="group">
-					<template v-for="gItem in item.group">
+					<template v-for="gItem in item.group" :key="gItem">
 						<component
 							class="singleGroup"
 							:is="compInfo.compMapList.get(gItem.key).render()"

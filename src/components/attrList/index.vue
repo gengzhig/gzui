@@ -2,43 +2,41 @@
 	<div v-if="compName" class="comp-attrList">
 		<h3 class="comp-name">{{ compName }}</h3>
 		<el-form label-width="80px" :model="state.compBaseInfo" class="demo-form-inline">
-			<el-form-item label="组件尺寸">
-				<el-col :span="11">
-					<el-input-number v-model="compProperty.width" :min="0" controls-position="right" placeholder="组件宽度" />
-				</el-col>
-				<el-col class="line" :span="2"> - </el-col>
-				<el-col :span="11">
-					<el-input-number v-model="compProperty.height" :min="0" controls-position="right" placeholder="组件高度" />
-				</el-col>
+			<el-form-item label="组件宽度">
+				<el-input-number v-model="compProperty.width" :min="0" controls-position="right" placeholder="组件宽度" />
 			</el-form-item>
-			<el-form-item label="组件位置">
-				<el-col :span="11">
-					<el-input-number v-model="compProperty.left" :min="0" controls-position="right" placeholder="x" />
-				</el-col>
-				<el-col class="line" :span="2">-</el-col>
-				<el-col :span="11">
-					<el-input-number v-model="compProperty.top" :min="0" controls-position="right" placeholder="y" />
-				</el-col>
+			<el-form-item label="组件高度">
+				<el-input-number v-model="compProperty.height" :min="0" controls-position="right" placeholder="组件高度" />
+			</el-form-item>
+			<el-form-item label="组件位置X">
+				<el-input-number v-model="compProperty.left" :min="0" controls-position="right" placeholder="x" />
+			</el-form-item>
+			<el-form-item label="组件位置Y">
+				<el-input-number v-model="compProperty.top" :min="0" controls-position="right" placeholder="y" />
 			</el-form-item>
 			<el-form-item label="旋转角度">
 				<el-input-number v-model="compProperty.rotate" :step="1" controls-position="right" placeholder="旋转角度" />
 			</el-form-item>
 			<el-form-item label="不透明度">
-				<el-slider v-model="compProperty.opacity" show-input> </el-slider>
+				<el-slider v-model="compProperty.opacity"> </el-slider>
 			</el-form-item>
 			<el-form-item label="动画系列">
-				<el-select
-					v-model="compProperty.animationGroup"
-					multiple
-					collapse-tags
-					placeholder="请选择"
-					@change="changeAnimation"
-				>
-					<el-option-group v-for="group in state.animationClassData" :key="group.label" :label="group.label">
-						<el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item"> </el-option>
-					</el-option-group>
-				</el-select>
-				<el-button @click="previewAnimate">预览动画</el-button>
+				<el-col :span="18">
+					<el-select
+						v-model="compProperty.animationGroup"
+						multiple
+						collapse-tags
+						placeholder="请选择"
+						@change="changeAnimation"
+					>
+						<el-option-group v-for="group in state.animationClassData" :key="group.label" :label="group.label">
+							<el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item"> </el-option>
+						</el-option-group>
+					</el-select>
+				</el-col>
+				<el-col :span="6">
+					<el-button @click="previewAnimate">预览</el-button>
+				</el-col>
 			</el-form-item>
 		</el-form>
 	</div>
