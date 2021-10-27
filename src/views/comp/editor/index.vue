@@ -59,7 +59,8 @@
 						<p v-else class="placeholder">请选择组件(属性)</p>
 					</gz-tabs-pane>
 					<gz-tabs-pane label="数据" name="second" class="tab-pane">
-						<p class="placeholder">请选择组件(数据)</p>
+						<DataList v-if="currentCompName" />
+						<p v-else class="placeholder">请选择组件(数据)</p>
 					</gz-tabs-pane>
 					<gz-tabs-pane label="交互" name="third" class="tab-pane">
 						<p class="placeholder">请选择组件(交互)</p>
@@ -89,6 +90,7 @@ import CanvasArea from "./canvas.vue";
 import compLibrary from "./compLibrary.vue";
 import compLayer from "./compLayer.vue";
 import AttrList from "@/components/attrList/index.vue";
+import DataList from "@/components/dataList/index.vue";
 const store = useStore();
 const appMainRef = ref(null);
 const canvasRef = ref(null);
@@ -288,7 +290,7 @@ window.addEventListener("keydown", keyboardEvent());
 				width: 100%;
 				height: calc(100vh - 160px);
 				overflow: auto;
-				background: #443e3e;
+				background: #0d2a42;
 			}
 		}
 		.operateMain {

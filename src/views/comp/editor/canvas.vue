@@ -15,7 +15,7 @@
 			:style="getCompStyle(item.style, index, item.isGroup)"
 			:defaultStyle="item.style"
 			:active="item.id == (currentComp || {}).id"
-			:class="{ lock: item.isLock }"
+			:class="{ lock: item.isLock, hide: item.isHide }"
 		>
 			<!-- 单个真实组件 -->
 			<component

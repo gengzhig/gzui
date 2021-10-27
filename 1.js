@@ -32,7 +32,7 @@ class MVVM {
 				},
 				set(newValue) {
 					if (that._data[key] != newValue) {
-                        that.domPool[key].innerText=newValue
+						that.domPool[key].innerText = newValue;
 						that._data[key] = newValue;
 						console.log("设置数据", key + ":" + that._data[key]);
 					}
@@ -51,7 +51,7 @@ class MVVM {
 					if (_isValid) {
 						const _key = _value.match(/\{\{(.+?)\}\}/)[1].trim();
 						this.domPool[_key] = item.parentNode;
-                        item.parentNode.innerText=this.data[_key]
+						item.parentNode.innerText = this.data[_key];
 					}
 				}
 			}
@@ -70,6 +70,5 @@ class MVVM {
 	handleInput(key, value) {
 		const _value = value.value;
 		this.data[key] = _value;
-		console.log(this.data.name);
 	}
 }

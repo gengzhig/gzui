@@ -85,13 +85,7 @@
 				<el-button :disabled="buttonStatus" size="mini" type="primary" icon="el-icon-lock" @click="lock"></el-button>
 			</el-tooltip>
 			<el-tooltip class="item" effect="dark" content="隐藏" placement="bottom">
-				<el-button
-					:disabled="buttonStatus"
-					size="mini"
-					type="primary"
-					icon="el-icon-view"
-					@click="moveBottom"
-				></el-button>
+				<el-button :disabled="buttonStatus" size="mini" type="primary" icon="el-icon-view" @click="hide"></el-button>
 			</el-tooltip>
 		</div>
 	</div>
@@ -161,6 +155,12 @@ const moveDown = () => {
 const lock = () => {
 	store.commit("lock");
 };
+
+// 隐藏
+const hide = () => {
+	store.commit("hide");
+};
+
 const deleteComp = () => {
 	store.commit("deleteComponent");
 };

@@ -366,6 +366,9 @@ const isNeedLockProportion = () => {
 	&:hover {
 		cursor: move;
 	}
+	&.hide {
+		display: none;
+	}
 	&.active .datav-scale {
 		outline: rgb(112, 192, 255) solid 1px;
 	}

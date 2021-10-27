@@ -228,7 +228,7 @@ const isNearly = (dragValue, targetValue) => {
 	height: 100%;
 }
 .line {
-	background: #333;
+	background: red;
 	position: absolute;
 	z-index: 1000;
 }

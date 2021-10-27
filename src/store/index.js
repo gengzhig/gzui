@@ -312,6 +312,14 @@ export default createStore({
 			})[0].isLock = false;
 			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
 		},
+		// 隐藏
+		hide(state) {
+			state.currentComp.isHide = !state.currentComp.isHide;
+			state.currentCompList.filter(c => {
+				return c.id == state.currentComp.id;
+			})[0].isHide = state.currentComp.isHide;
+			localStorage.setItem("currentCompList", JSON.stringify(state.currentCompList));
+		},
 		// 重命名
 		rename(state, payload) {
 			state.currentComp.name = payload;
@@ -445,7 +453,6 @@ export default createStore({
 					});
 			}
 		},
-		hide(state, payload) {},
 	},
 	actions: {
 		changeDevice({ commit }, payload) {

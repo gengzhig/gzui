@@ -53,5 +53,12 @@ onMounted(() => {
 .preview-comp {
 	width: 100%;
 	height: 100%;
+	.group {
+		height: 100%;
+		position: relative;
+		.singleGroup {
+			position: absolute;
+		}
+	}
 }
 </style>

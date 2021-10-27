@@ -15,31 +15,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
-    .container {
-      height: 100vh;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    #left {
-      width: 300px;
-      border-right: 1px solid #ccc
-    }
-
     #right {
-      width: 300px;
+      display: none;
+    }
+
+    .content {
+      display: none;
+    }
+
+    .content h1,
+    .content p {
+      display: none;
+    }
+
+    .mask {
+      display: none;
+    }
+
+    .mask p {
+      display: none;
+    }
+
+    video {
+      position: absolute;
     }
   </style>
 </head>
 
 <body>
+
   <div class="container">
-    <div id="left"></div>
+    <pre id="left"></pre>
+
     <div id="right">
-      <h1>介绍</h1>
-      <p>
-        自我介绍
-      </p>
+      <div class="content">
+        <h1>上海有智</h1>
+        <p class="p1"> 上海有智（USMART）网络科技有限公司是全球领先的工业企业智慧监控与可视化运营管理云服务提供商。</p>
+        <p class="p2">
+          上海有智（USMART）网络科技有限公司的iPEMS®解决方案，让企业运营管理人员全面掌握企业运行状态，及时发现生产过程中存在的问题，及时做出智慧决策，从而全面优化企业运行效率，帮助企业节能减排，促进企业安全生产，有效提高企业信息化与智慧化水平。
+        </p>
+        <p class="p3">上海有智网络科技有限公司，通过CMMI专家团的评估：有智网络科技软件研发成熟度已经到达业界最高的CMMI 5级水平！</p>
+      </div>
+      <div class="mask">
+        <p>沧海横流</p>
+        <p>方显英雄本色</p>
+      </div>
+      <video style="width: 100%;height: 100%;object-fit: fill" muted="" autoplay="autoplay" loop="loop"
+        src="http://www.usmartww.com/client/global/video/banner_3.mp4" ng-if="_handle.isPcOrAndroid=='pc'"
+        class="ng-scope"></video>
     </div>
   </div>
   <style id="style">
@@ -47,15 +70,77 @@
 
 </body>
 <script>
-  let code = `body {
-      background-color: red;
+  let code = `
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #ced6e0;
       perspective: 1000px;
     }
-    
+    .container {
+      height: 100vh;
+      display: flex;
+      justify-content: space-between;
+      box-sizing: border-box;
+      padding: 50px;
+    }
+    #left{
+       width: 300px;
+       padding-right: 50px;
+       border-right: 1px solid #ccc;
+       overflow: auto;
+    }
     #right{
-      background-color: greenyellow;
+      flex: 1;
+      position: relative;
+      display:block;
+    }
+    #right .content{
+      display:block;
+      position: absolute;
+      top: 0;
+      width: 400px;
+      height: 98%;
+      left: 0;
+      z-index: 9999;
+      color: #fff;
+      transition: .8s all ease-in-out;
       transform: rotateY(10deg);
-    }`
+      padding: 50px;
+      box-sizing: border-box;
+      font-family: "楷体";
+    }
+    #right .content h1{
+      display:block;
+      margin-bottom: 15px;
+    }
+    #right .content p{
+      display:block;
+      line-height: 30px;
+      text-indent: 2em;
+    }
+    #right .mask{
+      display:block;
+      position: absolute;
+      color: #fff;
+      right: 50px;
+      top: 100px;
+      z-index: 9999;
+      -webkit-writing-mode: vertical-rl;
+      writing-mode: vertical-rl;
+      font-size: 40px;
+      font-style: italic;
+    }
+    #right .mask p{
+      display:block;
+    }
+    #right .mask p:last-child {
+      display:block;
+      margin-top: 50px;
+    }
+    `
   let n = 0;
   showStyle()
   function showStyle() {
@@ -67,7 +152,7 @@
       } else {
         n++;
       }
-    }, 100);
+    }, 1000 / 40);
   }
 
 </script>

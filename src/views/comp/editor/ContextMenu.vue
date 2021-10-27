@@ -103,6 +103,10 @@ const lock = () => {
 const unlock = () => {
 	store.commit("unlock");
 };
+// 隐藏
+const hide = () => {
+	store.commit("hide");
+};
 // 重命名
 const rename = () => {
 	Msgbox.prompt("请输入组件名称", "提示", {

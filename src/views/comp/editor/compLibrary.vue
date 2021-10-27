@@ -76,6 +76,7 @@ const drop = e => {
 			name: currentComp.subLabel,
 			key: currentComp.key,
 			isLock: false,
+			isHide: false,
 			isGroup: false,
 			animations: [],
 			events: {},
