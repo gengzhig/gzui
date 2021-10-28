@@ -8,7 +8,14 @@
 -->
 <template>
 	<div class="select" v-focus>
-		<SelectInput :width="width" :height="height" :value="value" :placeholder="placeholder" @searchValue="searchValue" />
+		<SelectInput
+			:width="width"
+			:height="height"
+			:label="label"
+			:value="value"
+			:placeholder="placeholder"
+			@searchValue="searchValue"
+		/>
 		<SelectMenu
 			:width="width"
 			:height="height"
@@ -38,6 +45,7 @@ export default {
 	props: {
 		placeholder: String,
 		value: String,
+		label: String,
 		menuData: Array,
 		width: Number,
 		height: Number,

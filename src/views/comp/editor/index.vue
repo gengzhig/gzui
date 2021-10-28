@@ -24,17 +24,16 @@
 				<div class="operateGroup">
 					<gz-button type="primary" @click="compose">成组</gz-button>
 					<gz-button type="primary" @click="decompose">解组</gz-button>
+					{{ currentCompList }}
 					<gz-selector
 						:width="200"
 						:height="40"
 						:filtrateData="true"
 						:value="state.value"
-						:menuData="state.menuData"
+						:menuData="currentCompList"
 						placeholder="搜索画布中的组件"
 						@selectItem="selectItem"
 					></gz-selector>
-					<gz-input v-model:inputValue="state.canvas.width" placeholder="画布大小"></gz-input>
-					<gz-input v-model:inputValue="state.canvas.height" placeholder="画布大小"></gz-input>
 				</div>
 				<div
 					class="wrap"
@@ -43,11 +42,46 @@
 					@mousedown="handleMouseDown"
 					@mouseup="deselectCurComponent"
 				>
-					<CanvasArea :canvasStyle="state.canvas"></CanvasArea>
+					<CanvasArea :canvasStyle="state.screen"></CanvasArea>
 				</div>
 			</div>
 			<div class="operateMain" :class="store.state.sidebar.operateMainArea ? '' : 'hide'">
+				<div class="config-manager-tabs" v-if="!currentCompId">
+					<div class="config-manager-head">页面设置</div>
+					<div class="config-manager-body">
+						<el-form label-width="80px" :model="state.screen" class="demo-form-inline">
+							<el-form-item label="屏幕宽度">
+								<el-input-number
+									v-model="state.screen.width"
+									:min="0"
+									controls-position="right"
+									placeholder="屏幕宽度"
+								/>
+							</el-form-item>
+							<el-form-item label="屏幕高度">
+								<el-input-number
+									v-model="state.screen.height"
+									:min="0"
+									controls-position="right"
+									placeholder="屏幕高度"
+								/>
+							</el-form-item>
+							<el-form-item label="背景颜色">
+								<el-color-picker v-model="state.screen.color" show-alpha />
+							</el-form-item>
+							<el-form-item label="缩放方式">
+								<el-radio-group v-model="state.screen.zoom" size="medium">
+									<el-radio-button label="1">全屏铺满</el-radio-button>
+									<el-radio-button label="2">等比宽铺满</el-radio-button>
+									<el-radio-button label="3">等比高铺满</el-radio-button>
+									<el-radio-button label="4">不缩放</el-radio-button>
+								</el-radio-group>
+							</el-form-item>
+						</el-form>
+					</div>
+				</div>
 				<gz-tabs
+					v-if="currentCompId"
 					v-model:activeName="state.activeName"
 					:width="350"
 					:headerHeight="60"
@@ -82,7 +116,7 @@ export default {
 };
 </script>
 <script setup>
-import { ref, inject, computed, reactive, toRef, watch } from "vue";
+import { ref, inject, computed, reactive, toRef, watch, onMounted } from "vue";
 import { useStore } from "vuex";
 
 import Navbar from "layouts/components/Navbar.vue";
@@ -95,10 +129,17 @@ const store = useStore();
 const appMainRef = ref(null);
 const canvasRef = ref(null);
 const state = reactive({
+	menuData: [],
 	activeName: "first",
 	canvas: {
 		width: 1920,
 		height: 1080,
+	},
+	screen: {
+		width: 1920,
+		height: 1080,
+		color: "#0d2a42",
+		zoom: "",
 	},
 });
 
@@ -129,21 +170,30 @@ watch(
 );
 watch(
 	() => {
-		return [state.canvas.width, state.canvas.height];
+		return state.screen;
 	},
 	value => {
-		let [width, height] = value;
-		width = parseInt(width);
-		height = parseInt(height);
+		let { width, height, color, zoom } = value;
 		localStorage.setItem(
 			"canvasStyle",
 			JSON.stringify({
 				width,
 				height,
+				color,
+				zoom,
 			})
 		);
+	},
+	{
+		deep: true,
 	}
 );
+onMounted(() => {
+	let canvasStyle = JSON.parse(localStorage.getItem("canvasStyle"));
+	if (canvasStyle) {
+		state.screen = canvasStyle;
+	}
+});
 const handleDrop = e => {
 	e.preventDefault();
 	e.stopPropagation();
@@ -311,7 +361,32 @@ window.addEventListener("keydown", keyboardEvent());
 			.comp-tag {
 				height: calc(100vh - 60px) !important;
 			}
+
+			.config-manager-tabs {
+				height: 100%;
+				.config-manager-head {
+					width: 100%;
+					height: 30px;
+					line-height: 30px;
+					background: #2e343c;
+					color: #bcc9d4;
+					text-align: center;
+					user-select: none;
+					font-size: 12px;
+				}
+				.config-manager-body {
+					padding: 20px;
+				}
+			}
 		}
 	}
+}
+</style>
+<style lang="scss">
+.operateMain .el-radio-button {
+	width: 110px;
+}
+.operateMain .el-radio-button__inner {
+	width: 110px;
 }
 </style>

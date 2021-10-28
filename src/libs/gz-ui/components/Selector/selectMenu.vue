@@ -2,7 +2,7 @@
 	<div class="selector-menu">
 		<template v-if="searchData.length > 0">
 			<div class="list-menu" v-for="(item, index) in searchData" :key="index" @click="selectItem(item)">
-				{{ item.text }}
+				{{ item.label }}
 			</div>
 		</template>
 		<noDataTip v-else></noDataTip>
@@ -50,10 +50,10 @@ export default {
 				return props.searchValue;
 			},
 			value => {
-        // 开启筛选数据
-        if (props.filtrateData) {
-          state.searchData = filterSearchData(value);
-        }
+				// 开启筛选数据
+				if (props.filtrateData) {
+					state.searchData = filterSearchData(value);
+				}
 			}
 		);
 		const filterSearchData = value => {
@@ -62,7 +62,7 @@ export default {
 			});
 		};
 		const selectItem = item => {
-			ctx.emit("selectItem", item);
+			ctx.emit("selectItem", item.value);
 		};
 		return { ...toRefs(state), selectItem };
 	},
@@ -83,6 +83,7 @@ export default {
 	box-sizing: border-box;
 	overflow-x: hidden;
 	overflow-y: auto;
+	z-index: 999;
 	.list-menu {
 		color: #606266;
 		font-size: 14px;

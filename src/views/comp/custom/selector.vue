@@ -20,6 +20,7 @@
 					:height="40"
 					:filtrateData="true"
 					:value="state.value"
+					:label="state.label"
 					:menuData="state.menuData"
 					placeholder="请选择"
 					@selectItem="selectItem"
@@ -36,6 +37,7 @@ import baseCopy from "@/components/baseFunction/Copy.vue";
 
 const state = reactive({
 	value: "",
+	label: "",
 	code: `<gz-selector
     :value="value"
     placeholder="请选择"
@@ -44,69 +46,60 @@ const state = reactive({
   </gz-selector>`,
 	menuData: [
 		{
-			id: 1,
 			value: "1",
-			text: "选项1",
+			label: "选项1",
 		},
 		{
-			id: 2,
 			value: "2",
-			text: "选项2",
+			label: "选项2",
 		},
 		{
-			id: 3,
 			value: "3",
-			text: "选项3",
+			label: "选项3",
 		},
 		{
-			id: 4,
 			value: "4",
-			text: "选项4",
+			label: "选项4",
 		},
 		{
-			id: 5,
 			value: "5",
-			text: "选项5",
+			label: "选项5",
 		},
 		{
-			id: 6,
 			value: "6",
-			text: "选项6",
+			label: "选项6",
 		},
 		{
-			id: 7,
 			value: "7",
-			text: "选项7",
+			label: "选项7",
 		},
 		{
-			id: 8,
 			value: "8",
-			text: "选项8",
+			label: "选项8",
 		},
 		{
-			id: 9,
 			value: "9",
-			text: "选项9",
+			label: "选项9",
 		},
 		{
-			id: 10,
 			value: "10",
-			text: "选项10",
+			label: "选项10",
 		},
 		{
-			id: 11,
 			value: "11",
-			text: "选项11",
+			label: "选项11",
 		},
 		{
-			id: 12,
 			value: "12",
-			text: "选项12",
+			label: "选项12",
 		},
 	],
 });
 const selectItem = item => {
-	state.value = item.text;
+	state.value = item;
+	state.label = state.menuData.filter(m => {
+		return m.value == item;
+	})[0].label;
 };
 </script>
 

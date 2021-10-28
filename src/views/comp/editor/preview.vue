@@ -32,15 +32,12 @@ const slots = useSlots();
 const router = useRouter();
 const compInfo = inject("compInfo");
 const compData = ref([]);
-const canvasStyle = ref(null);
+const canvasStyle = computed(() => {
+	return JSON.parse(localStorage.getItem("canvasStyle"));
+});
 onMounted(() => {
 	let compList = JSON.parse(localStorage.getItem("currentCompList"));
-	let canvas = JSON.parse(localStorage.getItem("canvasStyle"));
-	if (!canvas) {
-		canvas = { width: 1920, height: 1080 };
-	}
 	compData.value = compList;
-	canvasStyle.value = canvas;
 });
 const getCompStyle = (style, index, isGroup) => {
 	const result = {};
@@ -63,6 +60,7 @@ const getCompStyle = (style, index, isGroup) => {
 .preview {
 	position: relative;
 	overflow: hidden;
+	background: v-bind("canvasStyle.color");
 	.comp {
 		position: absolute;
 		.group {

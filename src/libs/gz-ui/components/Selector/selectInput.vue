@@ -6,7 +6,8 @@
 			ref="inputValue"
 			:data-placeholder="placeholder"
 			:placeholder="placeholder"
-			:value="value"
+			:value="label"
+			:label="label"
 			@input="searchValue($event)"
 			@focus="searchValue($event)"
 			@blur="setValue(value)"
@@ -20,6 +21,9 @@ import { getCurrentInstance } from "vue";
 export default {
 	name: "selectInput",
 	props: {
+		label: {
+			type: String,
+		},
 		value: {
 			type: String,
 		},

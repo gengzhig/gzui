@@ -276,6 +276,7 @@ const getCompStyle = (style, index, isGroup) => {
 	width: 100%;
 	height: calc(100vh - 160px);
 	position: relative;
+	background: v-bind("canvasStyle.color");
 	.group {
 		width: 100%;
 		height: 100%;
