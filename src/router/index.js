@@ -65,6 +65,15 @@ const router = createRouter({
 							},
 							component: () => import("views/comp/custom/ellipsis.vue"),
 						},
+						{
+							path: "image",
+							name: "Image",
+							meta: {
+								title: "图片",
+								icon: "s-platform",
+							},
+							component: () => import("views/comp/custom/image.vue"),
+						},
 					],
 				},
 				{

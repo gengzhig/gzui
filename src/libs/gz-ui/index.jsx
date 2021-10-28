@@ -20,6 +20,7 @@ import gzTree from "./components/Tree/index.vue";
 import gzCarousel from "./components/Carousel/index.vue";
 import gzCarouselItem from "./components/Carousel/item.vue";
 import gzEllipsis from "./components/Ellipsis/index.vue";
+import gzImage from "./components/Image/index.vue";
 import config from "./config.js";
 
 let gzUI = {};
@@ -38,6 +39,7 @@ gzUI.install = function (Vue) {
 	Vue.component(gzCarouselItem.name, gzCarouselItem);
 	Vue.component(gzButton.name, gzButton);
 	Vue.component(gzEllipsis.name, gzEllipsis);
+	Vue.component(gzImage.name, gzImage);
 };
 
 function compSign() {
@@ -249,6 +251,26 @@ compInfo.register({
 	style: {
 		width: 600,
 		height: 300,
+	},
+});
+
+compInfo.register({
+	label: "通用",
+	subLabel: "图片",
+	preview: () => <gz-image width={150} height={150} src={config.image.src} fit="fill" alt="state.alt"></gz-image>,
+	render: () => (
+		<gz-image
+			width={config.image.width}
+			height={config.image.height}
+			src={config.image.src}
+			fit="fill"
+			alt="state.alt"
+		></gz-image>
+	),
+	key: "0010",
+	style: {
+		width: 200,
+		height: 200,
 	},
 });
 export default { gzUI, compInfo };

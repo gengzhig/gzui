@@ -21,22 +21,20 @@
 				<el-slider v-model="compProperty.opacity"> </el-slider>
 			</el-form-item>
 			<el-form-item label="动画系列">
-				<el-col :span="18">
-					<el-select
-						v-model="compProperty.animationGroup"
-						multiple
-						collapse-tags
-						placeholder="请选择"
-						@change="changeAnimation"
-					>
-						<el-option-group v-for="group in state.animationClassData" :key="group.label" :label="group.label">
-							<el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item"> </el-option>
-						</el-option-group>
-					</el-select>
-				</el-col>
-				<el-col :span="6">
-					<el-button @click="previewAnimate">预览</el-button>
-				</el-col>
+				<el-select
+					v-model="compProperty.animationGroup"
+					multiple
+					collapse-tags
+					placeholder="请选择"
+					@change="changeAnimation"
+				>
+					<el-option-group v-for="group in state.animationClassData" :key="group.label" :label="group.label">
+						<el-option v-for="item in group.options" :key="item.value" :label="item.label" :value="item"> </el-option>
+					</el-option-group>
+				</el-select>
+			</el-form-item>
+			<el-form-item label="">
+				<el-button @click="previewAnimate">预览</el-button>
 			</el-form-item>
 		</el-form>
 	</div>

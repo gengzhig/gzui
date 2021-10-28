@@ -47,22 +47,9 @@
 				</div>
 			</div>
 			<div class="operateMain" :class="store.state.sidebar.operateMainArea ? '' : 'hide'">
-				<el-tabs v-model="state.activeName" @tab-click="handleClick">
-					<el-tab-pane label="属性" name="first">
-						<AttrList v-if="currentCompName" />
-						<p v-else class="placeholder">请选择组件(属性)</p>
-					</el-tab-pane>
-					<el-tab-pane label="数据" name="second">
-						<DataList v-if="currentCompName" />
-						<p v-else class="placeholder">请选择组件(数据)</p>
-					</el-tab-pane>
-					<el-tab-pane label="交互" name="third">
-						<p class="placeholder">请选择组件(交互)</p>
-					</el-tab-pane>
-				</el-tabs>
-				<!-- <gz-tabs
+				<gz-tabs
 					v-model:activeName="state.activeName"
-					:width="500"
+					:width="350"
 					:headerHeight="60"
 					headerBgColor="#13161A"
 					headerBgActiveColor="#1D2126"
@@ -78,7 +65,7 @@
 					<gz-tabs-pane label="交互" name="third" class="tab-pane">
 						<p class="placeholder">请选择组件(交互)</p>
 					</gz-tabs-pane>
-				</gz-tabs> -->
+				</gz-tabs>
 			</div>
 		</div>
 	</div>
@@ -134,7 +121,7 @@ watch(
 			appMainRef.value.style.paddingLeft = "220px";
 		}
 		if (operateMainArea) {
-			appMainRef.value.style.paddingRight = "505px";
+			appMainRef.value.style.paddingRight = "355px";
 		} else {
 			appMainRef.value.style.paddingRight = "20px";
 		}
@@ -290,7 +277,7 @@ window.addEventListener("keydown", keyboardEvent());
 			top: 0;
 			left: 0;
 			box-sizing: border-box;
-			padding: 80px 505px 20px 420px;
+			padding: 80px 355px 20px 420px;
 			overflow: auto;
 			.operateGroup {
 				margin-bottom: 20px;
