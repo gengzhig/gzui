@@ -96,10 +96,8 @@ const state = reactive({
 	],
 });
 const selectItem = item => {
-	state.value = item;
-	state.label = state.menuData.filter(m => {
-		return m.value == item;
-	})[0].label;
+	state.value = item.value;
+	state.label = item.label;
 };
 </script>
 

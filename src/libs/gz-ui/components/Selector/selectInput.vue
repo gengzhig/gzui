@@ -10,7 +10,7 @@
 			:label="label"
 			@input="searchValue($event)"
 			@focus="searchValue($event)"
-			@blur="setValue(value)"
+			@blur="setValue(label)"
 		/>
 		<span></span>
 	</div>

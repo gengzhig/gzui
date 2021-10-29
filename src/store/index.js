@@ -43,6 +43,8 @@ export default createStore({
 		},
 		// 如果没点中组件，并且在画布空白处弹起鼠标，则取消当前组件的选中状态
 		isClickComponent: false,
+		manageSnapArea: false,
+		snapData: JSON.parse(localStorage.getItem("snapshotData") || "[]"),
 		snapshotData: [], // 编辑器快照数据
 		snapshotIndex: -1, // 快照索引
 	},
@@ -451,6 +453,59 @@ export default createStore({
 							message: "已取消删除",
 						});
 					});
+			}
+		},
+		// 生成快照
+		createSnapshot(state, payload) {
+			Message({
+				showClose: true,
+				message: "正在生成快照！",
+				type: "success",
+			});
+			let preSnapData = JSON.parse(localStorage.getItem("snapshotData"));
+			if (preSnapData && preSnapData.length > 2) {
+				Message({
+					showClose: true,
+					message: "快照数量已满！",
+					type: "error",
+				});
+				return false;
+			}
+			let time = new Date().toLocaleTimeString();
+			// 获取最新一次快照
+			let snapData = state.snapshotData[state.snapshotData.length - 1];
+			let map;
+			if (preSnapData) {
+				map = [
+					...preSnapData,
+					{
+						time,
+						snapData,
+					},
+				];
+			} else {
+				map = [
+					{
+						time,
+						snapData,
+					},
+				];
+			}
+			state.snapData = map;
+			localStorage.setItem("snapshotData", JSON.stringify(map));
+		},
+		manageSnapshot(state) {
+			state.manageSnapArea = !state.manageSnapArea;
+		},
+		deleteSnap(state, payload) {
+			let snapId = payload.snapData[0].id;
+			let findIndex = state.snapData.findIndex(s => {
+				return s.snapData[0].id == snapId;
+			});
+			if (findIndex > -1) {
+				state.snapData.splice(findIndex, 1);
+				console.log(state.snapData);
+				localStorage.setItem("snapshotData", JSON.stringify(state.snapData));
 			}
 		},
 	},

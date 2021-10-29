@@ -24,13 +24,13 @@
 				<div class="operateGroup">
 					<gz-button type="primary" @click="compose">成组</gz-button>
 					<gz-button type="primary" @click="decompose">解组</gz-button>
-					{{ currentCompList }}
 					<gz-selector
 						:width="200"
 						:height="40"
 						:filtrateData="true"
 						:value="state.value"
-						:menuData="currentCompList"
+						:label="state.label"
+						:menuData="canvasCompList"
 						placeholder="搜索画布中的组件"
 						@selectItem="selectItem"
 					></gz-selector>
@@ -46,7 +46,27 @@
 				</div>
 			</div>
 			<div class="operateMain" :class="store.state.sidebar.operateMainArea ? '' : 'hide'">
-				<div class="config-manager-tabs" v-if="!currentCompId">
+				<gz-tabs
+					v-if="currentCompId"
+					v-model:activeName="state.activeName"
+					:width="350"
+					:headerHeight="60"
+					headerBgColor="#13161A"
+					headerBgActiveColor="#1D2126"
+				>
+					<gz-tabs-pane label="属性" name="first" class="tab-pane">
+						<AttrList v-if="currentCompName" />
+						<p v-else class="placeholder">请选择组件(属性)</p>
+					</gz-tabs-pane>
+					<gz-tabs-pane label="数据" name="second" class="tab-pane">
+						<DataList v-if="currentCompName" />
+						<p v-else class="placeholder">请选择组件(数据)</p>
+					</gz-tabs-pane>
+					<gz-tabs-pane label="交互" name="third" class="tab-pane">
+						<p class="placeholder">请选择组件(交互)</p>
+					</gz-tabs-pane>
+				</gz-tabs>
+				<div class="config-manager-tabs" v-else>
 					<div class="config-manager-head">页面设置</div>
 					<div class="config-manager-body">
 						<el-form label-width="80px" :model="state.screen" class="demo-form-inline">
@@ -80,26 +100,31 @@
 						</el-form>
 					</div>
 				</div>
-				<gz-tabs
-					v-if="currentCompId"
-					v-model:activeName="state.activeName"
-					:width="350"
-					:headerHeight="60"
-					headerBgColor="#13161A"
-					headerBgActiveColor="#1D2126"
-				>
-					<gz-tabs-pane label="属性" name="first" class="tab-pane">
-						<AttrList v-if="currentCompName" />
-						<p v-else class="placeholder">请选择组件(属性)</p>
-					</gz-tabs-pane>
-					<gz-tabs-pane label="数据" name="second" class="tab-pane">
-						<DataList v-if="currentCompName" />
-						<p v-else class="placeholder">请选择组件(数据)</p>
-					</gz-tabs-pane>
-					<gz-tabs-pane label="交互" name="third" class="tab-pane">
-						<p class="placeholder">请选择组件(交互)</p>
-					</gz-tabs-pane>
-				</gz-tabs>
+			</div>
+			<div
+				class="operateMain snapArea"
+				:class="store.state.sidebar.operateMainArea ? '' : 'hide'"
+				v-show="manageSnapArea"
+			>
+				<div class="title">
+					<p class="history-snapshot-manager__title">
+						快照管理
+						<span class="color-base">
+							<span class="color-blue">3</span>个/还可创建<span class="color-blue"> {{ 3 - snapshotData.length }}</span
+							>个</span
+						>
+					</p>
+					<div class="close-btn" @click="handleSnapAreaClose">X</div>
+				</div>
+				<gz-table :config="state.config" v-if="state.config.tableData">
+					<template #operate="{ row }">
+						<el-button size="mini" @click="lookSnap(row.row)">预览</el-button>
+						<el-button size="mini" type="danger" @click="deleteSnap(row.row)">删除</el-button>
+					</template>
+				</gz-table>
+				<span class="limit-indicator" v-if="snapshotData.length == 3">
+					<i class="datav-icon datav-font icon-error error-icon"></i>快照数量已达到上限3个，可选中删除
+				</span>
 			</div>
 		</div>
 	</div>
@@ -125,11 +150,48 @@ import compLibrary from "./compLibrary.vue";
 import compLayer from "./compLayer.vue";
 import AttrList from "@/components/attrList/index.vue";
 import DataList from "@/components/dataList/index.vue";
+import router from "../../../router";
 const store = useStore();
 const appMainRef = ref(null);
 const canvasRef = ref(null);
+const snapSync = ref(false);
 const state = reactive({
+	config: {
+		style: {
+			stripe: true,
+			border: true,
+			height: 500,
+			index: false,
+			radio: true,
+			checkBox: true,
+		},
+		defaultSort: {
+			prop: "time",
+			order: "descending", // ascending 表示升序，descending 表示降序，null 表示还原为原始顺序
+		},
+		columnData: [
+			{
+				prop: "time",
+				label: "名称",
+				width: 100,
+				tooltip: true,
+				formatter: (row, column) => {
+					return row.time;
+				},
+			},
+			{
+				prop: "operate",
+				label: "操作",
+				minWidth: 100,
+				slotName: "operate",
+				fixed: "right",
+			},
+		],
+		tableData: [],
+	},
 	menuData: [],
+	value: "",
+	label: "",
 	activeName: "first",
 	canvas: {
 		width: 1920,
@@ -144,11 +206,27 @@ const state = reactive({
 });
 
 const compInfo = inject("compInfo");
+const manageSnapArea = computed(() => {
+	return store.state.manageSnapArea;
+});
 const currentCompId = computed(() => {
 	return store.getters.currentCompId;
 });
 const currentCompList = computed(() => {
 	return store.state.currentCompList;
+});
+
+const canvasCompList = computed(() => {
+	return currentCompList.value.map(c => {
+		return {
+			value: c.id,
+			label: c.name,
+		};
+	});
+});
+
+const snapshotData = computed(() => {
+	return store.state.snapData;
 });
 watch(
 	() => [store.state.sidebar.layerArea, store.state.sidebar.compLibraryArea, store.state.sidebar.operateMainArea],
@@ -188,12 +266,34 @@ watch(
 		deep: true,
 	}
 );
+watch(
+	() => {
+		return [snapshotData.value, localStorage.getItem("snapshotData")];
+	},
+	value => {
+		let [data, result] = value;
+		state.config.tableData = JSON.parse(JSON.stringify(data));
+	}
+);
+watch(
+	() => {
+		return manageSnapArea.value;
+	},
+	value => {
+		state.config.tableData = JSON.parse(JSON.stringify(snapshotData.value));
+	}
+);
 onMounted(() => {
 	let canvasStyle = JSON.parse(localStorage.getItem("canvasStyle"));
 	if (canvasStyle) {
 		state.screen = canvasStyle;
 	}
 });
+
+const selectItem = item => {
+	state.value = item.value;
+	state.label = item.label;
+};
 const handleDrop = e => {
 	e.preventDefault();
 	e.stopPropagation();
@@ -282,6 +382,21 @@ const keyboardEvent = () => {
 };
 
 window.addEventListener("keydown", keyboardEvent());
+
+const handleSnapAreaClose = () => {
+	store.commit("manageSnapshot");
+};
+
+const lookSnap = row => {
+	let routeUrl = router.resolve({
+		path: "/preview",
+	});
+	window.open(routeUrl.href, "_blank");
+};
+
+const deleteSnap = row => {
+	store.commit("deleteSnap", row);
+};
 </script>
 
 <style lang="scss" scoped>
@@ -355,6 +470,37 @@ window.addEventListener("keydown", keyboardEvent());
 			margin-top: 60px;
 			transition: width 0.25s ease-in-out;
 			overflow: hidden;
+			&.snapArea {
+				box-sizing: border-box;
+				z-index: 99;
+				padding: 20px;
+				.title {
+					line-height: 16px;
+					color: #2681ff;
+					border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+					padding: 5px;
+					display: flex;
+					justify-content: space-between;
+					.history-snapshot-manager__title {
+						color: #fff;
+						font-size: 14px;
+						margin-bottom: 10px;
+						.color-base {
+							font-size: 12px;
+							letter-spacing: 1px;
+							color: #bcc9d4;
+							padding-left: 8px;
+							.color-blue {
+								padding: 0 2px;
+								color: #2681ff;
+							}
+						}
+					}
+					.close-btn {
+						cursor: pointer;
+					}
+				}
+			}
 			&.hide {
 				width: 0;
 			}

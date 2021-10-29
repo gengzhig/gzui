@@ -56,13 +56,21 @@ export default {
 				}
 			}
 		);
+		watch(
+			() => {
+				return props.data;
+			},
+			value => {
+				state.searchData = value;
+			}
+		);
 		const filterSearchData = value => {
 			return props.data.filter(item => {
-				return item.text.toLowerCase().includes(props.searchValue.toLowerCase());
+				return item.label.toLowerCase().includes(props.searchValue.toLowerCase());
 			});
 		};
 		const selectItem = item => {
-			ctx.emit("selectItem", item.value);
+			ctx.emit("selectItem", item);
 		};
 		return { ...toRefs(state), selectItem };
 	},

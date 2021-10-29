@@ -53,18 +53,6 @@
 				<el-button type="primary" icon="el-icon-video-play" @click="preview"></el-button>
 			</el-tooltip>
 		</div>
-		<!-- <el-avatar icon="el-icon-user-solid"></el-avatar> -->
-		<!-- <el-drawer
-			title="组件库"
-			:append-to-body="true"
-			:visible.sync="drawer"
-			style="position: absolute"
-			direction="ltr"
-			z-index="1000"
-			:before-close="handleClose"
-		>
-			<compLibrary></compLibrary>
-		</el-drawer> -->
 	</div>
 </template>
 
@@ -77,7 +65,7 @@ import compLibrary from "@/views/comp/editor/compLibrary.vue";
 const route = useRouter();
 const router = useRouter();
 const store = useStore();
-const drawer = ref(false);
+const drawer = ref(true);
 const goHome = e => {
 	router.push("/home");
 };
@@ -95,16 +83,10 @@ const handleClose = done => {
 };
 
 const createSnapshot = () => {
-	Message({
-		message: "此功能尚未开放！",
-		type: "warning",
-	});
+	store.commit("createSnapshot");
 };
 const manageSnapshot = () => {
-	Message({
-		message: "此功能尚未开放！",
-		type: "warning",
-	});
+	store.commit("manageSnapshot");
 };
 const publish = () => {
 	Message({
