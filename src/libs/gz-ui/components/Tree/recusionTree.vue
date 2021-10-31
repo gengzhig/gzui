@@ -103,7 +103,6 @@ const findSiblings = tag => {
 	&:hover {
 		background: v-bind("hoverBgColor");
 		color: #fff;
-		//
 	}
 	& ~ .gz-tree-list {
 		display: none;
