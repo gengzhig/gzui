@@ -113,9 +113,6 @@ const state = reactive({
 .demo {
 	.el-row {
 		margin-bottom: 20px;
-		button {
-			margin-right: 10px;
-		}
 	}
 }
 </style>

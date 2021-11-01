@@ -1,49 +1,52 @@
 Arguments: 
-  D:\Program Files\nodejs\node.exe D:\Program Files\nodejs\node_global\node_modules\yarn\bin\yarn.js add vitepress -D
+  D:\Program Files\nodejs\node.exe D:\Develop\nodejs\node_global\node_modules\yarn\bin\yarn.js remove vitepress-theme-demoblock
 
 PATH: 
-  C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;D:\bin;D:\Program Files\Java\jdk1.8.0_191\bin;D:\Program Files\Java\jdk1.8.0_191\jre\bin;D:\sdk\platform-tools;D:\sdk\tools;D:\Program Files\nodejs\node_global;D:\Program Files\TortoiseGit\bin;d:\Program Files\Git\cmd;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\python;C:\Program Files\python\Scripts;;D:\BtSoft\panel\script;D:\Program Files\nodejs\;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;d:\Users\耿智\AppData\Local\Programs\Microsoft VS Code\bin;D:\Program Files\nodejs\node_global;;C:\Users\耿智\AppData\Local\Microsoft\WindowsApps;C:\Users\耿智\AppData\Roaming\npm
+  C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;D:\Program Files\TortoiseSVN\bin;D:\Program Files\nodejs\;D:\Program Files\Git\cmd;D:\Program Files\TortoiseGit\bin;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;D:\Develop\nodejs\node_global;;D:\Users\Administrator\AppData\Local\Programs\Microsoft VS Code\bin
 
 Yarn version: 
   1.22.10
 
 Node version: 
-  14.17.2
+  14.16.0
 
 Platform: 
   win32 x64
 
 Trace: 
-  Error: connect EHOSTUNREACH 104.16.24.35:443
-      at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1148:16)
+  Error: EPERM: operation not permitted, unlink 'D:\workspace\gz-ui\node_modules\_esbuild-windows-64@0.13.12@esbuild-windows-64\esbuild.exe'
 
 npm manifest: 
   {
-  	"name": "gengzhiui",
-  	"version": "1.0.0",
-  	"description": "耿智开发的一套基于vue3的前端组件库",
-  	"scripts": {
-  		"dev": "vite",
-  		"build": "vite build",
-  		"test-e2e": "cypress open"
-  	},
-  	"dependencies": {
-  		"axios": "^0.21.1",
-  		"echarts": "^5.1.2",
-  		"element3": "^0.0.39",
-  		"monaco-editor": "^0.29.1",
-  		"vue": "^3.0.5",
-  		"vue-cropper": "^0.5.7",
-  		"vue-router": "^4.0.3",
-  		"vuex": "^4.0.0-rc.2"
-  	},
-  	"devDependencies": {
-  		"@vitejs/plugin-vue": "^1.4.0",
-  		"@vitejs/plugin-vue-jsx": "^1.0.2",
-  		"@vue/compiler-sfc": "3.1.5",
-  		"sass": "^1.32.5",
-  		"vite": "^2.0.0-beta.12"
-  	}
+    "name": "gengzhiui",
+    "version": "1.0.0",
+    "description": "耿智开发的一套基于vue3的前端组件库",
+    "scripts": {
+      "dev": "vite",
+      "build": "vite build",
+      "test-e2e": "cypress open",
+      "docs:dev": "vitepress dev docs",
+      "docs:build": "vitepress build docs",
+      "docs:serve": "vitepress serve docs"
+    },
+    "dependencies": {
+      "axios": "^0.21.1",
+      "echarts": "^5.1.2",
+      "element3": "^0.0.39",
+      "monaco-editor": "^0.29.1",
+      "vue": "^3.0.5",
+      "vue-cropper": "^0.5.7",
+      "vue-router": "^4.0.3",
+      "vuex": "^4.0.0-rc.2"
+    },
+    "devDependencies": {
+      "@vitejs/plugin-vue": "^1.4.0",
+      "@vitejs/plugin-vue-jsx": "^1.2.0",
+      "@vue/compiler-sfc": "3.1.5",
+      "sass": "^1.32.5",
+      "vite": "^2.0.0-beta.12",
+      "vitepress": "^0.20.0"
+    }
   }
 
 yarn manifest: 

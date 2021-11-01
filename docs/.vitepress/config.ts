@@ -62,11 +62,11 @@ module.exports = {
 				children: [{ text: "模态框", link: "/components/modalBox/" }],
 			},
 		],
-		markdown: {
-			config: md => {
-				const { demoBlockPlugin } = require("vitepress-theme-demoblock");
-				md.use(demoBlockPlugin);
-			},
+	},
+	markdown: {
+		config: md => {
+			const { demoBlockPlugin } = require("vitepress-theme-demoblock");
+			md.use(demoBlockPlugin);
 		},
 	},
 };
