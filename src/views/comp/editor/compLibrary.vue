@@ -7,7 +7,7 @@
 			<!-- <div class="header">组件列表</div> -->
 			<div
 				class="compItem"
-				v-for="(item, index) in compInfo.compList"
+				v-for="(item, index) in compList"
 				:key="index"
 				:data-index="index"
 				draggable="true"
@@ -36,12 +36,25 @@ import { reactive, ref, onMounted, watch, computed, getCurrentInstance, useSlots
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 
-const compInfo = inject("compInfo");
+// const compInfo = inject("compInfo");
 const ctx = getCurrentInstance();
 
 const store = useStore();
+const compList = ref(null);
 let currentComp = null; // 当前组件
-
+onMounted(() => {
+	vm.$axios
+		.post("http://localhost:8000/getLibraryList")
+		.then(result => {
+			if (result.status === 200) {
+				compList.value = result.data.data;
+				console.log(result.data.data);
+			}
+		})
+		.catch(err => {
+			console.log(result);
+		});
+});
 const dragstart = (e, comp) => {
 	let canvas = document.querySelector(".canvas");
 	e.dataTransfer.setData("index", e.target.dataset.index);
