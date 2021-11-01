@@ -98,7 +98,7 @@ const router = createRouter({
 							path: "selector",
 							name: "Selector",
 							meta: {
-								title: "下拉菜单",
+								title: "选择器",
 								icon: "s-document",
 							},
 							component: () => import("views/comp/custom/selector.vue"),

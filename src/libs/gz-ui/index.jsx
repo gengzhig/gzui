@@ -148,7 +148,7 @@ compInfo.register({
 
 compInfo.register({
 	label: "数据录入",
-	subLabel: "下拉菜单",
+	subLabel: "选择器",
 	preview: () => <gz-selector placeholder="请选择"></gz-selector>,
 	render: () => <gz-selector width={"100%"} height={"100%"} placeholder="请选择"></gz-selector>,
 	key: "0005",

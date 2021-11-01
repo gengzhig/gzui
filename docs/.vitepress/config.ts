@@ -37,7 +37,7 @@ module.exports = {
 				text: "数据录入",
 				children: [
 					{ text: "输入框", link: "/components/input/" },
-					{ text: "下拉菜单", link: "/components/selector/" },
+					{ text: "选择器", link: "/components/selector/" },
 					{ text: "五星好评", link: "/components/fiveStar/" },
 				],
 			},

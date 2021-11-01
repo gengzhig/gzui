@@ -4,6 +4,8 @@ import Carousel from "../../../gzui/carousel/index.vue";
 import Ellipsis from "../../../gzui/ellipsis/index.vue";
 import Image from "../../../gzui/image/index.vue";
 import Input from "../../../gzui/input/index.vue";
+import Selector from "../../../gzui/selector/index.vue";
+import FiveStar from "../../../gzui/fiveStar/index.vue";
 
 import Demo from "vitepress-theme-demoblock/components/Demo.vue";
 import DemoBlock from "vitepress-theme-demoblock/components/DemoBlock.vue";
@@ -17,6 +19,9 @@ export default {
 		app.component("gzEllipsis", Ellipsis);
 		app.component("gzImage", Image);
 		app.component("gzInput", Input);
+		app.component("gzSelector", Selector);
+		app.component("gzFiveStar", FiveStar);
+
 		app.component("Demo", Demo);
 		app.component("DemoBlock", DemoBlock);
 	},
