@@ -10,7 +10,8 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "@/router";
 import store from "./store";
-import axios from "axios";
+// import axios from "axios";
+import axios from "@/plugins/request.js";
 // 全局样式
 import "styles/index.scss";
 // import animated from "animate.css";

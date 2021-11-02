@@ -6,6 +6,8 @@ import Image from "../../../gzui/image/index.vue";
 import Input from "../../../gzui/input/index.vue";
 import Selector from "../../../gzui/selector/index.vue";
 import FiveStar from "../../../gzui/fiveStar/index.vue";
+import VirtualList from "../../../gzui/virtualList/index.vue";
+import Tree from "../../../gzui/tree/index.vue";
 
 import Demo from "vitepress-theme-demoblock/components/Demo.vue";
 import DemoBlock from "vitepress-theme-demoblock/components/DemoBlock.vue";
@@ -21,6 +23,8 @@ export default {
 		app.component("gzInput", Input);
 		app.component("gzSelector", Selector);
 		app.component("gzFiveStar", FiveStar);
+		app.component("gzVirtualList", VirtualList);
+		app.component("gzTree", Tree);
 
 		app.component("Demo", Demo);
 		app.component("DemoBlock", DemoBlock);

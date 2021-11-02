@@ -44,15 +44,12 @@ const compList = ref(null);
 let currentComp = null; // 当前组件
 onMounted(() => {
 	vm.$axios
-		.post("http://localhost:8000/getLibraryList")
-		.then(result => {
-			if (result.status === 200) {
-				compList.value = result.data.data;
-				console.log(result.data.data);
-			}
+		.post("/api/getLibraryList")
+		.then(data => {
+			compList.value = data;
 		})
 		.catch(err => {
-			console.log(result);
+			console.log(err);
 		});
 });
 const dragstart = (e, comp) => {
@@ -120,11 +117,13 @@ const dragend = e => {
 	// }
 };
 
-const setZindex = data => {
+const setZindex = async data => {
 	data.map((c, i) => {
 		c.style.zIndex = i + 1;
 	});
-	store.commit("setCurrentCompList", data);
+	let result = await store.dispatch("setCurrentCompListSync", data);
+	console.log(result);
+	// store.commit("setCurrentCompList", data);
 };
 </script>
 

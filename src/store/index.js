@@ -1,4 +1,5 @@
 import { Store } from "vuex";
+import axios from "@/plugins/request.js";
 /*
  * @Author: your name
  * @Date: 2021-01-30 10:29:13
@@ -95,7 +96,6 @@ export default createStore({
 		},
 		addAnimation(state, animation, rootState) {
 			state.currentComp.animations = animation;
-			console.log(state);
 		},
 		removeAnimation(state) {
 			state.currentComp.animations = [];
@@ -110,6 +110,7 @@ export default createStore({
 			if (width) currentComp.style.width = width;
 			if (height) currentComp.style.height = height;
 			if (rotate) currentComp.style.rotate = rotate;
+			console.log(currentComp, "设置选中组件样式");
 		},
 		// 设置当前选中组件
 		setCurrentComp(state, { compData, index }) {
@@ -124,7 +125,6 @@ export default createStore({
 			state.curComponentIndex = -1;
 			// state.currentComp = {};
 			state.currentComp.id = 0;
-			console.log("resetCurrentCompIndex");
 		},
 		// 新增组件
 		addComponent(state, { component, index }) {
@@ -513,6 +513,37 @@ export default createStore({
 		changeDevice({ commit }, payload) {
 			commit("toggleDevice", payload);
 		},
+		setCurrentCompListSync({ commit }, payload) {
+			return new Promise((resolve, reject) => {
+				vm.$axios
+					.post("/api/setCompList", {
+						list: payload,
+					})
+					.then(data => {
+						commit("setCurrentCompList", payload);
+						resolve(data);
+					})
+					.catch(err => {
+						reject(err);
+					});
+			});
+		},
+		// 获取当前画布所有组件
+		getCompListSync({ commit }, payload) {
+			return new Promise((resolve, reject) => {
+				vm.$axios
+					.post("/api/getCompList")
+					.then(data => {
+						commit("setCurrentCompList", data);
+						resolve(data);
+					})
+					.catch(err => {
+						reject(err);
+					});
+			});
+		},
+		// 设置选中组件样式
+		setCurrentCompStyleSync({ commit }, payload) {},
 	},
 	modules: {
 		sidebar,

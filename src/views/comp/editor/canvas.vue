@@ -94,10 +94,11 @@ const area = reactive({
 	isShowArea: false,
 });
 
-onMounted(() => {
+onMounted(async () => {
 	mitt.on("hideArea", () => {
 		hideArea();
 	});
+	let result = await store.dispatch("getCompListSync");
 });
 const hideArea = () => {
 	area.isShowArea = 0;

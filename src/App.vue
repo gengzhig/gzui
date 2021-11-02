@@ -18,7 +18,7 @@ provide("compInfo", ui.compInfo);
 provide("$tool", tool);
 </script>
 <style>
-.title {
+.menuList .title {
 	display: block;
 	text-decoration: none;
 	text-align: center;

@@ -1,16 +1,17 @@
 const Koa = require("koa"); // 引入 Koa
 const app = new Koa(); // 创建 Koa 实例
+const bodyParser = require("koa-bodyparser");
 const router = require("koa-router")();
 const cors = require("koa2-cors");
 app.use(cors());
-
+app.use(bodyParser());
 router.get("/a", async (ctx, next) => {
 	console.log(1231);
 	ctx.response.body = "<p>Hello Koa Server!</p>";
 });
 
 // 获取组件库
-router.post("/getLibraryList", async (ctx, next) => {
+router.post("/api/getLibraryList", async (ctx, next) => {
 	ctx.response.body = {
 		status: 200,
 		msg: "获取组件库",
@@ -225,143 +226,31 @@ router.post("/getLibraryList", async (ctx, next) => {
 	};
 });
 
-// 获取组件数据
-router.post("/getCompList", async (ctx, next) => {
+let compList = [];
+// 更新画布组件
+router.post("/api/setCompList", async (ctx, next) => {
+	if (!ctx.request.body.list) {
+		ctx.response.body = {
+			status: 500,
+			msg: "缺少list传参！",
+			data: false,
+		};
+	} else {
+		compList = ctx.request.body.list;
+		ctx.response.body = {
+			status: 200,
+			msg: "更新画布组件成功！",
+			data: true,
+		};
+	}
+});
+
+// 获取画布组件
+router.post("/api/getCompList", async (ctx, next) => {
 	ctx.response.body = {
 		status: 200,
 		msg: "获取组件数据",
-		data: [
-			{
-				id: 1635758098912,
-				name: "五星好评",
-				key: "0001",
-				isLock: false,
-				isHide: false,
-				isGroup: false,
-				animations: [],
-				events: {},
-				groupStyle: {},
-				group: [],
-				style: { top: 0, left: 0, width: 150, height: 26, zIndex: 1, opacity: 100, rotate: 0, animationGroup: [] },
-			},
-			{
-				id: 1635757805065,
-				name: "tabs标签页",
-				key: "0002",
-				isLock: false,
-				isHide: false,
-				isGroup: false,
-				animations: [],
-				events: {},
-				groupStyle: {},
-				group: [],
-				style: { top: 0, left: 0, width: 400, height: 200, zIndex: 1, opacity: 100, rotate: 0, animationGroup: [] },
-			},
-			{
-				id: 1635758160495,
-				name: "虚拟列表",
-				key: "0003",
-				isLock: false,
-				isHide: false,
-				isGroup: false,
-				animations: [],
-				events: {},
-				groupStyle: {},
-				group: [],
-				style: { top: 0, left: 0, width: 300, height: 200, zIndex: 1, opacity: 100, rotate: 0, animationGroup: [] },
-			},
-			{
-				id: 1635758179447,
-				name: "模态框",
-				key: "0004",
-				isLock: false,
-				isHide: false,
-				isGroup: false,
-				animations: [],
-				events: {},
-				groupStyle: {},
-				group: [],
-				style: { top: 0, left: 0, width: 400, height: 200, zIndex: 1, opacity: 100, rotate: 0, animationGroup: [] },
-			},
-			{
-				id: 1635758208825,
-				name: "选择器",
-				key: "0005",
-				isLock: false,
-				isHide: false,
-				isGroup: false,
-				animations: [],
-				events: {},
-				groupStyle: {},
-				group: [],
-				style: { top: 0, left: 0, width: 200, height: 40, zIndex: 1, opacity: 100, rotate: 0, animationGroup: [] },
-			},
-			{
-				id: 1635758227368,
-				name: "table表格",
-				key: "0006",
-				isLock: false,
-				isHide: false,
-				isGroup: false,
-				animations: [],
-				events: {},
-				groupStyle: {},
-				group: [],
-				style: { top: 0, left: 0, width: 800, height: 250, zIndex: 1, opacity: 100, rotate: 0, animationGroup: [] },
-			},
-			{
-				id: 1635758228929,
-				name: "分页器",
-				key: "0007",
-				isLock: false,
-				isHide: false,
-				isGroup: false,
-				animations: [],
-				events: {},
-				groupStyle: {},
-				group: [],
-				style: { top: 0, left: 0, width: 500, height: 50, zIndex: 1, opacity: 100, rotate: 0 },
-			},
-			{
-				id: 1635758280647,
-				name: "按钮",
-				key: "0008",
-				isLock: false,
-				isHide: false,
-				isGroup: false,
-				animations: [],
-				events: {},
-				groupStyle: {},
-				group: [],
-				style: { top: 0, left: 0, width: 70, height: 40, zIndex: 1, opacity: 100, rotate: 0, animationGroup: [] },
-			},
-			{
-				id: 1635758291479,
-				name: "轮播图",
-				key: "0009",
-				isLock: false,
-				isHide: false,
-				isGroup: false,
-				animations: [],
-				events: {},
-				groupStyle: {},
-				group: [],
-				style: { top: 0, left: 0, width: 600, height: 300, zIndex: 1, opacity: 100, rotate: 0 },
-			},
-			{
-				id: 1635758311255,
-				name: "图片",
-				key: "0010",
-				isLock: false,
-				isHide: false,
-				isGroup: false,
-				animations: [],
-				events: {},
-				groupStyle: {},
-				group: [],
-				style: { top: 0, left: 0, width: 200, height: 200, zIndex: 1, opacity: 100, rotate: 0 },
-			},
-		],
+		data: compList,
 	};
 });
 

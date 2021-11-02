@@ -29,7 +29,14 @@ export default defineConfig({
 	},
 	server: {
 		// host: "192.168.0.166",
-		open: true,
+		proxy: {
+			"/api": {
+				target: "http://localhost:8000/api",
+				changeOrigin: true,
+				ws: true,
+				rewrite: path => path.replace(/^\/api/, ""),
+			},
+		},
 	},
 	plugins: [vue(), vueJsx()],
 });
