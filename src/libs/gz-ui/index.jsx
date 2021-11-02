@@ -21,6 +21,7 @@ import gzCarousel from "./components/Carousel/index.vue";
 import gzCarouselItem from "./components/Carousel/item.vue";
 import gzEllipsis from "./components/Ellipsis/index.vue";
 import gzImage from "./components/Image/index.vue";
+import gzGradientText from "./components/GradientText/index.vue";
 import config from "./config.js";
 
 let gzUI = {};
@@ -40,6 +41,7 @@ gzUI.install = function (Vue) {
 	Vue.component(gzButton.name, gzButton);
 	Vue.component(gzEllipsis.name, gzEllipsis);
 	Vue.component(gzImage.name, gzImage);
+	Vue.component(gzGradientText.name, gzGradientText);
 };
 
 function compSign() {

@@ -74,6 +74,15 @@ const router = createRouter({
 							},
 							component: () => import("views/comp/custom/image.vue"),
 						},
+						{
+							path: "gradientText",
+							name: "GradientText",
+							meta: {
+								title: "渐变文字",
+								icon: "s-platform",
+							},
+							component: () => import("views/comp/custom/gradientText.vue"),
+						},
 					],
 				},
 				{
