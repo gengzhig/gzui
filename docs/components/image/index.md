@@ -13,11 +13,19 @@
 	<gz-image
 		width="100"
 		height="100"
-		src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-		fit="fill"
-		alt="gz图片"
+		:src="src"
+		:fit="fit"
+		:alt="alt"
 	></gz-image>
 </template>
+<script setup>
+import { ref } from 'vue'
+const fit = ref("fill");
+const alt = ref("gz图片");
+const src= ref("https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg");
+
+</script>
+
 ```
 
 :::
@@ -33,17 +41,22 @@
 	<gz-image
 		width="100"
 		height="100"
-		src="https://fuss11110.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-		fit="fill"
-		alt="gz图片"
+		src="src"
+		:fit="fit"
+		:alt="alt"
 	>
 		<template #error>
-			<img
-				src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fbpic.588ku.com%2Felement_origin_min_pic%2F01%2F37%2F81%2F48573c62a9aea6d.jpg&refer=http%3A%2F%2Fbpic.588ku.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1638339927&t=6d8170481e5b352044bd58f90fb367de"
-			/>
+			<img :src="errorSrc"/>
 		</template>
 	</gz-image>
 </template>
+<script setup>
+import { ref } from 'vue'
+const fit = ref("fill");
+const alt = ref("gz图片");
+const src=ref("https://fuss11110.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg");
+const errorSrc= ref("https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fbpic.588ku.com%2Felement_origin_min_pic%2F01%2F37%2F81%2F48573c62a9aea6d.jpg&refer=http%3A%2F%2Fbpic.588ku.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1638339927&t=6d8170481e5b352044bd58f90fb367de");
+</script>
 ```
 
 :::

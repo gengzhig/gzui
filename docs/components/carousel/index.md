@@ -24,6 +24,9 @@
 		</gz-carousel-item>
 	</gz-carousel>
 </template>
+<script setup>
+import cData from "../../../gzui/carousel/data"
+</script>
 ```
 
 :::
