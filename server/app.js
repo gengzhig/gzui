@@ -5,9 +5,12 @@ const router = require("koa-router")();
 const cors = require("koa2-cors");
 app.use(cors());
 app.use(bodyParser());
-router.get("/a", async (ctx, next) => {
-	console.log(1231);
-	ctx.response.body = "<p>Hello Koa Server!</p>";
+router.get("/", async (ctx, next) => {
+	ctx.response.body = {
+		status: 200,
+		msg: "获取组件库",
+		data: [123]
+	}
 });
 
 // 获取组件库

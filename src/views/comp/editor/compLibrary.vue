@@ -35,7 +35,7 @@ export default {
 import { reactive, ref, onMounted, watch, computed, getCurrentInstance, useSlots, nextTick, inject } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
-
+import axios from "@/plugins/request.js";
 // const compInfo = inject("compInfo");
 const ctx = getCurrentInstance();
 
@@ -43,9 +43,10 @@ const store = useStore();
 const compList = ref(null);
 let currentComp = null; // 当前组件
 onMounted(() => {
-	vm.$axios
+	axios
 		.post("/api/getLibraryList")
 		.then(data => {
+			console.log(data);
 			compList.value = data;
 		})
 		.catch(err => {

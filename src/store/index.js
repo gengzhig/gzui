@@ -515,7 +515,7 @@ export default createStore({
 		},
 		setCurrentCompListSync({ commit }, payload) {
 			return new Promise((resolve, reject) => {
-				vm.$axios
+				axios
 					.post("/api/setCompList", {
 						list: payload,
 					})
@@ -531,7 +531,7 @@ export default createStore({
 		// 获取当前画布所有组件
 		getCompListSync({ commit }, payload) {
 			return new Promise((resolve, reject) => {
-				vm.$axios
+				axios
 					.post("/api/getCompList")
 					.then(data => {
 						commit("setCurrentCompList", data);
