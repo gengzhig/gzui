@@ -10,78 +10,77 @@
 
 ```vue
 <template>
-	<gz-virtual-list
-		:data="[
-			{
-				title: 1,
-				desc: '说明：这是第1个虚拟列表',
-			},
-			{
-				title: 2,
-				desc: '说明：这是第2个虚拟列表',
-			},
-			{
-				title: 3,
-				desc: '说明：这是第3个虚拟列表',
-			},
-			{
-				title: 4,
-				desc: '说明：这是第4个虚拟列表',
-			},
-			{
-				title: 5,
-				desc: '说明：这是第5个虚拟列表',
-			},
-			{
-				title: 6,
-				desc: '说明：这是第6个虚拟列表',
-			},
-			{
-				title: 7,
-				desc: '说明：这是第7个虚拟列表',
-			},
-			{
-				title: 8,
-				desc: '说明：这是第8个虚拟列表',
-			},
-			{
-				title: 9,
-				desc: '说明：这是第9个虚拟列表',
-			},
-			{
-				title: 10,
-				desc: '说明：这是第10个虚拟列表',
-			},
-			{
-				title: 11,
-				desc: '说明：这是第11个虚拟列表',
-			},
-			{
-				title: 12,
-				desc: '说明：这是第12个虚拟列表',
-			},
-			{
-				title: 13,
-				desc: '说明：这是第13个虚拟列表',
-			},
-			{
-				title: 14,
-				desc: '说明：这是第14个虚拟列表',
-			},
-			{
-				title: 15,
-				desc: '说明：这是第15个虚拟列表',
-			},
-			{
-				title: 16,
-				desc: '说明：这是第16个虚拟列表',
-			},
-		]"
-		:width="300"
-		:height="200"
-		:itemHeight="50"
-	></gz-virtual-list>
+	<gz-virtual-list :data="data" :width="300" :height="200" :itemHeight="50"></gz-virtual-list>
 </template>
+<script setup>
+import { ref } from 'vue';
+const data = ref([
+	{
+		title: 1,
+		desc: "说明：这是第1个虚拟列表",
+	},
+	{
+		title: 2,
+		desc: "说明：这是第2个虚拟列表",
+	},
+	{
+		title: 3,
+		desc: "说明：这是第3个虚拟列表",
+	},
+	{
+		title: 4,
+		desc: "说明：这是第4个虚拟列表",
+	},
+	{
+		title: 5,
+		desc: "说明：这是第5个虚拟列表",
+	},
+	{
+		title: 6,
+		desc: "说明：这是第6个虚拟列表",
+	},
+	{
+		title: 7,
+		desc: "说明：这是第7个虚拟列表",
+	},
+	{
+		title: 8,
+		desc: "说明：这是第8个虚拟列表",
+	},
+	{
+		title: 9,
+		desc: "说明：这是第9个虚拟列表",
+	},
+	{
+		title: 10,
+		desc: "说明：这是第10个虚拟列表",
+	},
+	{
+		title: 11,
+		desc: "说明：这是第11个虚拟列表",
+	},
+	{
+		title: 12,
+		desc: "说明：这是第12个虚拟列表",
+	},
+	{
+		title: 13,
+		desc: "说明：这是第13个虚拟列表",
+	},
+	{
+		title: 14,
+		desc: "说明：这是第14个虚拟列表",
+	},
+	{
+		title: 15,
+		desc: "说明：这是第15个虚拟列表",
+	},
+	{
+		title: 16,
+		desc: "说明：这是第16个虚拟列表",
+	},
+]);
+</script>
 ```
 
 :::

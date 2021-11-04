@@ -98,35 +98,8 @@
 								</el-radio-group>
 							</el-form-item>
 							<div class="cropper-app">
-								<el-upload
-									class="upload-banner"
-									drag
-									action=""
-									:auto-upload="true"
-									:on-change="handleCrop"
-									:before-upload="beforeAvatarUpload"
-									:show-file-list="false"
-								>
-									<el-image
-										v-if="state.cropperData.iconUrl"
-										:src="state.cropperData.iconUrl"
-										fit="contain"
-										class="avatar"
-									></el-image>
-									<div v-else class="upload-box">
-										<el-button type="primary" class="select-btn">选择图片</el-button>
-									</div>
-								</el-upload>
-								<!-- 剪裁组件弹窗 -->
-								{{ state.showCropper }}
-								<cropperImage
-									:dialogVisible="state.showCropper"
-									:cropper-option="state.cropperOption"
-									:file-size="state.fileSize"
-									:cropper-style="cropperStyle"
-									@close="state.showCropper = false"
-									@uploadCropper="uploadImg"
-								/>
+								<el-button @click="dialogVisible = true">上传背景图</el-button>
+								<cropperImage :dialogVisible.sync="dialogVisible" @closeAvatarDialog="closeAvatarDialog"></cropperImage>
 							</div>
 						</el-form>
 					</div>
@@ -187,20 +160,8 @@ const store = useStore();
 const appMainRef = ref(null);
 const canvasRef = ref(null);
 const snapSync = ref(false);
+const dialogVisible = ref(false);
 const state = reactive({
-	cropperData: {},
-	showCropper: false, // 显示裁剪弹窗
-	canCropper: false,
-	fileSize: 2, // 限制文件上传大小
-	cropperOption: {
-		img: "",
-		autoCropWidth: 375,
-		autoCropHeight: 176,
-	},
-	cropperStyle: {
-		width: "390px",
-		height: "290px",
-	},
 	config: {
 		style: {
 			stripe: true,
@@ -443,46 +404,9 @@ const deleteSnap = row => {
 	store.commit("deleteSnap", row);
 };
 
-const handleCrop = file => {
-	// 点击弹出剪裁框
-	nextTick(() => {
-		if (state.canCropper) {
-			state.cropperOption.img = window.URL.createObjectURL(file.raw);
-			state.showCropper = state.canCropper;
-		}
-	});
-};
-const beforeAvatarUpload = file => {
-	// 上传前校验
-	const isJPG = file.type === "image/jpeg" || file.type === "image/jpg" || file.type === "image/png";
-	const isLt2M = file.size / 1024 / 1024 < 2;
-
-	if (!isJPG) {
-		state.$message.error("上传头像图片只能是 JPG/PNG 格式!");
-	}
-	if (!isLt2M) {
-		state.$message.error("上传头像图片大小不能超过 2 MB!");
-	}
-	// 校验通过后显示裁剪框
-	state.canCropper = isJPG && isLt2M;
-	return false;
-};
-// 自定义上传方法
-const uploadImg = (file, data) => {
-	let fileFormData = new FormData();
-	fileFormData.append("file", file);
-	// 移除上传组件带来的bug
-	// document.getElementsByTagName('body')[0].removeAttribute('style')
-	state.cropperData.iconUrl = data;
-	state.showCropper = false;
-	// api.uploadFile(fileFormData, state).then(res => {
-	//   state.cropperData.iconUrl = res
-	//   state.showCropper = false
-	//   state.$message({
-	//     message: '操作成功',
-	//     type: 'success'
-	//   })
-	// })
+const closeAvatarDialog = data => {
+	console.log(data);
+	dialogVisible.value = false;
 };
 </script>
 
@@ -613,38 +537,6 @@ const uploadImg = (file, data) => {
 			}
 		}
 	}
-}
-
-.cropper-app {
-	>>> .el-dialog {
-		width: max-content;
-		max-width: 860px;
-		height: 470px;
-	}
-	>>> .el-image__inner {
-		overflow: hidden;
-		border-radius: 6px;
-	}
-}
-
-.cropper-app >>> .el-upload-dragger {
-	width: 320px;
-	height: 170px;
-	line-height: 170px;
-	// background: #ecedf2;
-	border: 0;
-}
-.upload-box {
-	height: 100%;
-	background: #ecedf2;
-}
-.el-upload-tips {
-	margin-top: 10px;
-	font-size: 14px;
-	color: #a7aebb;
-}
-.select-btn {
-	margin-top: 50px;
 }
 </style>
 <style lang="scss">

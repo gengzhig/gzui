@@ -8,8 +8,15 @@
 
 ```vue
 <template>
-	<gz-five-star :num="4" :size="20" highColor="orange" @change="change"> </gz-five-star>
+	<gz-five-star :num="num" :size="20" highColor="orange" @change="change"> </gz-five-star>
 </template>
+<script setup>
+import { ref } from 'vue'
+const num=ref(1)
+const change=(value)=>{
+  num.value += value;
+}
+</script>
 ```
 
 :::

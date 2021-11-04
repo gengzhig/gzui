@@ -8,8 +8,13 @@
 
 ```vue
 <template>
-	<gz-input v-model:inputValue="      " inputType="text" :disabled="false" placeholder="请输入内容"> </gz-input>
+	<gz-input v-model:inputValue="inputValue" inputType="text" :disabled="false" :placeholder="placeholder"> </gz-input>
 </template>
+<script setup>
+import { ref } from 'vue'
+const inputValue = ref("");
+const placeholder = ref("请输入内容");
+</script>
 ```
 
 :::
