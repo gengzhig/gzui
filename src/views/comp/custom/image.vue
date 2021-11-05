@@ -23,7 +23,7 @@
 			<base-copy :code="state.errorCode"></base-copy>
 		</div>
 		<h3>懒加载</h3>
-		<p>可通过slot = error可自定义加载失败内容。</p>
+		<p>可通过lazy开启懒加载。</p>
 		<div class="meta">
 			<div class="demo">
 				<gz-image width="900" height="600" :urls="state.urls" lazy :fit="state.fit" :alt="state.alt"> </gz-image>
@@ -52,7 +52,7 @@ const state = reactive({
 		"https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg",
 		"https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg",
 	],
-	errorSrc: "https://1fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
+	errorSrc: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.51yuansu.com%2Fpic3%2Fcover%2F01%2F28%2F54%2F5923688f44190_610.jpg&refer=http%3A%2F%2Fpic.51yuansu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1638670781&t=9dd32002bfe338d97e74ade1f36d1907",
 	src: "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg",
 	fit: "fill",
 	code: `<gz-image :width="100" :height="100" :src="state.src" :fit="state.fit"></gz-image>`,

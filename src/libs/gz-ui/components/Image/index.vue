@@ -9,8 +9,8 @@
 		<div class="image-error-slot" v-if="error">
 			<slot name="error"></slot>
 		</div>
-		<div class="image-lazy" v-else-if="lazy">
-			<img class="iamge-lazy-item" v-for="url in urls" :key="url" :src="url" />
+		<div class="image-lazy" v-else-if="lazy" ref="lazyImages">
+			<img class="iamge-lazy-item" v-for="url in urls" :key="url" :data-src="url" />
 		</div>
 
 		<img
@@ -62,9 +62,10 @@ const props = defineProps({
 const imageWidth = ref(null);
 const imageHeight = ref(null);
 const error = ref(false);
+const lazyImages=ref(null);
 onMounted(() => {
 	if (props.lazy) {
-		addLazyLoadListener();
+		addLazyLoadListener(); 
 	} else {
 		loadImage();
 	}
@@ -84,8 +85,26 @@ const handleLoad = (e, img) => {
 const handleError = e => {
 	error.value = true;
 };
+// 懒加载 采用IntersectionObserver交叉观察
+const addLazyLoadListener = () => {
+	const cb=entries=>{
+		entries.forEach(entry=>{
+			if(entry.isIntersecting){
+                console.log(entry,"进入应该观察区域");
+				let image=entry.target;
+				let dataSrc=image.getAttribute("data-src");
+				image.setAttribute("src",dataSrc);
+				observer.unobserve(image);
+			}
+		})
+	}
+	let observer=new IntersectionObserver(cb);
+	let imagesDom=lazyImages.value.querySelectorAll("img");
+	imagesDom.forEach(image => {
+		observer.observe(image);
+	});
 
-const addLazyLoadListener = () => {};
+};
 </script>
 
 <style scoped lang="scss">
