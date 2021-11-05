@@ -56,7 +56,7 @@ watch(
 	left: 0;
 	box-sizing: border-box;
 	padding: 90px 30px 30px calc(200px + 30px);
-	overflow: auto;
+	overflow: auto; // 页面开启全屏loading时必须得禁止滚动
 	&.mobile {
 		padding: 90px 10px 10px 100px;
 	}

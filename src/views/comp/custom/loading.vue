@@ -6,10 +6,31 @@
 		<p>在需要的时候展示加载动画，防止页面失去响应提高用户体验（例如表格）。</p>
 		<div class="meta">
 			<div class="demo">
-				<!-- 默认为局部加载 absolute:false为全局加载 -->
-				<gz-loading :absolute="true" theme="dark" :loading="loading"></gz-loading>
+				<gz-loading :full="false" theme="dark" :loading="loading">这是一个简单的文字</gz-loading>
+				测试文字
 			</div>
-			<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
+			<base-copy :code="state.code"></base-copy>
+		</div>
+		<h3>指令用法</h3>
+		<p>全局指令,v-gzload。</p>
+		<div class="meta">
+			<div class="demo">
+				<div
+					v-gzload="{
+						full: false,
+						theme: 'dark',
+						loading: true,
+						tips: '指令加载中...',
+					}"
+				>
+					测试文字
+				</div>
+			</div>
+			<base-copy
+				:code="state.zlcode"
+				:attributeBrief="state.attributesBrief"
+				:eventBrief="state.eventsBrief"
+			></base-copy>
 		</div>
 	</div>
 </template>
@@ -18,15 +39,16 @@ import { reactive, toRefs, ref } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 const loading = ref(true);
 const state = reactive({
-	code: `<gz-loading :absolute="true" theme="dark" :loading="loading"></gz-loading>`,
+	code: `<gz-loading :full="false" theme="dark" :loading="loading">这是一个简单的文字</gz-loading>`,
+	zlcode: `<div v-gzload="{full: false,theme: 'dark',loading: true,tips: '指令加载中...',}">测试文字</div>`,
 	attributesBrief: {
 		tableData: [
 			{
-				param: "absolute",
+				param: "full",
 				explain: "加载方式",
 				type: "Boolean",
 				optional: "true局部加载/false全局加载",
-				default: "true",
+				default: "false",
 			},
 			{
 				param: "theme",
@@ -41,6 +63,13 @@ const state = reactive({
 				type: "Boolean",
 				optional: "true/false",
 				default: "false",
+			},
+			{
+				param: "tips",
+				explain: "提示文字",
+				type: "String",
+				optional: "---",
+				default: "加载中...",
 			},
 		],
 	},

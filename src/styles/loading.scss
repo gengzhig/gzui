@@ -1,0 +1,35 @@
+.loading-root {
+	position: relative;
+	overflow: hidden !important; // 解决加载时出现滚动
+}
+.loading {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 200;
+	display: flex;
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+	font-size: 14px;
+
+	&.full {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 300;
+	}
+	&.light {
+		background-color: hsla(0, 0%, 100%, 0.9);
+	}
+	&.dark {
+		background-color: rgba(0, 0, 0, 0.8);
+	}
+	.el-icon-loading {
+		color: #0960bd;
+	}
+	.tip {
+		color: #0960bd;
+	}
+}

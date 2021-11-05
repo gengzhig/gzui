@@ -1,6 +1,6 @@
 <template>
-	<div class="loading" :class="{ absolute, [theme]: theme }" v-show="loading">
-		<div class="loading-content">
+	<div class="loading-comp" :class="{ full, [theme]: theme }" v-show="loading">
+		<div class="loading-comp-content">
 			<i class="el-icon-loading"></i>
 			<div class="tip">
 				<slot>加载中...</slot>
@@ -18,14 +18,14 @@ export default {
 <script setup>
 import { reactive, ref, onMounted, watch, computed, getCurrentInstance, useSlots, nextTick } from "vue";
 const props = defineProps({
-	// false:全屏loading true:局部loading
-	absolute: {
+	// true:全屏 false:局部
+	full: {
 		type: Boolean,
-		default: true,
+		default: false,
 	},
 	loading: {
 		type: Boolean,
-		default: false,
+		default: true,
 	},
 	theme: {
 		type: String,
@@ -35,34 +35,35 @@ const props = defineProps({
 </script>
 
 <style scoped lang="scss">
-.loading {
-	position: fixed;
-	top: 0;
-	left: 0;
+.loading-comp {
+	// position: fixed;
+	// top: 0;
+	// left: 0;
 	z-index: 200;
 	display: flex;
 	width: 100%;
 	height: 100%;
 	justify-content: center;
 	align-items: center;
+	padding: 5px 0;
 
-	&.absolute {
-		position: absolute;
+	&.full {
+		position: fixed;
 		top: 0;
 		left: 0;
 		z-index: 300;
 	}
 	&.light {
-		background-color: hsla(0,0%,100%,.9);
+		background-color: hsla(0, 0%, 100%, 0.9);
 	}
 	&.dark {
 		background-color: rgba(0, 0, 0, 0.8);
 	}
 	&-content {
 		display: flex;
-		flex-flow: column;
 		justify-content: center;
 		align-items: center;
+		font-size: 14px;
 	}
 	.el-icon-loading {
 		color: #0960bd;

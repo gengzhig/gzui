@@ -17,7 +17,12 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-virtual-list :data="state.data" :width="300" :height="200" :itemHeight="30"></gz-virtual-list>
+				<gz-virtual-list
+					:data="state.data"
+					:width="300"
+					:height="200"
+					:itemHeight="30"
+				></gz-virtual-list>
 			</div>
 			<base-copy :code="state.code"></base-copy>
 		</div>
