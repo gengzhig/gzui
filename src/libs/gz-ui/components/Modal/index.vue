@@ -6,6 +6,7 @@
 			width: width + 'px',
 			height: height + 'px',
 		}"
+		v-show="showModal"
 	>
 		<div
 			class="ui-modal"
@@ -16,7 +17,6 @@
 				// marginLeft: -width / 2 + 'px',
 				// marginTop: -modalHeight / 2 + 'px',
 			}"
-			v-show="showModal"
 		>
 			<!-- 标题 -->
 			<header
@@ -143,9 +143,10 @@ export default {
 	width: 100%;
 	height: 100%;
 	position: absolute;
-	top: 0;
-	left: 0;
+	top: 50%;
+	left: 50%;
 	background: rgba(0, 0, 0, 0.3);
+	transform: translate(-50%, -50%);
 	z-index: 2;
 	.ui-modal {
 		width: 100%;
