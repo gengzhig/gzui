@@ -23,6 +23,7 @@ import gzEllipsis from "./components/Ellipsis/index.vue";
 import gzImage from "./components/Image/index.vue";
 import gzGradientText from "./components/GradientText/index.vue";
 import gzLoading from "./components/Loading/index.vue";
+import gzRadio from "./components/Radio/index.vue";
 import config from "./config.js";
 
 let gzUI = {};
@@ -44,6 +45,7 @@ gzUI.install = function (Vue) {
 	Vue.component(gzImage.name, gzImage);
 	Vue.component(gzGradientText.name, gzGradientText);
 	Vue.component(gzLoading.name, gzLoading);
+	Vue.component(gzRadio.name, gzRadio);
 };
 
 function compSign() {

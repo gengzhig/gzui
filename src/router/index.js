@@ -104,6 +104,24 @@ const router = createRouter({
 							component: () => import("views/comp/custom/input.vue"),
 						},
 						{
+							path: "radio",
+							name: "Radio",
+							meta: {
+								title: "单选框",
+								icon: "s-order",
+							},
+							component: () => import("views/comp/custom/radio.vue"),
+						},
+						{
+							path: "checkbox",
+							name: "Checkbox",
+							meta: {
+								title: "复选框",
+								icon: "s-order",
+							},
+							component: () => import("views/comp/custom/checkbox.vue"),
+						},
+						{
 							path: "selector",
 							name: "Selector",
 							meta: {
