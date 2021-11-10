@@ -10,7 +10,7 @@
 		</p>
 		<div class="meta">
 			<div class="demo">
-				<gzRadio name="group1" v-model:gz="radio1" :label="1" :disabled="true">水果</gzRadio>
+				<gzRadio name="group1" disabled v-model:gz="radio1" :label="1">水果</gzRadio>
 				<gzRadio name="group1" v-model:gz="radio1" :label="2">蔬菜</gzRadio>
 				<gzRadio name="group1" v-model:gz="radio1" :label="3">鸡肉</gzRadio>
 			</div>
@@ -23,9 +23,7 @@ import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 const radio1 = ref(1);
 const state = reactive({
-	code: `<gzRadio name="group1" v-model:gz="radio1" :label="1" :disabled="true">水果</gzRadio>
-<gzRadio name="group1" v-model:gz="radio1" :label="2">蔬菜</gzRadio>
-<gzRadio name="group1" v-model:gz="radio1" :label="3">鸡肉</gzRadio>`,
+	code: `<gzRadio name="group1" v-model:gz="radio1" :label="1">水果</gzRadio>`,
 	attributesBrief: {
 		tableData: [
 			{

@@ -1,9 +1,9 @@
 <template>
-	<div class="gzRadio">
-		<input type="radio" class="radio-input" :name="name" />
+	<label class="gzRadio" :for="label">
+		<input type="radio" class="radio-input" :id="label" :name="name" />
 		<div class="radio-dot" :class="{ disabled: disabled }" @click="toggleA"></div>
 		<div class="radio-label" :class="{ disabled: disabled }" @click="toggleB"><slot></slot></div>
-	</div>
+	</label>
 </template>
 
 <script>

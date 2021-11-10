@@ -139,6 +139,15 @@ const router = createRouter({
 							},
 							component: () => import("views/comp/custom/fiveStar.vue"),
 						},
+						{
+							path: "switch",
+							name: "Switch",
+							meta: {
+								title: "开关",
+								icon: "s-order",
+							},
+							component: () => import("views/comp/custom/switch.vue"),
+						},
 					],
 				},
 				{

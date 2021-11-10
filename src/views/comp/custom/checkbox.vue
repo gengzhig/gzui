@@ -1,67 +1,59 @@
 <template>
 	<div class="page-component">
 		<h1>多选 Checkbox</h1>
-		<p>震惊不会消失，只会转移。</p>
+		<p>一组备选项中进行多选。</p>
 		<h3>基础用法</h3>
-		<p>当你想看到更多信息时，信息也在看你。</p>
+		<p>适用于多个勾选框绑定到同一个数组的情景，通过是否勾选来表示这一组选项中选中的项。</p>
 		<div class="meta">
 			<div class="demo">
-				<gz-ellipsis width="100%" line="5" triggerClick>
-					请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-					我只想让你们记住我的存在</gz-ellipsis
-				>
+				{{ checkValue }}
+				<gzCheckBox :list="list" v-model:defaults="checkValue"></gzCheckBox>
 			</div>
 			<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
 		</div>
 	</div>
 </template>
 <script setup>
-import { reactive, toRefs } from "vue";
+import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
+const list = ref([
+	{
+		label: "苹果",
+		value: "apple",
+		disabled: true,
+	},
+	{
+		label: "西瓜",
+		value: "watermelon",
+	},
+	{
+		label: "葡萄",
+		value: "grape",
+	},
+	{
+		label: "香蕉",
+		value: "banana",
+	},
+]);
+const checkValue = ref(["apple", "banana"]);
+
 const state = reactive({
-	code: `<gz-ellipsis :width="300" :line="3" triggerClick>
-请不要只盯着我最奇怪的刘海 我只想让你们记住我的存在请不要只盯着我最奇怪的刘海
-</gz-ellipsis>`,
+	code: `<gzCheckBox :list="list" v-model:defaults="checkValue"></gzCheckBox>`,
 	attributesBrief: {
 		tableData: [
 			{
-				param: "width",
-				explain: "显示宽度",
-				type: "Number",
+				param: "list",
+				explain: "展示数据",
+				type: "Array",
 				optional: "---",
-				default: "---",
+				default: "[]",
 			},
 			{
-				param: "line",
-				explain: "显示行数",
-				type: "Number",
+				param: "checkValue",
+				explain: "默认勾选值",
+				type: "Array",
 				optional: "---",
-				default: "---",
-			},
-			{
-				param: "triggerClick",
-				explain: "点击展示完整文本",
-				type: "Boolean",
-				optional: "true/false",
-				default: "---",
+				default: "[]",
 			},
 		],
 	},
