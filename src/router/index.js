@@ -104,6 +104,15 @@ const router = createRouter({
 							component: () => import("views/comp/custom/input.vue"),
 						},
 						{
+							path: "inputNumber",
+							name: "inputNumber",
+							meta: {
+								title: "数字输入",
+								icon: "s-order",
+							},
+							component: () => import("views/comp/custom/inputNumber.vue"),
+						},
+						{
 							path: "radio",
 							name: "Radio",
 							meta: {
