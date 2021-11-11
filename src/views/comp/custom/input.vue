@@ -14,35 +14,108 @@
 
 		<div class="meta">
 			<div class="demo">
-				<!-- <gz-input :inputType="state.type" :rows="rows" :placeholder="state.placeholder"></gz-input> -->
+				<gz-input :width="150" v-model:inputValue="inputValue" inputType="type" :placeholder="placeholder"></gz-input>
+			</div>
+			<base-copy :code="code"></base-copy>
+		</div>
+		<h3>禁用状态</h3>
+		<p>通过 disabled 属性指定是否禁用 input 组件</p>
+		<h3>只允许输入数字</h3>
+		<p>通过 number 属性指定是否只允许输入数字</p>
+		<h3>文本域</h3>
+		<div class="meta">
+			<div class="demo">
 				<gz-input
-					v-model:inputValue="state.inputValue"
-					:inputType="state.type"
-					:disabled="state.disabled"
-					:placeholder="state.placeholder"
+					v-model:textAreaValue="textAreaValue"
+					inputType="textarea"
+					:rows="rows"
+					:placeholder="placeholder"
 				></gz-input>
 			</div>
-			<base-copy :code="state.code"></base-copy>
+			<base-copy :code="textAreaCode" :attributeBrief="attributesBrief" :eventBrief="eventsBrief"></base-copy>
 		</div>
 	</div>
 </template>
 
 <script setup>
-import { reactive, toRefs } from "vue";
+import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
+const textAreaValue = ref("测试文本域输入");
+const inputValue = ref("sdfsdf");
+const inputValue2 = ref("");
+const rows = ref(5);
+const disabled = ref(true);
+const type = ref("text");
+const placeholder = ref("请输入内容");
+const code = ref(`<gz-input
+	:width="150"
+	v-model:inputValue="inputValue"
+	:inputType="type"
+	:placeholder="placeholder">
+</gz-input>`);
 
-const state = reactive({
-	inputValue: "",
-	rows: 5,
-	disabled: false,
-	placeholder: "请输入内容",
-	type: "text",
-	code: `<gz-input
-    v-model:inputValue="state.inputValue"
-    :inputType="state.type"
-    :disabled="state.disabled"
-    :placeholder="state.placeholder"
-></gz-input>`,
+const textAreaCode = ref(`<gz-input
+	v-model:textAreaValue="textAreaValue"
+	inputType="textarea"
+	:rows="rows"
+	:placeholder="placeholder">
+</gz-input>`);
+
+const attributesBrief = ref({
+	tableData: [
+		{
+			param: "width",
+			explain: "宽度",
+			type: "String/Number",
+			optional: "---",
+			default: "180",
+		},
+		{
+			param: "center",
+			explain: "对齐方式",
+			type: "Boolean",
+			optional: "true/false",
+			default: "false",
+		},
+		{
+			param: "inputType",
+			explain: "输入框类型",
+			type: "String",
+			optional: "type/textarea",
+			default: "type",
+		},
+		{
+			param: "disabled",
+			explain: "禁用状态",
+			type: "Boolean",
+			optional: "true/false",
+			default: "false",
+		},
+		{
+			param: "number",
+			explain: "限制只能输入数字",
+			type: "Boolean",
+			optional: "true/false",
+			default: "false",
+		},
+		{
+			param: "rows",
+			explain: "文本域最大展示行数",
+			type: "Number",
+			optional: "---",
+			default: "5",
+		},
+		{
+			param: "placeholder",
+			explain: "输入框占位文本",
+			type: "String",
+			optional: "---",
+			default: "请输入内容",
+		},
+	],
+});
+const eventsBrief = ref({
+	tableData: [],
 });
 </script>
 

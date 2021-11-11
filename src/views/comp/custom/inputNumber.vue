@@ -6,17 +6,20 @@
 		<p>要使用它，只需要在 'gz-input-number' 元素中使用 v-model 绑定变量即可，变量的初始值即为默认值。</p>
 		<div class="meta">
 			<div class="demo">
-				<gzInputNumber></gzInputNumber>
+				<gzInputNumber :min="1" :max="10"></gzInputNumber>
 			</div>
-			<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
 		</div>
+		<h3>禁用状态</h3>
+		<p>通过 disabled 属性</p>
+
+		<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
 	</div>
 </template>
 <script setup>
 import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 const state = reactive({
-	code: ``,
+	code: `<gzInputNumber :min="1" :max="10"></gzInputNumber>`,
 	attributesBrief: {
 		tableData: [
 			{
@@ -39,6 +42,20 @@ const state = reactive({
 				type: "String",
 				optional: "---",
 				default: "#ff4949",
+			},
+			{
+				param: "min",
+				explain: "最小值",
+				type: "Number",
+				optional: "---",
+				default: "",
+			},
+			{
+				param: "max",
+				explain: "最大值",
+				type: "Number",
+				optional: "---",
+				default: "",
 			},
 		],
 	},

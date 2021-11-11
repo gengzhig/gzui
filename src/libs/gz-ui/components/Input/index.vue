@@ -14,14 +14,23 @@
 			name=""
 			id=""
 			:disabled="disabled"
-			:value="inputValue"
 			:placeholder="placeholder"
+			v-model="inputContent"
 			@input="input"
+			@keyup="keyup"
+			:style="{ textAlign: center ? 'center' : 'left', width: typeof width == 'number' ? width + 'px' : width }"
 		/>
 	</template>
 	<!-- 文本域 -->
 	<template v-if="inputType == 'textarea'">
-		<textarea :placeholder="placeholder" :rows="rows" />
+		<textarea
+			:placeholder="placeholder"
+			:rows="rows"
+			:disabled="disabled"
+			v-model="textAreaValue"
+			@input="textAreaInput"
+			:style="{ textAlign: center ? 'center' : 'left', width: typeof width == 'number' ? width + 'px' : width }"
+		/>
 	</template>
 </template>
 
@@ -31,7 +40,8 @@ export default {
 };
 </script>
 <script setup>
-import { reactive, ref, getCurrentInstance } from "vue";
+import { reactive, ref, getCurrentInstance, watch } from "vue";
+
 const { emit } = getCurrentInstance();
 const props = defineProps({
 	inputValue: {
@@ -53,9 +63,45 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+	width: {
+		type: [Number, String],
+		default: 180,
+	},
+	center: {
+		type: Boolean,
+		default: false,
+	},
+	textAreaValue: {
+		type: [String, Boolean, Number],
+		default: "请输入内容",
+	},
+	number: {
+		type: Boolean,
+		default: false,
+	},
 });
+let inputContent = ref(props.inputValue);
+watch(
+	() => props.inputValue,
+	value => {
+		inputContent.value = value;
+	}
+);
 const input = e => {
-	emit("update:inputValue", e.target.value);
+	// 正则校验 只允许输入数字
+	if (props.number) {
+		emit("update:inputValue", e.target.value.replace(/\D/g, ""));
+	} else {
+		emit("update:inputValue", e.target.value);
+	}
+};
+const keyup = e => {
+	if (props.number) {
+		inputContent.value = (inputContent.value || "").replace(/\D/g, "");
+	}
+};
+const textAreaInput = e => {
+	emit("update:textAreaValue", e.target.value);
 };
 </script>
 
@@ -67,6 +113,7 @@ input {
 	padding: 0 15px;
 	border-radius: 4px;
 	border: 1px solid #dcdfe6;
+	box-sizing: border-box;
 	&:disabled {
 		cursor: not-allowed;
 	}
@@ -77,6 +124,9 @@ textarea {
 	padding: 5px 15px;
 	line-height: 1.5;
 	box-sizing: border-box;
+	&:disabled {
+		cursor: not-allowed;
+	}
 }
 textarea:focus {
 	outline: none !important;
