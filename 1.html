@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+
+	<body></body>
+	<script>
+		// let data = [
+		// 	{
+		// 		title: "水果",
+		// 		id: 1,
+		// 		pid: 0,
+		// 		children: [
+		// 			{
+		// 				title: "苹果",
+		// 				id: 2,
+		// 				pid: 1,
+		// 			},
+		// 			{
+		// 				title: "西瓜",
+		// 				id: 3,
+		// 				pid: 1,
+		// 				children: [
+		// 					{
+		// 						title: "西瓜瓜籽",
+		// 						id: 4,
+		// 						pid: 3,
+		// 					},
+		// 				],
+		// 			},
+		// 		],
+		// 	},
+		// 	{
+		// 		title: "蔬菜",
+		// 		id: 5,
+		// 		pid: 0,
+		// 		children: [
+		// 			{
+		// 				title: "青菜",
+		// 				id: 6,
+		// 				pid: 5,
+		// 			},
+		// 			{
+		// 				title: "胡萝卜",
+		// 				id: 7,
+		// 				pid: 5,
+		// 			},
+		// 		],
+		// 	},
+		// ];
+		let flatData = [
+			{
+				id: 1,
+				title: "水果",
+				pid: 0,
+			},
+			{
+				id: 2,
+				title: "苹果",
+				pid: 1,
+			},
+			{
+				id: 3,
+				title: "西瓜",
+				pid: 1,
+			},
+			{
+				id: 4,
+				title: "西瓜瓜籽",
+				pid: 3,
+			},
+			{
+				id: 5,
+				title: "蔬菜",
+				pid: 0,
+			},
+			{
+				id: 6,
+				title: "青菜",
+				pid: 5,
+			},
+			{
+				id: 7,
+				title: "胡萝卜",
+				pid: 5,
+			},
+		];
+
+		function formatterTreeData(data) {
+			let parentData = data.filter(d => d.pid == 0);
+			let childrenData = data.filter(d => d.pid != 0);
+			function toTree(parentD, childrenD) {
+				parentD.map(p => {
+					childrenD.map((c, i) => {
+						if (c.pid == p.id) {
+							let _c = JSON.parse(JSON.stringify(childrenD));
+							_c.splice(i, 1);
+							toTree([c], _c);
+							if (p.children) {
+								p.children.push(c);
+							} else {
+								p.children = [c];
+							}
+						}
+					});
+				});
+			}
+			toTree(parentData, childrenData);
+			return parentData;
+		}
+		console.log(formatterTreeData(flatData));
+		// 1.将树结构扁平化
+		// function flatTreeData(data) {
+		// 	let res = [];
+		// 	data.forEach(r => {
+		// 		res.push({ id: r.id, title: r.title, pid: r.pid });
+		// 		if (r?.children?.length) res.push(...flatTreeData(r.children));
+		// 	});
+		// 	return res;
+		// }
+		function jsonToView(data) {
+			return JSON.stringify(data, null, 2);
+		}
+		// console.log(jsonToView(flatTreeData(data)));
+		// function filter(keywords, data) {
+		// 	let newData = flatTreeData(data);
+		// 	let arr = newData
+		// 		.filter(d => d.title.includes(keywords))
+		// 		.reduce((total, r) => total.concat(newData.filter(rr => r.key && r.key.startsWith(rr.key))), []);
+		// 	return fmtNest(arr);
+		// }
+		// function fmtNest(data, parentKey) {
+		// 	let root = data.filter(r => r.parentKey === parentKey).map(r => ({ key: r.key, title: r.title }));
+		// 	root.forEach(r => {
+		// 		let children = fmtNest(data, r.key);
+		// 		children?.length && (r.children = children);
+		// 	});
+		// 	return root;
+		// }
+
+		// console.log(filter("西瓜", data));
+
+		// let arr = [
+		// 	{ name: "水果", id: 1 },
+		// 	{ name: "水果", id: 1 },
+		// 	{ name: "西瓜", id: 2 },
+		// 	{ name: "苹果", id: 3 },
+		// ];
+
+		// function filtersArr(arr, property) {
+		// 	return arr.reduce((pre, cur) => {
+		// 		let find = pre.find(p => p[property] == cur[property]);
+		// 		if (!find) {
+		// 			pre.push(cur);
+		// 		}
+		// 		return pre;
+		// 	}, []);
+		// }
+		// console.log(filtersArr(arr, "name"));
+		// let map = new Map();
+		// map.set(1, { a: 1 });
+		// map.set(2, { a: 2 });
+		// [...map].map(m => {
+		// 	console.log(m);
+		// });
+	</script>
+</html>
