@@ -140,6 +140,15 @@ const router = createRouter({
 							component: () => import("views/comp/custom/selector.vue"),
 						},
 						{
+							path: "datePicker",
+							name: "DatePicker",
+							meta: {
+								title: "日期选择器",
+								icon: "s-document",
+							},
+							component: () => import("views/comp/custom/datePicker.vue"),
+						},
+						{
 							path: "fiveStar",
 							name: "FiveStar",
 							meta: {
@@ -169,6 +178,15 @@ const router = createRouter({
 						icon: "mobile",
 					},
 					children: [
+						{
+							path: "calendar",
+							name: "Calendar",
+							meta: {
+								title: "日历",
+								icon: "document-copy",
+							},
+							component: () => import("views/comp/custom/calendar.vue"),
+						},
 						{
 							path: "virtualList",
 							name: "VirtualList",

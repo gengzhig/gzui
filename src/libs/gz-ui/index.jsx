@@ -27,6 +27,7 @@ import gzRadio from "./components/Radio/index.vue";
 import gzCheckBox from "./components/CheckBox/index.vue";
 import gzSwitch from "./components/Switch/index.vue";
 import gzInputNumber from "./components/InputNumber/index.vue";
+import gzDatePicker from "./components/DatePicker/index.vue";
 import config from "./config.js";
 
 let gzUI = {};
@@ -52,6 +53,7 @@ gzUI.install = function (Vue) {
 	Vue.component(gzCheckBox.name, gzCheckBox);
 	Vue.component(gzSwitch.name, gzSwitch);
 	Vue.component(gzInputNumber.name, gzInputNumber);
+	Vue.component(gzDatePicker.name, gzDatePicker);
 };
 
 function compSign() {
