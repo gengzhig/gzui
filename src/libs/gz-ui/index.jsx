@@ -171,13 +171,23 @@ compInfo.register({
 		height: 40,
 	},
 });
-
+compInfo.register({
+	label: "数据录入",
+	subLabel: "日期选择器",
+	preview: () => <gz-date-picker width={"100%"} height={"100%"}></gz-date-picker>,
+	render: () => <gz-date-picker width={"100%"} height={"100%"}></gz-date-picker>,
+	key: "0006",
+	style: {
+		width: 420,
+		height: 453,
+	},
+});
 compInfo.register({
 	label: "数据展示",
 	subLabel: "table表格",
 	preview: () => <gz-table></gz-table>,
 	render: () => <gz-table config={config.tableConfig}></gz-table>,
-	key: "0006",
+	key: "0007",
 	style: {
 		width: 800,
 		height: 250,
@@ -197,7 +207,7 @@ compInfo.register({
 			defaultLimitData={config.pagination.defaultLimitData}
 		></gz-pagination>
 	),
-	key: "0007",
+	key: "0008",
 	style: {
 		width: 500,
 		height: 50,
@@ -213,7 +223,7 @@ compInfo.register({
 			按钮
 		</gz-button>
 	),
-	key: "0008",
+	key: "0009",
 	style: {
 		width: 70,
 		height: 40,
@@ -261,7 +271,7 @@ compInfo.register({
 			})}
 		</gz-carousel>
 	),
-	key: "0009",
+	key: "0010",
 	style: {
 		width: 600,
 		height: 300,
@@ -281,7 +291,7 @@ compInfo.register({
 			alt="state.alt"
 		></gz-image>
 	),
-	key: "0010",
+	key: "0011",
 	style: {
 		width: 200,
 		height: 200,

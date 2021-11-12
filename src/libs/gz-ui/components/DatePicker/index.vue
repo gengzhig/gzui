@@ -113,7 +113,9 @@ const selectItem = item => {
 
 <style scoped lang="scss">
 .gzDatePicker {
-	width: 420px;
+	// width: 420px;
+	height: 100%;
+	background-color: #fff;
 	.header {
 		display: flex;
 		justify-content: space-between;
@@ -126,6 +128,7 @@ const selectItem = item => {
 	}
 	.content {
 		border: 1px solid #ccc;
+		height: calc(100% - 50px);
 		.content-header {
 			height: 40px;
 			line-height: 40px;
@@ -143,7 +146,7 @@ const selectItem = item => {
 				cursor: pointer;
 				&.active {
 					background: #18a058;
-					color: #fff;
+					// color: #fff;
 				}
 			}
 		}
