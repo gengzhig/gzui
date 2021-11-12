@@ -14,7 +14,13 @@
 
 		<div class="meta">
 			<div class="demo">
-				<gz-input :width="150" v-model:inputValue="inputValue" inputType="type" :placeholder="placeholder"></gz-input>
+				<gz-input
+					password
+					:width="150"
+					v-model:inputValue="inputValue"
+					:inputType="type"
+					:placeholder="placeholder"
+				></gz-input>
 			</div>
 			<base-copy :code="code"></base-copy>
 		</div>
@@ -41,11 +47,11 @@
 import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 const textAreaValue = ref("测试文本域输入");
-const inputValue = ref("sdfsdf");
+const inputValue = ref("测试文本输入");
 const inputValue2 = ref("");
 const rows = ref(5);
 const disabled = ref(true);
-const type = ref("text");
+const type = ref("type");
 const placeholder = ref("请输入内容");
 const code = ref(`<gz-input
 	:width="150"
@@ -81,7 +87,7 @@ const attributesBrief = ref({
 			param: "inputType",
 			explain: "输入框类型",
 			type: "String",
-			optional: "type/textarea",
+			optional: "text/textarea/password",
 			default: "type",
 		},
 		{

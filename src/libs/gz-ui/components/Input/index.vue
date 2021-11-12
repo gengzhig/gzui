@@ -11,8 +11,6 @@
 	<template v-if="inputType != 'textarea'">
 		<input
 			:type="inputType"
-			name=""
-			id=""
 			:disabled="disabled"
 			:placeholder="placeholder"
 			v-model="inputContent"
@@ -76,6 +74,10 @@ const props = defineProps({
 		default: "请输入内容",
 	},
 	number: {
+		type: Boolean,
+		default: false,
+	},
+	password: {
 		type: Boolean,
 		default: false,
 	},

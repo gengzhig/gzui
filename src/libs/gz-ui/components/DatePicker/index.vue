@@ -1,23 +1,17 @@
 <template>
-	<div class="gzDatePicker">
+	<div class="gzDatePicker" :style="{ width: typeof width == 'number' ? width + 'px' : width }">
 		<div class="header">
-			<gz-button @click="prevM">{{ prevMonth }}</gz-button>
-			<gz-button @click="changeD(-1)">{{ prevDay }}</gz-button>
+			<gz-button size="mini" @click="prevM">{{ prevMonth }}</gz-button>
+			<gz-button size="mini" @click="changeD(-1)">{{ prevDay }}</gz-button>
 			<span class="year">{{ year }}年</span>
 			<span class="month">{{ month }}月</span>
 			<span class="date">{{ date }}日</span>
-			<gz-button @click="changeD(1)">{{ nextDay }}</gz-button>
-			<gz-button @click="nextM">{{ nextMonth }}</gz-button>
+			<gz-button size="mini" @click="changeD(1)">{{ nextDay }}</gz-button>
+			<gz-button size="mini" @click="nextM">{{ nextMonth }}</gz-button>
 		</div>
 		<div class="content">
 			<div class="content-header">
-				<div class="item">一</div>
-				<div class="item">二</div>
-				<div class="item">三</div>
-				<div class="item">四</div>
-				<div class="item">五</div>
-				<div class="item">六</div>
-				<div class="item">日</div>
+				<div class="item" v-for="(item, index) in weekHearders" :key="index">{{ item }}</div>
 			</div>
 			<div class="content-wrap">
 				<div
@@ -44,7 +38,14 @@ export default {
 import { ref, onMounted, computed } from "vue";
 import layout from "./layout";
 let oldTime = null;
+const props = defineProps({
+	width: {
+		type: [Number, String],
+		default: 420,
+	},
+});
 
+const weekHearders = ref(["一", "二", "三", "四", "五", "六", "日"]);
 const prevMonth = ref("<<");
 const nextMonth = ref(">>");
 const prevDay = ref("<");
@@ -113,7 +114,6 @@ const selectItem = item => {
 
 <style scoped lang="scss">
 .gzDatePicker {
-	// width: 420px;
 	height: 100%;
 	background-color: #fff;
 	.header {
@@ -141,12 +141,12 @@ const selectItem = item => {
 				width: calc(100% / 7);
 				display: inline-block;
 				text-align: center;
-				height: 60px;
-				line-height: 60px;
+				height: 50px;
+				line-height: 50px;
 				cursor: pointer;
+				border-radius: 50%;
 				&.active {
 					background: #18a058;
-					// color: #fff;
 				}
 			}
 		}

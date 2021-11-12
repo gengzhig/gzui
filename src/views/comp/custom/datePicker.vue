@@ -6,7 +6,7 @@
 		<p>选择某一天。</p>
 		<div class="meta">
 			<div class="demo">
-				<gz-date-picker></gz-date-picker>
+				<gz-date-picker :width="350"></gz-date-picker>
 			</div>
 			<base-copy :code="state.code"></base-copy>
 		</div>
