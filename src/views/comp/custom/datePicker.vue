@@ -8,7 +8,7 @@
 			<div class="demo">
 				<gz-date-picker></gz-date-picker>
 			</div>
-			<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
+			<base-copy :code="state.code"></base-copy>
 		</div>
 	</div>
 </template>
@@ -16,21 +16,7 @@
 import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 const state = reactive({
-	code: ``,
-	attributesBrief: {
-		tableData: [
-			// {
-			// 	param: "text",
-			// 	explain: "文字描述",
-			// 	type: "String",
-			// 	optional: "---",
-			// 	default: "on|off",
-			// },
-		],
-	},
-	eventsBrief: {
-		tableData: [],
-	},
+	code: `<gz-date-picker></gz-date-picker>`,
 });
 </script>
 

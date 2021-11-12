@@ -2,15 +2,34 @@
 	<div class="gzDatePicker">
 		<div class="header">
 			<gz-button @click="prevM">{{ prevMonth }}</gz-button>
-			<gz-button>{{ prevDay }}</gz-button>
+			<gz-button @click="changeD(-1)">{{ prevDay }}</gz-button>
 			<span class="year">{{ year }}年</span>
 			<span class="month">{{ month }}月</span>
 			<span class="date">{{ date }}日</span>
-			<gz-button>{{ nextDay }}</gz-button>
+			<gz-button @click="changeD(1)">{{ nextDay }}</gz-button>
 			<gz-button @click="nextM">{{ nextMonth }}</gz-button>
 		</div>
 		<div class="content">
-			<gz-table :config="config"> </gz-table>
+			<div class="content-header">
+				<div class="item">一</div>
+				<div class="item">二</div>
+				<div class="item">三</div>
+				<div class="item">四</div>
+				<div class="item">五</div>
+				<div class="item">六</div>
+				<div class="item">日</div>
+			</div>
+			<div class="content-wrap">
+				<div
+					class="item"
+					:class="{ active: item == nowDate }"
+					v-for="(item, index) in timeDatas"
+					:key="index"
+					@click="selectItem(item)"
+				>
+					{{ item.split("-")[2] }}
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -22,181 +41,47 @@ export default {
 </script>
 
 <script setup>
-import { reactive, ref, onMounted, watch, computed, useSlots, nextTick } from "vue";
-const props = defineProps({});
-const emit = defineEmits();
+import { ref, onMounted, computed } from "vue";
+import layout from "./layout";
+let oldTime = null;
 
 const prevMonth = ref("<<");
 const nextMonth = ref(">>");
 const prevDay = ref("<");
 const nextDay = ref(">");
-const config = ref({
-	style: {
-		width: 422,
-		stripe: true,
-		border: true,
-		height: 337,
-		index: false,
-		radio: false,
-		checkBox: false,
-	},
-	columnData: [
-		{
-			prop: "Mon",
-			label: "一",
-			width: 60,
-		},
-		{
-			prop: "Tue",
-			label: "二",
-			width: 60,
-		},
-		{
-			prop: "Wed",
-			label: "三",
-			width: 60,
-		},
-		{
-			prop: "Thu",
-			label: "四",
-			width: 60,
-		},
-		{
-			prop: "Fri",
-			label: "五",
-			width: 60,
-		},
-		{
-			prop: "Sat",
-			label: "六",
-			width: 60,
-		},
-		{
-			prop: "Sun",
-			label: "日",
-			width: 60,
-		},
-	],
-	tableData: [
-		{
-			Mon: "",
-			Tue: "",
-			Wed: "",
-			Thu: "",
-			Fri: "",
-			Sat: "",
-			Sun: "",
-		},
-		{
-			Mon: "",
-			Tue: "",
-			Wed: "",
-			Thu: "",
-			Fri: "",
-			Sat: "",
-			Sun: "",
-		},
-		{
-			Mon: "",
-			Tue: "",
-			Wed: "",
-			Thu: "",
-			Fri: "",
-			Sat: "",
-			Sun: "",
-		},
-		{
-			Mon: "",
-			Tue: "",
-			Wed: "",
-			Thu: "",
-			Fri: "",
-			Sat: "",
-			Sun: "",
-		},
-		{
-			Mon: "",
-			Tue: "",
-			Wed: "",
-			Thu: "",
-			Fri: "",
-			Sat: "",
-			Sun: "",
-		},
-		{
-			Mon: "",
-			Tue: "",
-			Wed: "",
-			Thu: "",
-			Fri: "",
-			Sat: "",
-			Sun: "",
-		},
-	],
-});
-
+const timeDatas = ref([]);
 const year = ref(new Date().getFullYear());
 const month = ref(new Date().getMonth() + 1);
 const date = ref(new Date().getDate());
-// const month = ref(12);
+// 当天/选中日期（年-月-日）
+const nowDate = computed(() => {
+	return year.value + "-" + month.value + "-" + date.value;
+});
 
 onMounted(() => {
-	layout();
+	// 外界传值显示日期
+	timeDatas.value = layout(year.value, month.value);
 });
-// 排版
-const layout = (Year, Month) => {
-	// 获取当前日期
-	let currentDate = new Date().getDate();
-	// 获取当前月第一天是星期几
-	let currentMonthFirstDayWeek = new Date(year.value, month.value - 1, 1).getDay();
-	// 获取当前月最后一天天数
-	let currentMonthLastDay = new Date(new Date(year.value, month.value, 1) - 86400 * 1000).getDate();
-	// 获取上个月最后一天天数
-	let prevMonthLastDay = new Date(new Date(year.value, month.value - 1, 1) - 86400 * 1000).getDate();
 
-	let timeData = [];
-	for (let i = prevMonthLastDay - (currentMonthFirstDayWeek - 1) + 1; i <= prevMonthLastDay; i++) {
-		timeData.push(i);
-	}
-	for (let i = 1; i <= currentMonthLastDay; i++) {
-		timeData.push(i);
-	}
-	let suppleDate = 42 - currentMonthLastDay - (currentMonthFirstDayWeek - 1);
-	// 再补充 42-currentMonthLastDay-(currentMonthFirstDayWeek-1)
-	for (let i = 1; i <= suppleDate; i++) {
-		timeData.push(i);
-	}
-	timeData = ArrayGroup(timeData, 7);
-	config.value.tableData.map((t, i) => {
-		t.Mon = timeData[i][0];
-		t.Tue = timeData[i][1];
-		t.Wed = timeData[i][2];
-		t.Thu = timeData[i][3];
-		t.Fri = timeData[i][4];
-		t.Sat = timeData[i][5];
-		t.Sun = timeData[i][6];
-	});
+const changeD = num => {
+	let nowTime = null;
+	nowTime = new Date(
+		+new Date(
+			oldTime ? oldTime.split("-")[0] : new Date().getFullYear(),
+			oldTime ? oldTime.split("-")[1] - 1 : new Date().getMonth(),
+			oldTime ? oldTime.split("-")[2] : new Date().getDate()
+		) +
+			86400 * 1000 * num
+	)
+		.toLocaleDateString()
+		.replaceAll("/", "-");
+
+	oldTime = nowTime;
+	year.value = +nowTime.split("-")[0];
+	month.value = +nowTime.split("-")[1];
+	date.value = +nowTime.split("-")[2];
+	timeDatas.value = layout(year.value, month.value);
 };
-
-const ArrayGroup = (array, subGroupLength) => {
-	let index = 0;
-	let newArray = [];
-	while (index < array.length) {
-		newArray.push(array.slice(index, (index += subGroupLength)));
-	}
-	return newArray;
-};
-
-const nextM = () => {
-	if (month.value == 12) {
-		month.value = 1;
-		year.value++;
-	} else {
-		month.value++;
-	}
-	layout();
-};
-
 const prevM = () => {
 	if (month.value == 1) {
 		month.value = 12;
@@ -204,7 +89,25 @@ const prevM = () => {
 	} else {
 		month.value--;
 	}
-	layout();
+	oldTime = year.value + "-" + month.value + "-" + date.value;
+	timeDatas.value = layout(year.value, month.value);
+};
+const nextM = () => {
+	if (month.value == 12) {
+		month.value = 1;
+		year.value++;
+	} else {
+		month.value++;
+	}
+	oldTime = year.value + "-" + month.value + "-" + date.value;
+	timeDatas.value = layout(year.value, month.value);
+};
+// 选中天
+const selectItem = item => {
+	year.value = +item.split("-")[0];
+	month.value = +item.split("-")[1];
+	date.value = +item.split("-")[2];
+	oldTime = item;
 };
 </script>
 
@@ -219,6 +122,30 @@ const prevM = () => {
 		.gz-button {
 			margin-bottom: 0;
 			margin-right: 0;
+		}
+	}
+	.content {
+		border: 1px solid #ccc;
+		.content-header {
+			height: 40px;
+			line-height: 40px;
+			display: flex;
+			justify-content: space-around;
+			border-bottom: 1px solid #ccc;
+		}
+		.content-wrap {
+			.item {
+				width: calc(100% / 7);
+				display: inline-block;
+				text-align: center;
+				height: 60px;
+				line-height: 60px;
+				cursor: pointer;
+				&.active {
+					background: #18a058;
+					color: #fff;
+				}
+			}
 		}
 	}
 }
