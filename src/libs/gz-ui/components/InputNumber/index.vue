@@ -7,7 +7,7 @@
 			:width="100"
 			:disabled="disabled"
 			class="gzInput"
-			v-model:inputValue="count"
+			v-model="count"
 			placeholder=""
 			inputType="text"
 		></gz-input>

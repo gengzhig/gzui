@@ -8,7 +8,7 @@
 
 ```vue
 <template>
-	<gz-input v-model:inputValue="inputValue" inputType="text" :disabled="false" :placeholder="placeholder"> </gz-input>
+	<gz-input v-model="inputValue" inputType="text" :disabled="false" :placeholder="placeholder"> </gz-input>
 </template>
 <script setup>
 import { ref } from 'vue'

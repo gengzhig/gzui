@@ -1,40 +1,40 @@
 {
-  "name": "gengzhiui",
-  "version": "1.0.0",
-  "description": "耿智开发的一套基于vue3的前端组件库",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "test": "jest",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:serve": "vitepress serve docs"
-  },
-  "dependencies": {
-    "axios": "^0.21.1",
-    "echarts": "^5.1.2",
-    "element3": "^0.0.39",
-    "monaco-editor": "^0.29.1",
-    "vue": "^3.0.5",
-    "vue-cropper": "^0.5.7",
-    "vue-router": "^4.0.3",
-    "vuex": "^4.0.0-rc.2"
-  },
-  "devDependencies": {
-    "@babel/preset-env": "^7.16.0",
-    "@babel/preset-typescript": "^7.16.0",
-    "@types/jest": "^27.0.2",
-    "@vitejs/plugin-vue": "^1.4.0",
-    "@vitejs/plugin-vue-jsx": "^1.2.0",
-    "@vue/babel-plugin-jsx": "^1.1.1",
-    "@vue/compiler-sfc": "3.1.5",
-    "@vue/test-utils": "^2.0.0-rc.16",
-    "babel-jest": "^27.3.1",
-    "jest": "^27.3.1",
-    "sass": "^1.32.5",
-    "vite": "^2.0.0-beta.12",
-    "vitepress": "^0.20.0",
-    "vitepress-theme-demoblock": "^1.2.2",
-    "vue-template-compiler": "^2.6.14"
-  }
+	"name": "gengzhiui",
+	"version": "1.0.0",
+	"description": "耿智开发的一套基于vue3的前端组件库",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"test": "jest",
+		"docs:dev": "vitepress dev docs",
+		"docs:build": "vitepress build docs",
+		"docs:serve": "vitepress serve docs"
+	},
+	"dependencies": {
+		"axios": "^0.21.1",
+		"echarts": "^5.1.2",
+		"element3": "^0.0.39",
+		"monaco-editor": "^0.29.1",
+		"vue": "^3.0.5",
+		"vue-cropper": "^0.5.7",
+		"vue-router": "^4.0.3",
+		"vuex": "^4.0.0-rc.2"
+	},
+	"devDependencies": {
+		"@babel/preset-env": "^7.16.0",
+		"@babel/preset-typescript": "^7.16.0",
+		"@types/jest": "^27.0.2",
+		"@vitejs/plugin-vue": "^1.4.0",
+		"@vitejs/plugin-vue-jsx": "^1.2.0",
+		"@vue/babel-plugin-jsx": "^1.1.1",
+		"@vue/compiler-sfc": "3.1.5",
+		"@vue/test-utils": "^2.0.0-rc.16",
+		"babel-jest": "^27.3.1",
+		"jest": "^27.3.1",
+		"sass": "^1.32.5",
+		"vite": "^2.0.0-beta.12",
+		"vitepress": "^0.20.0",
+		"vitepress-theme-demoblock": "^1.2.2",
+		"vue-template-compiler": "^2.6.14"
+	}
 }
