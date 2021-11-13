@@ -1,5 +1,5 @@
 <template>
-	<div class="gzDatePicker" :style="{ width: typeof width == 'number' ? width + 'px' : width }">
+	<div class="gzCalendar" :style="{ width: typeof width == 'number' ? width + 'px' : width }">
 		<div class="header">
 			<gz-button size="mini" @click="prevM">{{ prevMonth }}</gz-button>
 			<gz-button size="mini" @click="changeD(-1)">{{ prevDay }}</gz-button>
@@ -28,7 +28,7 @@
 
 <script>
 export default {
-	name: "gzDatePicker",
+	name: "gzCalendar",
 };
 </script>
 
@@ -128,7 +128,7 @@ const selectItem = item => {
 </script>
 
 <style scoped lang="scss">
-.gzDatePicker {
+.gzCalendar {
 	height: 100%;
 	background-color: #fff;
 	.header {

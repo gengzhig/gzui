@@ -8,28 +8,27 @@
 			<div class="demo">
 				<gz-date-picker :width="350"></gz-date-picker>
 			</div>
-			<base-copy :code="state.code"></base-copy>
+			<base-copy :code="code" :attributeBrief="attributesBrief" :eventBrief="eventsBrief"></base-copy>
 		</div>
 	</div>
 </template>
 <script setup>
 import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
-const state = reactive({
-	code: `<gz-date-picker></gz-date-picker>`,
+const defaultTime = ref("2021-11-11");
+const code = ref('<gz-date-picker :width="350"></gz-date-picker>');
+const attributesBrief = ref({
+	tableData: [
+		{
+			param: "width",
+			explain: "宽度",
+			type: "Number,String",
+			optional: "---",
+			default: "420",
+		},
+	],
+});
+const eventsBrief = ref({
+	tableData: [],
 });
 </script>
-
-<style lang="scss" scoped>
-.demo {
-	.gz-switch:first-child {
-		margin-bottom: 10px;
-	}
-	.el-row {
-		margin-bottom: 20px;
-		button {
-			margin-right: 10px;
-		}
-	}
-}
-</style>
