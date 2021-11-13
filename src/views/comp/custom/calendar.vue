@@ -9,7 +9,7 @@
 		</p>
 		<div class="meta">
 			<div class="demo">
-				<gz-date-picker v-model="defaultTime" :width="350"></gz-date-picker>
+				<gz-calendar v-model="defaultTime" :width="350"></gz-calendar>
 			</div>
 			<base-copy :code="code" :attributeBrief="attributesBrief" :eventBrief="eventsBrief"></base-copy>
 		</div>
@@ -19,7 +19,7 @@
 import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 const defaultTime = ref("");
-const code = ref('<gz-date-picker v-model="defaultTime" :width="350"></gz-date-picker>');
+const code = ref('<gz-calendar v-model="defaultTime" :width="350"></gz-calendar>');
 const attributesBrief = ref({
 	tableData: [
 		{
@@ -28,6 +28,13 @@ const attributesBrief = ref({
 			type: "Number,String",
 			optional: "---",
 			default: "420",
+		},
+		{
+			param: "defaultTime",
+			explain: "默认值",
+			type: "String",
+			optional: "---",
+			default: "---",
 		},
 	],
 });
