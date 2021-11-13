@@ -1,6 +1,6 @@
 <template>
 	<div v-for="(item, index) in list" :key="index" class="gzCheckBox">
-		<input type="checkbox" :disabled="item.disabled" :id="item.value" :value="item.value" v-model="defaults" />
+		<input type="checkbox" :disabled="item.disabled" :id="item.value" :value="item.value" v-model="modelValue" />
 		<label :for="item.value">{{ item.label }}</label>
 	</div>
 </template>
@@ -18,22 +18,25 @@ const props = defineProps({
 		type: Array,
 		default: () => [],
 	},
-	defaults: {
+	modelValue: {
 		type: Array,
 		default: () => [],
 	},
 });
-const emit = defineEmits(["sendValue"]);
+const emits = defineEmits(["modelValue"]);
 watch(
-	() => props.defaults,
+	() => props.modelValue,
 	value => {
-		emit("update:defaults", value);
+		emits("update:modelValue", value);
 	}
 );
 </script>
 
 <style scoped lang="scss">
 .gzCheckBox {
+	label {
+		cursor: pointer;
+	}
 	input[type="checkbox"] + label::before {
 		content: "\a0"; /*不换行空格*/
 		display: inline-block;

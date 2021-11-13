@@ -9,18 +9,11 @@
 <template>
 	<div class="page-component">
 		<h1>Input 输入框</h1>
-		<p>支持普通输入，密码可禁选，文本域。</p>
+		<p>支持普通文本输入,文本域和密码,可禁选。</p>
 		<h3>基础用法</h3>
-
 		<div class="meta">
 			<div class="demo">
-				<gz-input
-					password
-					:width="150"
-					v-model:inputValue="inputValue"
-					:inputType="type"
-					:placeholder="placeholder"
-				></gz-input>
+				<gz-input password :width="150" v-model="inputValue" :inputType="type" :placeholder="placeholder"></gz-input>
 			</div>
 			<base-copy :code="code"></base-copy>
 		</div>
@@ -47,7 +40,7 @@
 import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 const textAreaValue = ref("测试文本域输入");
-const inputValue = ref("测试文本输入");
+const inputValue = ref("");
 const inputValue2 = ref("");
 const rows = ref(5);
 const disabled = ref(true);
@@ -55,7 +48,7 @@ const type = ref("type");
 const placeholder = ref("请输入内容");
 const code = ref(`<gz-input
 	:width="150"
-	v-model:inputValue="inputValue"
+	v-model="inputValue"
 	:inputType="type"
 	:placeholder="placeholder">
 </gz-input>`);

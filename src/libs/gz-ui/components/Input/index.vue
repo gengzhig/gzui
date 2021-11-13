@@ -42,7 +42,7 @@ import { reactive, ref, getCurrentInstance, watch } from "vue";
 
 const { emit } = getCurrentInstance();
 const props = defineProps({
-	inputValue: {
+	modelValue: {
 		default: "",
 	},
 	inputType: {
@@ -82,9 +82,9 @@ const props = defineProps({
 		default: false,
 	},
 });
-let inputContent = ref(props.inputValue);
+let inputContent = ref(props.modelValue);
 watch(
-	() => props.inputValue,
+	() => props.modelValue,
 	value => {
 		inputContent.value = value;
 	}
@@ -92,9 +92,9 @@ watch(
 const input = e => {
 	// 正则校验 只允许输入数字
 	if (props.number) {
-		emit("update:inputValue", e.target.value.replace(/\D/g, ""));
+		emit("update:modelValue", e.target.value.replace(/\D/g, ""));
 	} else {
-		emit("update:inputValue", e.target.value);
+		emit("update:modelValue", e.target.value);
 	}
 };
 const keyup = e => {

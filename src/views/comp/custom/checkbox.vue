@@ -4,10 +4,10 @@
 		<p>一组备选项中进行多选。</p>
 		<h3>基础用法</h3>
 		<p>适用于多个勾选框绑定到同一个数组的情景，通过是否勾选来表示这一组选项中选中的项。</p>
+		<p>设置 checkValue 来指定默认选中项。 checkValue 支持 v-model 双向绑定。</p>
 		<div class="meta">
 			<div class="demo">
-				{{ checkValue }}
-				<gzCheckBox :list="list" v-model:defaults="checkValue"></gzCheckBox>
+				<gzCheckBox :list="list" v-model="checkValue"></gzCheckBox>
 			</div>
 			<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
 		</div>
@@ -38,7 +38,7 @@ const list = ref([
 const checkValue = ref(["apple", "banana"]);
 
 const state = reactive({
-	code: `<gzCheckBox :list="list" v-model:defaults="checkValue"></gzCheckBox>`,
+	code: `	<gzCheckBox :list="list" v-model="checkValue"></gzCheckBox>`,
 	attributesBrief: {
 		tableData: [
 			{
