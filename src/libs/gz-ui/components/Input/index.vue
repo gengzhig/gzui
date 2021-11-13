@@ -13,10 +13,12 @@
 			:type="inputType"
 			:disabled="disabled"
 			:placeholder="placeholder"
+			:style="{ textAlign: center ? 'center' : 'left', width: typeof width == 'number' ? width + 'px' : width }"
 			v-model="inputContent"
 			@input="input"
 			@keyup="keyup"
-			:style="{ textAlign: center ? 'center' : 'left', width: typeof width == 'number' ? width + 'px' : width }"
+			@focus="focus($event)"
+			@blur="blur($event)"
 		/>
 	</template>
 	<!-- 文本域 -->
@@ -96,6 +98,12 @@ const input = e => {
 	} else {
 		emit("update:modelValue", e.target.value);
 	}
+};
+const focus = e => {
+	emit("focus", e.target.value);
+};
+const blur = e => {
+	emit("blur", e);
 };
 const keyup = e => {
 	if (props.number) {

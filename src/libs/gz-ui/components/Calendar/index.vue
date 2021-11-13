@@ -1,11 +1,11 @@
 <template>
 	<div class="gzCalendar" :style="{ width: typeof width == 'number' ? width + 'px' : width }">
 		<div class="header">
-			<gz-button size="mini" @click="prevM">{{ prevMonth }}</gz-button>
-			<gz-button size="mini" @click="changeD(-1)">{{ prevDay }}</gz-button>
-			<span class="time">{{ year }} 年{{ month }} 月{{ date }} 日</span>
-			<gz-button size="mini" @click="changeD(1)">{{ nextDay }}</gz-button>
-			<gz-button size="mini" @click="nextM">{{ nextMonth }}</gz-button>
+			<gz-button type="text" size="mini" @click="prevM">{{ prevMonth }}</gz-button>
+			<gz-button type="text" size="mini" @click="changeD(-1)">{{ prevDay }}</gz-button>
+			<span class="time">{{ year }}年{{ month }}月</span>
+			<gz-button type="text" size="mini" @click="changeD(1)">{{ nextDay }}</gz-button>
+			<gz-button type="text" size="mini" @click="nextM">{{ nextMonth }}</gz-button>
 		</div>
 		<div class="content">
 			<div class="content-header">
@@ -39,13 +39,13 @@ let oldTime = null;
 const props = defineProps({
 	width: {
 		type: [Number, String],
-		default: 420,
+		default: 280,
 	},
 	modelValue: {
 		type: [String, Number],
 	},
 });
-const emits = defineEmits(["modelValue"]);
+const emits = defineEmits(["modelValue", "clickValue"]);
 const weekHearders = ref(["一", "二", "三", "四", "五", "六", "日"]);
 const prevMonth = ref("<<");
 const nextMonth = ref(">>");
@@ -66,9 +66,9 @@ const today = computed(() => {
 onMounted(() => {
 	// 外界传值显示日期
 	if (props.modelValue) {
-		year.value = props.modelValue.split("-")[0];
-		month.value = props.modelValue.split("-")[1];
-		date.value = props.modelValue.split("-")[2];
+		year.value = +props.modelValue.split("-")[0];
+		month.value = +props.modelValue.split("-")[1];
+		date.value = +props.modelValue.split("-")[2];
 		oldTime = props.modelValue;
 	}
 	timeDatas.value = layout(year.value, month.value);
@@ -124,6 +124,7 @@ const selectItem = item => {
 	month.value = +item.split("-")[1];
 	date.value = +item.split("-")[2];
 	oldTime = item;
+	emits("clickValue", item);
 };
 </script>
 
@@ -156,8 +157,8 @@ const selectItem = item => {
 				width: calc(100% / 7);
 				display: inline-block;
 				text-align: center;
-				height: 50px;
-				line-height: 50px;
+				height: 40px;
+				line-height: 40px;
 				cursor: pointer;
 				user-select: none;
 				&.active {

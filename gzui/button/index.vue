@@ -283,7 +283,7 @@ const buttonWidthStyle = computed(() => {
 		font-size: 12px;
 	}
 	&-mini {
-		min-height: 28px;
+		min-height: 20px;
 		padding: 7px 15px;
 		font-size: 12px;
 	}

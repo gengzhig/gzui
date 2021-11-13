@@ -9,7 +9,7 @@
 		</p>
 		<div class="meta">
 			<div class="demo">
-				<gz-calendar v-model="defaultTime" :width="350"></gz-calendar>
+				<gz-calendar v-model="defaultTime" :width="280"></gz-calendar>
 			</div>
 			<base-copy :code="code" :attributeBrief="attributesBrief" :eventBrief="eventsBrief"></base-copy>
 		</div>

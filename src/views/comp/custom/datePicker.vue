@@ -4,9 +4,10 @@
 		<p>用于选择或输入日期。</p>
 		<h3>基础用法</h3>
 		<p>选择某一天。</p>
+		<p>以”日“为基本单位，基础的日期选择控件</p>
 		<div class="meta">
 			<div class="demo">
-				<gz-date-picker :width="350"></gz-date-picker>
+				<gz-date-picker v-model="time"></gz-date-picker>
 			</div>
 			<base-copy :code="code" :attributeBrief="attributesBrief" :eventBrief="eventsBrief"></base-copy>
 		</div>
@@ -15,8 +16,8 @@
 <script setup>
 import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
-const defaultTime = ref("2021-11-11");
 const code = ref('<gz-date-picker :width="350"></gz-date-picker>');
+const time = ref("");
 const attributesBrief = ref({
 	tableData: [
 		{
