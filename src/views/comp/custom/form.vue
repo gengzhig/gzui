@@ -182,11 +182,25 @@ const code = ref(`<gz-form :inline="false" labelAlign="right" :form="form" :labe
 const attributesBrief = ref({
 	tableData: [
 		{
-			param: "width",
-			explain: "宽度",
-			type: "Number,String",
+			param: "inline",
+			explain: "是否行排列",
+			type: "Boolean",
+			optional: "true/false",
+			default: "false",
+		},
+		{
+			param: "labelAlign",
+			explain: "label对齐方式",
+			type: "String",
+			optional: "left/right",
+			default: "right",
+		},
+		{
+			param: "labelWidth",
+			explain: "label宽度",
+			type: "Number",
 			optional: "---",
-			default: "420",
+			default: "---",
 		},
 	],
 });
