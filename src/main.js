@@ -19,8 +19,7 @@ import "@/styles/animate.css";
 // 全局引入element3
 import element3 from "plugins/element3";
 
-import loading from '@/directors/loading.js';
-
+import loading from "@/directors/loading.js";
 // 全局引入工具类
 import tool from "@/assets/js/tool.js";
 // 全局引入gzUI
@@ -28,7 +27,7 @@ import ui from "@/libs/gz-ui/index.jsx";
 const app = createApp(App);
 app.config.globalProperties.$axios = axios;
 app.config.globalProperties.$tool = tool;
-app.directive("gzload",loading);
+app.directive("gzload", loading);
 app.use(router);
 app.use(store);
 app.use(element3);
