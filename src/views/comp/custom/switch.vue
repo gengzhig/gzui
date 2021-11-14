@@ -25,8 +25,8 @@ import baseCopy from "@/components/baseFunction/Copy.vue";
 const value = ref(true);
 const value2 = ref(false);
 const state = reactive({
-	code: `<gz-switch v-model:gz="value" text="开|关" activeColor="#13ce66" inactiveColor="#fdfdfd"></gz-switch>
-<gz-switch disabled v-model:gz="value" text="on|off" activeColor="#13ce66" inactiveColor="#fdfdfd"></gz-switch>`,
+	code: `<gz-switch v-model="value" text="开|关" activeColor="#13ce66" inactiveColor="#fdfdfd"></gz-switch>
+<gz-switch disabled v-model="value" text="on|off" activeColor="#13ce66" inactiveColor="#fdfdfd"></gz-switch>`,
 	attributesBrief: {
 		tableData: [
 			{

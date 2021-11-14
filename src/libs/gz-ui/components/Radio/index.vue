@@ -1,8 +1,17 @@
 <template>
-	<label class="gzRadio" :for="label">
-		<input type="radio" class="radio-input" :id="label" :name="name" />
-		<div class="radio-dot" :class="{ disabled: disabled }" @click="toggleA"></div>
-		<div class="radio-label" :class="{ disabled: disabled }" @click="toggleB"><slot></slot></div>
+	<label v-for="(item, index) in list" :key="index" class="gzRadio" :for="item.label" @click="e => toggle(e, item)">
+		<input
+			type="radio"
+			class="radio-input"
+			:id="item.label"
+			:name="item.name"
+			:value="item.label"
+			v-model="radioValue"
+		/>
+		<div class="radio-dot" :class="{ disabled: item.disabled, 'radio-dot-checked': index == selectIndex }"></div>
+		<div class="radio-label" :class="{ disabled: item.disabled, 'radio-label-checked': index == selectIndex }">
+			{{ item.value }}
+		</div>
 	</label>
 </template>
 
@@ -15,11 +24,9 @@ export default {
 <script setup>
 import { reactive, ref, onMounted, watch, computed, getCurrentInstance, useSlots, nextTick } from "vue";
 const props = defineProps({
-	name: {
-		type: String,
-	},
-	label: {
-		type: [String, Number, Boolean],
+	list: {
+		type: Array,
+		default: () => [],
 	},
 	color: {
 		type: String,
@@ -29,35 +36,32 @@ const props = defineProps({
 		type: String,
 		default: "#18A058",
 	},
-	disabled: {
-		type: Boolean,
-		default: false,
+	modelValue: {
+		type: [String, Number, Boolean],
 	},
 });
 const ctx = getCurrentInstance();
-const emit = defineEmits(["gz"]);
+const emits = defineEmits(["modelValue"]);
 const slots = useSlots();
-const toggleA = val => {
-	// 获取页面上所有name相同的单选框
-	let radios = document.querySelectorAll(`.gzRadio .radio-input[name=${props.name}]`);
-	radios.forEach(r => {
-		r.nextElementSibling.classList.remove("radio-dot-checked");
-	});
-	val.target.classList.add("radio-dot-checked");
-	if (!val.target.classList.contains("disabled")) {
-		emit("update:gz", props.label);
+const radioValue = ref();
+const selectIndex = ref(-1);
+onMounted(() => {
+	if (props.modelValue) {
+		radioValue.value = props.modelValue;
+		let findIndex = props.list.findIndex(l => l.label == props.modelValue);
+		selectIndex.value = findIndex;
 	}
-};
+});
 
-const toggleB = val => {
-	// 获取页面上所有name相同的单选框
-	let radios = document.querySelectorAll(`.gzRadio .radio-input[name=${props.name}]`);
-	radios.forEach(r => {
-		r.nextElementSibling.classList.remove("radio-dot-checked");
-	});
-	val.target.previousElementSibling.classList.add("radio-dot-checked");
-	if (!val.target.classList.contains("disabled")) {
-		emit("update:gz", props.label);
+const toggle = (e, item) => {
+	// 禁选时没有小圆点
+	if (item.disabled) {
+		return false;
+	}
+	let findIndex = props.list.findIndex(l => l.label == item.label);
+	selectIndex.value = findIndex;
+	if (!item.disabled) {
+		emits("update:modelValue", item.label);
 	}
 };
 </script>
@@ -120,6 +124,9 @@ const toggleB = val => {
 		&.disabled {
 			cursor: not-allowed;
 			color: rgba(194, 194, 194, 1);
+		}
+		&.radio-label-checked {
+			color: v-bind(color);
 		}
 	}
 }

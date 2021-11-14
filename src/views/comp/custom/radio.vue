@@ -10,9 +10,7 @@
 		</p>
 		<div class="meta">
 			<div class="demo">
-				<gzRadio name="group1" disabled v-model:gz="radio1" :label="1">水果</gzRadio>
-				<gzRadio name="group1" v-model:gz="radio1" :label="2">蔬菜</gzRadio>
-				<gzRadio name="group1" v-model:gz="radio1" :label="3">鸡肉</gzRadio>
+				<gzRadio v-model="radio1" :list="radioList"> </gzRadio>
 			</div>
 			<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
 		</div>
@@ -21,17 +19,49 @@
 <script setup>
 import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
-const radio1 = ref(1);
+const radio1 = ref("jirou");
+const radioList = ref([
+	{
+		label: "shuiguo",
+		value: "水果",
+		name: "group1",
+		disabled: true,
+	},
+	{
+		label: "shucai",
+		value: "蔬菜",
+		name: "group1",
+	},
+	{
+		label: "jirou",
+		value: "鸡肉",
+		name: "group1",
+	},
+]);
 const state = reactive({
-	code: `<gzRadio name="group1" v-model:gz="radio1" :label="1">水果</gzRadio>`,
+	code: `<gzRadio name="group1" v-model="radio1" :label="1">水果</gzRadio>`,
 	attributesBrief: {
 		tableData: [
 			{
-				param: "label",
-				explain: "单选框对应的值",
-				type: "string/number/boolean",
+				param: "borderColor",
+				explain: "单选框边框颜色",
+				type: "String",
 				optional: "---",
-				default: "---",
+				default: "#18A058",
+			},
+			{
+				param: "color",
+				explain: "单选框原点和文字颜色",
+				type: "String",
+				optional: "---",
+				default: "#18A058",
+			},
+			{
+				param: "list",
+				explain: "单选框数据",
+				type: "Array",
+				optional: "---",
+				default: "[]",
 			},
 			{
 				param: "disabled",

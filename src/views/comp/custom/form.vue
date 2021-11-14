@@ -13,9 +13,7 @@
 						<gzInputNumber v-model="form.count" :min="1" :max="10"></gzInputNumber>
 					</gz-form-item>
 					<gz-form-item label="三name">
-						<gzRadio name="group1" disabled v-model:gz="form.radio" :label="1">水果</gzRadio>
-						<gzRadio name="group1" v-model:gz="form.radio" :label="2">蔬菜</gzRadio>
-						<gzRadio name="group1" v-model:gz="form.radio" :label="3">鸡肉</gzRadio>
+						<gzRadio v-model="form.radio" :list="radioList"> </gzRadio>
 					</gz-form-item>
 					<gz-form-item label="四name">
 						<gzCheckBox :list="list" v-model="form.checkValue"></gzCheckBox>
@@ -105,6 +103,24 @@ const state = reactive({
 		},
 	],
 });
+const radioList = ref([
+	{
+		label: "shuiguo",
+		value: "水果",
+		name: "group1",
+		disabled: true,
+	},
+	{
+		label: "shucai",
+		value: "蔬菜",
+		name: "group1",
+	},
+	{
+		label: "jirou",
+		value: "鸡肉",
+		name: "group1",
+	},
+]);
 const list = ref([
 	{
 		label: "苹果",
