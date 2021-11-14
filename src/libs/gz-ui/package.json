@@ -1,0 +1,14 @@
+{
+	"name": "gz-comp-ui",
+	"version": "1.0.8",
+	"description": "gzui组件库",
+	"main": "index.jsx",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"componentLibrary"
+	],
+	"author": "gengzhi",
+	"license": "ISC"
+}

@@ -1,13 +1,4 @@
-<!--
- * @Author: gz
- * @Date: 2021-08-11 09:36:48
- * @LastEditors: gz
- * @LastEditTime: 2021-09-10 15:20:01
- * @Description: file content
- * @FilePath: \gi-ui\README.md
--->
-
-# gzui 介绍
+# gz-comp-ui 介绍
 
 ## 实现组件（目前完成23个组件）
 
