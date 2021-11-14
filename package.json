@@ -1,6 +1,6 @@
 {
 	"name": "gz-comp-ui",
-	"version": "2.0.2",
+	"version": "2.0.3",
 	"description": "耿智开发的一套基于vue3的前端组件库",
 	"scripts": {
 		"dev": "vite",
