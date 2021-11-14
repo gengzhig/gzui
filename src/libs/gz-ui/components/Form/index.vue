@@ -41,6 +41,6 @@ const slots = useSlots();
 
 <style scoped lang="scss">
 .gzForm {
-	overflow: auto;
+	// overflow: auto;
 }
 </style>
