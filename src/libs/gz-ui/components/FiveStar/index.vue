@@ -1,7 +1,7 @@
 <template>
 	<div class="star-container" ref="starContainer" :style="{ height: height + 'px', width: width + 'px' }">
 		<span
-			:class="['iconfont icon-star', starNum <= num ? 'active' : '']"
+			:class="['iconfont icon-star', starNum <= modelValue ? 'active' : '']"
 			v-active
 			v-for="starNum in 5"
 			:key="starNum"
@@ -20,10 +20,6 @@ export default {
 	name: "gzFiveStar",
 	directives: { active },
 	props: {
-		num: {
-			type: Number,
-			default: 0,
-		},
 		size: {
 			type: Number,
 			default: 50,
@@ -39,6 +35,9 @@ export default {
 		height: {
 			type: [Number, String],
 			default: 26,
+		},
+		modelValue: {
+			type: [Number],
 		},
 	},
 	setup(props, ctx) {
@@ -77,6 +76,7 @@ export default {
 	margin-right: 10px;
 	&.icon-star {
 		transition: color 0.3s;
+		cursor: pointer;
 	}
 	&.icon-star:before {
 		content: "\e647";

@@ -7,7 +7,13 @@
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Selector\index.vue
 -->
 <template>
-	<div class="select" v-focus>
+	<div
+		class="select"
+		v-focus
+		:style="{
+			width: width + 'px',
+		}"
+	>
 		<SelectInput
 			:width="width"
 			:height="height"
@@ -47,7 +53,7 @@ export default {
 		value: String,
 		label: String,
 		menuData: Array,
-		width: Number,
+		width: [Number, String],
 		height: Number,
 		filtrateData: Boolean,
 	},

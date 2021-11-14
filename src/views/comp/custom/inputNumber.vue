@@ -6,7 +6,7 @@
 		<p>要使用它，只需要在 'gz-input-number' 元素中使用 v-model 绑定变量即可，变量的初始值即为默认值。</p>
 		<div class="meta">
 			<div class="demo">
-				<gzInputNumber :min="1" :max="10"></gzInputNumber>
+				<gzInputNumber v-model="count" :min="1" :max="10"></gzInputNumber>
 			</div>
 		</div>
 		<h3>禁用状态</h3>
@@ -18,8 +18,9 @@
 <script setup>
 import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
+const count = ref(2);
 const state = reactive({
-	code: `<gzInputNumber :min="1" :max="10"></gzInputNumber>`,
+	code: `<gzInputNumber v-model="count" :min="1" :max="10"></gzInputNumber>`,
 	attributesBrief: {
 		tableData: [
 			{

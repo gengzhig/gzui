@@ -137,6 +137,7 @@ let config = {
 			},
 		],
 	},
+	// checkBox,
 };
 
 export default config;

@@ -1,5 +1,5 @@
 <template>
-	<div class="gz-switch" :class="{ 'gz-switch-on': isChecked, disabled: disabled }" :value="value" @click="toggle">
+	<div class="gz-switch" :class="{ 'gz-switch-on': isChecked, disabled: disabled }" @click="toggle">
 		<div v-if="isChecked && direction.length > 0" class="gz-switch-rail" style="line-height: 20px; color: #fff">
 			{{ direction[0] }}
 		</div>
@@ -18,13 +18,9 @@ export default {
 };
 </script>
 <script setup>
-import { watch, ref, computed } from "vue";
+import { watch, ref, computed, onMounted } from "vue";
 
 const props = defineProps({
-	value: {
-		type: Boolean,
-		default: true,
-	},
 	text: {
 		type: String,
 		default: "on|off",
@@ -45,6 +41,10 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+	modelValue: {
+		type: Boolean,
+		default: false,
+	},
 });
 const switchWidth = computed(() => {
 	if (typeof props.width == "number") {
@@ -53,7 +53,7 @@ const switchWidth = computed(() => {
 		return props.width;
 	}
 });
-const emits = defineEmits(["change"]);
+const emits = defineEmits(["modelValue"]);
 const direction = computed(() => {
 	if (props.text) {
 		return props.text.split("|");
@@ -61,9 +61,9 @@ const direction = computed(() => {
 		return [];
 	}
 });
-const isChecked = ref(props.value);
+const isChecked = ref(props.modelValue);
 watch(
-	() => props.value,
+	() => props.modelValue,
 	val => {
 		isChecked.value = val;
 	}
@@ -71,7 +71,7 @@ watch(
 watch(
 	() => isChecked.value,
 	val => {
-		emits("update:gz", val);
+		emits("update:modelValue", val);
 	}
 );
 const toggle = () => {

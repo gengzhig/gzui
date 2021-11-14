@@ -6,14 +6,14 @@
 		<p>绑定 v-model 到一个 Boolean 类型的变量。 可以使用 active-color 属性与 inactive-color 属性来设置开关的背景色。</p>
 		<div class="meta">
 			<div class="demo">
-				<gz-switch v-model:gz="value" text="开|关" activeColor="#13ce66" inactiveColor="#fdfdfd"></gz-switch>
+				<gz-switch v-model="value" text="开|关" activeColor="#13ce66" inactiveColor="#fdfdfd"></gz-switch>
 			</div>
 		</div>
 		<h3>禁用状态</h3>
 		<p>设置disabled属性来控制是否禁用开关。</p>
 		<div class="meta">
 			<div class="demo">
-				<gz-switch disabled v-model:gz="value" text="on|off" activeColor="#13ce66" inactiveColor="#fdfdfd"></gz-switch>
+				<gz-switch disabled v-model="value2" text="on|off" activeColor="#13ce66" inactiveColor="#fdfdfd"></gz-switch>
 			</div>
 			<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
 		</div>
@@ -22,7 +22,8 @@
 <script setup>
 import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
-const value = ref(false);
+const value = ref(true);
+const value2 = ref(false);
 const state = reactive({
 	code: `<gz-switch v-model:gz="value" text="开|关" activeColor="#13ce66" inactiveColor="#fdfdfd"></gz-switch>
 <gz-switch disabled v-model:gz="value" text="on|off" activeColor="#13ce66" inactiveColor="#fdfdfd"></gz-switch>`,

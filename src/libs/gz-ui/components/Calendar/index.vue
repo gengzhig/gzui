@@ -2,9 +2,9 @@
 	<div class="gzCalendar" :style="{ width: typeof width == 'number' ? width + 'px' : width }">
 		<div class="header">
 			<gz-button type="text" size="mini" @click="prevM">{{ prevMonth }}</gz-button>
-			<gz-button type="text" size="mini" @click="changeD(-1)">{{ prevDay }}</gz-button>
+			<!-- <gz-button type="text" size="mini" @click="changeD(-1)">{{ prevDay }}</gz-button> -->
 			<span class="time">{{ year }}年{{ month }}月</span>
-			<gz-button type="text" size="mini" @click="changeD(1)">{{ nextDay }}</gz-button>
+			<!-- <gz-button type="text" size="mini" @click="changeD(1)">{{ nextDay }}</gz-button> -->
 			<gz-button type="text" size="mini" @click="nextM">{{ nextMonth }}</gz-button>
 		</div>
 		<div class="content">
@@ -47,10 +47,10 @@ const props = defineProps({
 });
 const emits = defineEmits(["modelValue", "clickValue"]);
 const weekHearders = ref(["一", "二", "三", "四", "五", "六", "日"]);
-const prevMonth = ref("<<");
-const nextMonth = ref(">>");
-const prevDay = ref("<");
-const nextDay = ref(">");
+const prevMonth = ref("<");
+const nextMonth = ref(">");
+// const prevDay = ref("<");
+// const nextDay = ref(">");
 const timeDatas = ref([]);
 
 const year = ref(new Date().getFullYear());

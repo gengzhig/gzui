@@ -16,7 +16,7 @@
 <script setup>
 import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
-const code = ref('<gz-date-picker :width="350"></gz-date-picker>');
+const code = ref('<gz-date-picker v-model="time"></gz-date-picker>');
 const time = ref("");
 const attributesBrief = ref({
 	tableData: [

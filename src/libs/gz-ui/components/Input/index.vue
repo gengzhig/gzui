@@ -7,31 +7,33 @@
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Input\index.vue
 -->
 <template>
-	<!-- 基础、密码框 -->
-	<template v-if="inputType != 'textarea'">
-		<input
-			:type="inputType"
-			:disabled="disabled"
-			:placeholder="placeholder"
-			:style="{ textAlign: center ? 'center' : 'left', width: typeof width == 'number' ? width + 'px' : width }"
-			v-model="inputContent"
-			@input="input"
-			@keyup="keyup"
-			@focus="focus($event)"
-			@blur="blur($event)"
-		/>
-	</template>
-	<!-- 文本域 -->
-	<template v-if="inputType == 'textarea'">
-		<textarea
-			:placeholder="placeholder"
-			:rows="rows"
-			:disabled="disabled"
-			v-model="textAreaValue"
-			@input="textAreaInput"
-			:style="{ textAlign: center ? 'center' : 'left', width: typeof width == 'number' ? width + 'px' : width }"
-		/>
-	</template>
+	<div class="gzInput">
+		<!-- 基础、密码框 -->
+		<template v-if="inputType != 'textarea'">
+			<input
+				:type="inputType"
+				:disabled="disabled"
+				:placeholder="placeholder"
+				:style="{ textAlign: center ? 'center' : 'left', width: typeof width == 'number' ? width + 'px' : width }"
+				v-model="inputContent"
+				@input="input"
+				@keyup="keyup"
+				@focus="focus($event)"
+				@blur="blur($event)"
+			/>
+		</template>
+		<!-- 文本域 -->
+		<template v-if="inputType == 'textarea'">
+			<textarea
+				:placeholder="placeholder"
+				:rows="rows"
+				:disabled="disabled"
+				v-model="textAreaValue"
+				@input="textAreaInput"
+				:style="{ textAlign: center ? 'center' : 'left', width: typeof width == 'number' ? width + 'px' : width }"
+			/>
+		</template>
+	</div>
 </template>
 
 <script>

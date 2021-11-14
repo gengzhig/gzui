@@ -1,7 +1,9 @@
 <template>
-	<div v-for="(item, index) in list" :key="index" class="gzCheckBox">
-		<input type="checkbox" :disabled="item.disabled" :id="item.value" :value="item.value" v-model="modelValue" />
-		<label :for="item.value">{{ item.label }}</label>
+	<div class="gzCheckBox">
+		<div v-for="(item, index) in list" :key="index">
+			<input type="checkbox" :disabled="item.disabled" :id="item.value" :value="item.value" v-model="modelValue" />
+			<label :for="item.value">{{ item.label }}</label>
+		</div>
 	</div>
 </template>
 

@@ -91,7 +91,7 @@ export default {
 	box-sizing: border-box;
 	overflow-x: hidden;
 	overflow-y: auto;
-	z-index: 999;
+	z-index: 1000;
 	.list-menu {
 		color: #606266;
 		font-size: 14px;
@@ -103,6 +103,7 @@ export default {
 		line-height: 34px;
 		box-sizing: border-box;
 		cursor: pointer;
+		text-align: left;
 
 		&:hover {
 			background-color: #f5f7fa;

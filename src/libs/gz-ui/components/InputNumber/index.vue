@@ -24,7 +24,6 @@ export default {
 <script setup>
 import { reactive, ref, onMounted, watch, computed } from "vue";
 
-const count = ref(1);
 const props = defineProps({
 	min: {
 		type: Number,
@@ -40,8 +39,24 @@ const props = defineProps({
 		type: Number,
 		default: 1,
 	},
+	modelValue: {
+		type: Number,
+	},
 });
+const emits = defineEmits(["modelValue"]);
+const count = ref(1);
 
+watch(
+	() => count.value,
+	value => {
+		emits("update:modelValue", value);
+	}
+);
+onMounted(() => {
+	if (props.modelValue) {
+		count.value = props.modelValue;
+	}
+});
 const subtract = () => {
 	if (props.min) {
 		if (count.value > props.min) {

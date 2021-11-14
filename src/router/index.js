@@ -166,6 +166,15 @@ const router = createRouter({
 							},
 							component: () => import("views/comp/custom/switch.vue"),
 						},
+						{
+							path: "form",
+							name: "Form",
+							meta: {
+								title: "表单",
+								icon: "s-order",
+							},
+							component: () => import("views/comp/custom/form.vue"),
+						},
 					],
 				},
 				{
