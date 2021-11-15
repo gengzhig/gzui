@@ -5,11 +5,12 @@
 		<h3>基础表单</h3>
 		<div class="meta">
 			<div class="demo">
-				<gz-form :inline="false" labelAlign="right" :form="form" :labelWidth="100">
-					<gz-form-item label="一name">
+				{{ form }}
+				<gz-form :rules="rules" :inline="false" labelAlign="right" :form="form" :labelWidth="100">
+					<gz-form-item label="一name" prop="inputValue">
 						<gz-input :width="150" v-model="form.inputValue" inputType="text"></gz-input>
 					</gz-form-item>
-					<gz-form-item label="二name">
+					<gz-form-item label="二name" prop="count">
 						<gzInputNumber v-model="form.count" :min="1" :max="10"></gzInputNumber>
 					</gz-form-item>
 					<gz-form-item label="三name">
@@ -39,6 +40,10 @@
 					<gz-form-item label="八Ename">
 						<gz-switch v-model="form.switch" text="开|关" activeColor="#13ce66" inactiveColor="#fdfdfd"></gz-switch>
 					</gz-form-item>
+					<gz-form-item>
+						<gz-button>取消</gz-button>
+						<gz-button type="primary" @click="submit">提交</gz-button>
+					</gz-form-item>
 				</gz-form>
 			</div>
 			<base-copy :code="code" :attributeBrief="attributesBrief" :eventBrief="eventsBrief"></base-copy>
@@ -48,7 +53,16 @@
 <script setup>
 import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
-
+const rules = ref({
+	inputValue: [
+		{
+			required: true,
+			message: "内容不能为空！",
+			trigger: "blur",
+		},
+	],
+	count: [{ required: true, message: "数字不能为空！", trigger: "blur" }],
+});
 const state = reactive({
 	value: "",
 	label: "",

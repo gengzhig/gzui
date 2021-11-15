@@ -9,8 +9,15 @@
 			></component>
 		</template>
 	</div> -->
-	<div ref="form" class="gzForm" :form="form" :labelWidth="labelWidth" :style="{ display: inline ? 'flex' : '' }">
-		<slot></slot>
+	<div
+		ref="form"
+		class="gzForm"
+		v-bind="attrs"
+		:form="form"
+		:labelWidth="labelWidth"
+		:style="{ display: inline ? 'flex' : '' }"
+	>
+		<slot :rules="rules"></slot>
 	</div>
 </template>
 
@@ -33,6 +40,16 @@ const props = defineProps({
 		default: false,
 	},
 });
+const ctx = getCurrentInstance();
+// let rules = ctx?.attrs?.rules;
+// if (rules) {
+// 	for (const key in rules) {
+// 		rules[key].forEach(item => {
+// 			console.log(item);
+// 		});
+// 	}
+// }
+// console.log(rules);
 const form = ref();
 const emit = defineEmits();
 const store = useStore();
@@ -40,7 +57,4 @@ const slots = useSlots();
 </script>
 
 <style scoped lang="scss">
-.gzForm {
-	// overflow: auto;
-}
 </style>
