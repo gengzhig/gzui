@@ -1,7 +1,5 @@
 <template>
 	<div class="gzFormItem">
-		<!-- gzFormItem-label-required -->
-		<!-- gzFormItem-label -->
 		<div :class="[prop ? 'gzFormItem-label-required' : 'gzFormItem-label']">{{ labelName }}</div>
 		<div class="gzFormItem-content">
 			<slot></slot>
@@ -22,7 +20,7 @@ export default {
 </script>
 
 <script setup>
-import { reactive, ref, onMounted, onUpdated, watch, computed, getCurrentInstance, useSlots, inject } from "vue";
+import { computed, getCurrentInstance, useSlots, inject } from "vue";
 const formVerify = inject("formVerify");
 const props = defineProps({
 	verify: {
