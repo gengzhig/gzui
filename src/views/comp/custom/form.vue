@@ -5,7 +5,7 @@
 		<h3>基础表单</h3>
 		<div class="meta">
 			<div class="demo">
-				<gz-form :rules="rules" :inline="false" labelAlign="right" :form="form" :labelWidth="100">
+				<gz-form :verify="verify" :rules="rules" :inline="false" labelAlign="right" :form="form" :labelWidth="100">
 					<gz-form-item label="一name" prop="inputValue">
 						<gz-input :width="150" v-model="form.inputValue" inputType="text"></gz-input>
 					</gz-form-item>
@@ -40,7 +40,7 @@
 						<gz-switch v-model="form.switch" text="开|关" activeColor="#13ce66" inactiveColor="#fdfdfd"></gz-switch>
 					</gz-form-item>
 					<gz-form-item>
-						<gz-button>取消</gz-button>
+						<gz-button @click="cancel">取消</gz-button>
 						<gz-button type="primary" @click="submit">提交</gz-button>
 					</gz-form-item>
 				</gz-form>
@@ -50,7 +50,7 @@
 	</div>
 </template>
 <script setup>
-import { reactive, ref, toRefs } from "vue";
+import { reactive, ref, toRefs, provide } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 const rules = ref({
 	inputValue: [
@@ -151,6 +151,8 @@ const list = ref([
 		value: "banana",
 	},
 ]);
+const verify = ref(false);
+provide("formVerify", verify);
 const form = reactive({
 	inputValue: "",
 	count: "",
@@ -232,5 +234,13 @@ const change = value => {
 const selectItem = item => {
 	form.selectValue = item.value;
 	state.label = item.label;
+};
+// 取消
+const cancel = () => {
+	verify.value = false;
+};
+// 提交
+const submit = () => {
+	verify.value = true;
 };
 </script>

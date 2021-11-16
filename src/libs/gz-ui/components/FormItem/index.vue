@@ -6,7 +6,7 @@
 		<div class="gzFormItem-content">
 			<slot></slot>
 			<div
-				v-if="prop && errorData[prop] && errorData[prop].length > 0 && errorData[prop][0]?.message"
+				v-if="formVerify && prop && errorData[prop] && errorData[prop].length > 0 && errorData[prop][0]?.message"
 				class="gzFormItem__error"
 			>
 				{{ errorData[prop][0]?.message }}
@@ -22,13 +22,15 @@ export default {
 </script>
 
 <script setup>
-import { reactive, ref, onMounted, watch, computed, getCurrentInstance, useSlots, nextTick } from "vue";
-const props = defineProps({});
+import { reactive, ref, onMounted, onUpdated, watch, computed, getCurrentInstance, useSlots, inject } from "vue";
+const formVerify = inject("formVerify");
+const props = defineProps({
+	verify: {
+		type: Boolean,
+		default: false,
+	},
+});
 const ctx = getCurrentInstance();
-
-const emit = defineEmits();
-const state = reactive({});
-const slots = useSlots();
 // 必填项
 const prop = computed(() => {
 	return ctx?.attrs?.prop;
@@ -45,7 +47,6 @@ const labelWidth = computed(() => {
 const labelAlign = computed(() => {
 	return ctx?.parent?.attrs?.labelAlign || "right";
 });
-onMounted(() => {});
 </script>
 
 <style scoped lang="scss">
