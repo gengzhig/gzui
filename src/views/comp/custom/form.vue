@@ -5,7 +5,6 @@
 		<h3>基础表单</h3>
 		<div class="meta">
 			<div class="demo">
-				{{ form }}
 				<gz-form :rules="rules" :inline="false" labelAlign="right" :form="form" :labelWidth="100">
 					<gz-form-item label="一name" prop="inputValue">
 						<gz-input :width="150" v-model="form.inputValue" inputType="text"></gz-input>
@@ -24,7 +23,7 @@
 							:width="200"
 							:height="40"
 							:filtrateData="true"
-							:value="state.value"
+							:value="form.selectValue"
 							:label="state.label"
 							:menuData="state.menuData"
 							placeholder="请选择"
@@ -64,7 +63,6 @@ const rules = ref({
 	count: [{ required: true, message: "数字不能为空！", trigger: "blur" }],
 });
 const state = reactive({
-	value: "",
 	label: "",
 	menuData: [
 		{
@@ -158,20 +156,11 @@ const form = reactive({
 	count: "",
 	radio: "",
 	checkValue: [],
+	selectValue: "",
 	time: "",
 	starNum: 4,
 	switch: false,
 });
-// const config = ref([
-// 	{ key: "0006", width: 280, height: 40, disabled: false },
-// 	{ key: "0007", width: 280, height: 40, disabled: false },
-// 	{ key: "0008", width: 280, height: 40, disabled: false },
-// 	{ key: "0009", width: 280, height: 40, disabled: false },
-// 	{ key: "0010", width: 280, height: 40, disabled: false },
-// 	{ key: "0011", width: 280, height: 40, disabled: false },
-// 	{ key: "0012", width: 280, height: 40, disabled: false },
-// 	{ key: "0013", height: 40, disabled: false },
-// ]);
 const code = ref(`<gz-form :inline="false" labelAlign="right" :form="form" :labelWidth="100">
 	<gz-form-item label="一name">
 		<gz-input :width="150" v-model="form.inputValue" inputType="text"></gz-input>
@@ -192,7 +181,7 @@ const code = ref(`<gz-form :inline="false" labelAlign="right" :form="form" :labe
 			:width="200"
 			:height="40"
 			:filtrateData="true"
-			:value="state.value"
+			:value="form.selectValue"
 			:label="state.label"
 			:menuData="state.menuData"
 			placeholder="请选择"
@@ -241,7 +230,7 @@ const change = value => {
 	form.starNum += value;
 };
 const selectItem = item => {
-	state.value = item.value;
+	form.selectValue = item.value;
 	state.label = item.label;
 };
 </script>
