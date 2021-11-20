@@ -6,8 +6,7 @@
 		<p>在需要的时候展示加载动画，防止页面失去响应提高用户体验（例如表格）。</p>
 		<div class="meta">
 			<div class="demo">
-				<gz-loading :full="false" theme="dark" :loading="loading">这是一个简单的文字</gz-loading>
-				测试文字
+				<gz-loading :full="false" theme="" :loading="loading"></gz-loading>
 			</div>
 			<base-copy :code="state.code"></base-copy>
 		</div>

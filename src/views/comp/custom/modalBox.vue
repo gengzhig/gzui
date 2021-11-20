@@ -19,7 +19,7 @@
 					ref="gzModel"
 					:show="show"
 					:width="400"
-					:borderRadius="1"
+					:borderRadius="4"
 					headerTitle="新增"
 					headerTitleColor="#fff"
 					headerTitleBackground="#2ed573"

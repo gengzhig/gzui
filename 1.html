@@ -7,10 +7,27 @@
 		<title>Document</title>
 	</head>
 
-	<body>
-		1234
-	</body>
+	<body></body>
 	<script>
+		var worker1 = new Worker("./1.js");
+		worker1.onmessage = e => {
+			console.log(e.data);
+		};
+		var worker2 = new Worker("./2.js");
+		worker2.onmessage = e => {
+			console.log(e.data);
+		};
+
+		// console.time();
+		// function fb(n) {
+		// 	if (n == 1 || n == 2) {
+		// 		return 1;
+		// 	}
+		// 	return fb(n - 1) + fb(n - 2);
+		// }
+		// let res = fb(43);
+		// let res2 = fb(43);
+		// console.timeEnd();
 		// let data = [
 		// 	{
 		// 		title: "水果",
@@ -92,29 +109,29 @@
 			},
 		];
 
-		function formatterTreeData(data) {
-			let parentData = data.filter(d => d.pid == 0);
-			let childrenData = data.filter(d => d.pid != 0);
-			function toTree(parentD, childrenD) {
-				parentD.map(p => {
-					childrenD.map((c, i) => {
-						if (c.pid == p.id) {
-							let _c = JSON.parse(JSON.stringify(childrenD));
-							_c.splice(i, 1);
-							toTree([c], _c);
-							if (p.children) {
-								p.children.push(c);
-							} else {
-								p.children = [c];
-							}
-						}
-					});
-				});
-			}
-			toTree(parentData, childrenData);
-			return parentData;
-		}
-		console.log(formatterTreeData(flatData));
+		// function formatterTreeData(data) {
+		// 	let parentData = data.filter(d => d.pid == 0);
+		// 	let childrenData = data.filter(d => d.pid != 0);
+		// 	function toTree(parentD, childrenD) {
+		// 		parentD.map(p => {
+		// 			childrenD.map((c, i) => {
+		// 				if (c.pid == p.id) {
+		// 					let _c = JSON.parse(JSON.stringify(childrenD));
+		// 					_c.splice(i, 1);
+		// 					toTree([c], _c);
+		// 					if (p.children) {
+		// 						p.children.push(c);
+		// 					} else {
+		// 						p.children = [c];
+		// 					}
+		// 				}
+		// 			});
+		// 		});
+		// 	}
+		// 	toTree(parentData, childrenData);
+		// 	return parentData;
+		// }
+		// console.log(formatterTreeData(flatData));
 		// 1.将树结构扁平化
 		// function flatTreeData(data) {
 		// 	let res = [];
@@ -124,9 +141,9 @@
 		// 	});
 		// 	return res;
 		// }
-		function jsonToView(data) {
-			return JSON.stringify(data, null, 2);
-		}
+		// function jsonToView(data) {
+		// 	return JSON.stringify(data, null, 2);
+		// }
 		// console.log(jsonToView(flatTreeData(data)));
 		// function filter(keywords, data) {
 		// 	let newData = flatTreeData(data);

@@ -1,42 +1,44 @@
 <template>
-	<div
-		class="modal-mask"
-		ref="modalMask"
-		:style="{
-			width: width + 'px',
-			height: height + 'px',
-		}"
-		v-show="showModal"
-	>
+	<div class="overlay" :style="{ display: !showModal ? 'none' : '' }">
 		<div
-			class="ui-modal"
-			ref="uiModal"
+			class="modal-mask"
+			ref="modalMask"
 			:style="{
-				// width: width + 'px',
-				borderRadius: borderRadius + 'px',
-				// marginLeft: -width / 2 + 'px',
-				// marginTop: -modalHeight / 2 + 'px',
+				width: width + 'px',
+				height: height + 'px',
 			}"
+			v-show="showModal"
 		>
-			<!-- 标题 -->
-			<header
+			<div
+				class="ui-modal"
+				ref="uiModal"
 				:style="{
-					color: headerTitleColor,
-					backgroundColor: headerTitleBackground,
+					// width: width + 'px',
+					borderRadius: borderRadius + 'px',
+					// marginLeft: -width / 2 + 'px',
+					// marginTop: -modalHeight / 2 + 'px',
 				}"
 			>
-				{{ headerTitle }}<span class="icon close-icon" @click="closeModal">x</span>
-			</header>
-			<!-- 主题 -->
-			<article><slot></slot></article>
-			<!-- 底部按钮组 -->
-			<div class="btn-group" v-if="showBtnGroup">
-				<gz-button type="danger" @click="cancelModal">
-					{{ cancelText }}
-				</gz-button>
-				<gz-button type="primary" @click="confirmModal">
-					{{ confirmText }}
-				</gz-button>
+				<!-- 标题 -->
+				<header
+					:style="{
+						color: headerTitleColor,
+						backgroundColor: headerTitleBackground,
+					}"
+				>
+					{{ headerTitle }}<span class="icon close-icon" @click="closeModal">x</span>
+				</header>
+				<!-- 主题 -->
+				<article><slot></slot></article>
+				<!-- 底部按钮组 -->
+				<div class="btn-group" v-if="showBtnGroup">
+					<gz-button type="danger" @click="cancelModal">
+						{{ cancelText }}
+					</gz-button>
+					<gz-button type="primary" @click="confirmModal">
+						{{ confirmText }}
+					</gz-button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -61,7 +63,7 @@ export default {
 		},
 		borderRadius: {
 			type: Number,
-			default: 1,
+			default: 4,
 		},
 		headerTitle: {
 			type: String,
@@ -139,13 +141,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.overlay {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 2000;
+	height: 100%;
+	background-color: #00000080;
+	overflow: auto;
+}
 .modal-mask {
 	width: 100%;
 	height: 100%;
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	background: rgba(0, 0, 0, 0.3);
 	transform: translate(-50%, -50%);
 	z-index: 2;
 	.ui-modal {
