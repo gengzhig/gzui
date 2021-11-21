@@ -1,1 +1,8 @@
-/* No CSS *//*# sourceMappingURL=element-ui.css.map */
+.el-menu-item {
+  background-color: #304156 !important;
+}
+
+.el-menu-item.is-active {
+  background-color: #263445 !important;
+}
+/*# sourceMappingURL=element-ui.css.map */

@@ -301,6 +301,15 @@ const router = createRouter({
 							},
 							component: () => import("views/comp/custom/loading.vue"),
 						},
+						{
+							path: "message",
+							name: "Message",
+							meta: {
+								title: "Message消息",
+								icon: "attract",
+							},
+							component: () => import("views/comp/custom/message.vue"),
+						},
 					],
 				},
 			],

@@ -2,4 +2,105 @@
   margin: 0;
   padding: 0;
 }
+
+.page-component h1 {
+  color: #1f2f3d;
+  margin: 20px 0 20px;
+}
+
+.page-component p {
+  font-size: 14px;
+  color: #5e6d82;
+  line-height: 1.5em;
+  margin: 1em 0;
+}
+
+.page-component h3 {
+  color: #1f2f3d;
+  font-size: 22px;
+  margin: 55px 0 20px;
+}
+
+.page-component .meta {
+  border: 1px solid #ebebeb;
+  border-radius: 3px;
+}
+
+.page-component .meta .demo {
+  padding: 24px;
+}
+
+.el-menu-item {
+  background-color: #304156 !important;
+}
+
+.el-menu-item.is-active {
+  background-color: #263445 !important;
+}
+
+::-webkit-scrollbar-track-piece {
+  background-color: #f8f8f8;
+}
+
+::-webkit-scrollbar {
+  width: 16px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #dddddd;
+  background-clip: padding-box;
+  min-height: 28px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #bbb;
+}
+
+.loading-root {
+  position: relative;
+  overflow: hidden !important;
+}
+
+.loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 14px;
+}
+
+.loading.full {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 300;
+}
+
+.loading.light {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.loading.dark {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.loading .el-icon-loading {
+  color: #0960bd;
+}
+
+.loading .tip {
+  color: #0960bd;
+}
 /*# sourceMappingURL=index.css.map */

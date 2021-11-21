@@ -31,6 +31,7 @@ import gzDatePicker from "./components/DatePicker/index.vue";
 import gzCalendar from "./components/Calendar/index.vue";
 import gzForm from "./components/Form/index.vue";
 import gzFormItem from "./components/FormItem/index.vue";
+import { gzMessage } from "./components/Message/index.js";
 import config from "./config.js";
 
 let gzUI = {};
@@ -60,6 +61,7 @@ gzUI.install = function (Vue) {
 	Vue.component(gzCalendar.name, gzCalendar);
 	Vue.component(gzForm.name, gzForm);
 	Vue.component(gzFormItem.name, gzFormItem);
+	// Vue.config.globalProperties.$gzMessage = gzMessage;
 };
 
 function compSign() {
