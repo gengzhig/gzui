@@ -10,7 +10,7 @@ import { createRouter, createWebHashHistory, createWebHistory } from "vue-router
 // 工厂函数创建router实例
 import Layout from "layouts/index.vue";
 const router = createRouter({
-	history: createWebHashHistory(), // createWebHistory ==> history模式  createWebHashHistory==> hash模式
+	history: createWebHistory(), // createWebHistory ==> history模式  createWebHashHistory==> hash模式
 	routes: [
 		{
 			path: "/",
@@ -333,30 +333,3 @@ const router = createRouter({
 	],
 });
 export default router;
-// export const constantRoutes = [
-// 	{
-// 		path: "/",
-// 		component: Layout,
-// 		redirect: "/dashboard",
-// 		children: [
-// 			{
-// 				path: "dashboard",
-// 				component: () => import("@/views/dashboard/index"),
-// 				name: "Dashboard",
-// 				meta: { title: "Dashboard", icon: "dashboard", affix: true },
-// 			},
-// 		],
-// 	},
-// 	{
-// 		path: "/documentation",
-// 		component: Layout,
-// 		children: [
-// 			{
-// 				path: "index",
-// 				component: () => import("@/views/documentation/index"),
-// 				name: "Documentation",
-// 				meta: { title: "Documentation", icon: "documentation", affix: true },
-// 			},
-// 		],
-// 	},
-// ];
