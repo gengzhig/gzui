@@ -41,17 +41,17 @@ const state = reactive({
 		{
 			label: "用户管理",
 			name: "first",
-			content: 1,
+			content: "用户管理",
 		},
 		{
 			label: "配置管理",
 			name: "second",
-			content: 2,
+			content: "配置管理",
 		},
 		{
 			label: "角色管理",
 			name: "third",
-			content: 3,
+			content: "角色管理",
 		},
 	],
 	activeName: "first",

@@ -7,16 +7,115 @@
 		<title>Document</title>
 	</head>
 
-	<body></body>
+	<body>
+		<input id="inp" type="text" placeholder="测试数据双向绑定" />
+		<br />
+		结果：
+		<h1></h1>
+	</body>
 	<script>
-		var worker1 = new Worker("./1.js");
-		worker1.onmessage = e => {
-			console.log(e.data);
-		};
-		var worker2 = new Worker("./2.js");
-		worker2.onmessage = e => {
-			console.log(e.data);
-		};
+		function f1(fn) {
+			return new Promise((resolve, reject) => {
+				fn.then(res => {
+					resolve(res);
+				}).catch(err => {
+					reject(err);
+				});
+			});
+		}
+		async function f3() {
+			try {
+				let res = await f1(f2(2));
+				console.log(res);
+			} catch (error) {
+				console.log(error);
+			}
+		}
+
+		f3();
+
+		function f2(id) {
+			return new Promise((resolve, reject) => {
+				if (id == "1") {
+					resolve(1);
+				} else {
+					reject(2);
+				}
+			});
+		}
+		// function handleInput(e) {
+		// 	console.log(e);
+		// }
+		// inp.addEventListener("input", handleInput, false);
+
+		// class Vue {
+		// 	constructor(data) {
+		// 		this.data = data;
+		// 		this.init();
+		// 	}
+		// 	init() {
+		// 		this.initData();
+		// 	}
+		// 	initData() {
+		// 		console.log(this);
+		// 	}
+		// }
+
+		// let ff = new Vue({
+		// 	a: 1,
+		// 	b: 2,
+		// });
+		// let gz = console.log.bind(document);
+
+		// let data = [
+		// 	{ id: "3", name: "???" },
+		// 	{ id: 3, name: "lisi" },
+		// 	{ id: 1, name: "gengzhi" },
+		// 	{ id: 2, name: "zhangsan" },
+		// 	{ id: 2, name: "zhangsan" },
+		// ];
+		// // 数据重组
+		// function map(data) {
+		// 	// return data.map(d => {
+		// 	// 	return Object.assign({ sex: 1 }, d);
+		// 	// });
+		// 	return data.map(d => d.name);
+		// }
+		// gz(map(data), "数据重组");
+
+		// // 过滤指定条件
+		// function filterProperty(data) {
+		// 	return data.filter(d => [2].includes(d.id));
+		// }
+		// gz(filterProperty(data));
+		// // 过滤掉相同属性的数据
+		// function filter(data) {
+		// 	return data.reduce((pre, cur) => {
+		// 		let findIndex = pre.findIndex(p => {
+		// 			return p.id == cur.id;
+		// 		});
+		// 		if (findIndex == -1) {
+		// 			pre.push(cur);
+		// 		}
+		// 		return pre;
+		// 	}, []);
+		// }
+		// gz(filter(data), "过滤掉相同属性的数据");
+		// // 排序 按照某个属性
+		// function sort(data, methods, property) {
+		// 	return data.sort((a, b) => {
+		// 		return methods == "asc" ? a[property] - b[property] : b[property] - a[property];
+		// 	});
+		// }
+		// gz(sort(data, "asc", "id"));
+		// var worker1 = new Worker("./1.js");
+		// worker1.onmessage = e => {
+		// 	console.log(e.data);
+		// };
+		// var worker2 = new Worker("./2.js");
+		// worker2.onmessage = e => {
+		// 	console.log(e.data);
+		// };
 
 		// console.time();
 		// function fb(n) {

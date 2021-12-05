@@ -1,5 +1,5 @@
 <template>
-	<div ref="contRef">
+	<div class="tab-item" v-show="name == activeKey">
 		<slot></slot>
 	</div>
 </template>
@@ -11,10 +11,7 @@ export default {
 </script>
 
 <script setup>
-import { reactive, ref, onMounted, watch, computed, getCurrentInstance, useSlots, nextTick } from "vue";
-import { useStore } from "vuex";
-const ctx = getCurrentInstance();
-
+import { inject, re } from "vue";
 const props = defineProps({
 	label: {
 		type: String,
@@ -23,40 +20,6 @@ const props = defineProps({
 		type: String,
 	},
 });
-const slots = useSlots();
-const contRef = ref(null);
-const state = reactive({
-	content: "",
-	curIndex: 0,
-	slots: slots.default(),
-});
-watch(
-	() => {
-		return ctx?.parent?.ctx?.state?.curIndex;
-	},
-	value => {
-		state.curIndex = value;
-		changeContent();
-	}
-);
-onMounted(() => {
-	changeContent();
-});
-const changeContent = () => {
-	let pNode = contRef?.value?.parentNode?.getElementsByClassName("tab-pane");
-	for (let i = 0; i < pNode.length; i++) {
-		pNode[i].style.display = "none";
-		pNode[state.curIndex].style.display = "block";
-	}
-};
+let activeKey = ref();
+activeKey = inject("activeKey");
 </script>
-<style scoped lang="scss">
-.tag-content {
-	.tab-pane {
-		display: none;
-		&.active {
-			display: block;
-		}
-	}
-}
-</style>

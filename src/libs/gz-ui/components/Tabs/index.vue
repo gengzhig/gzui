@@ -13,7 +13,7 @@
 				:class="['tab', index == state.curIndex ? 'active' : '']"
 				v-for="(item, index) in state.slots"
 				:key="index"
-				@click="select(index)"
+				@click="select(index, item)"
 			>
 				{{ item.props.label }}
 			</span>
@@ -31,8 +31,7 @@ export default {
 </script>
 
 <script setup>
-import { onMounted, reactive, useSlots, getCurrentInstance } from "vue";
-import mitt from "@/mitt.js";
+import { ref, onMounted, computed, reactive, useSlots, getCurrentInstance, provide } from "vue";
 const props = defineProps({
 	activeName: {
 		type: String,
@@ -59,30 +58,18 @@ const props = defineProps({
 	},
 });
 const slots = useSlots();
-const ctx = getCurrentInstance();
 const state = reactive({
 	content: "",
 	curIndex: 0,
 	slots: slots.default().length > 1 ? slots.default() : slots.default()[0].children,
 });
-onMounted(() => {
-	// state.curIndex = state.slots.findIndex(s => s.props.name === props.activeName);
-	// if (slots.default() && slots.default()[state.curIndex].el) {
-	// 	slots.default()[state.curIndex].el.classList.add("active");
-	// }
-	// mitt.emit("current-tabIndex", state.curIndex);
-});
-const select = index => {
+
+let activeKey = ref(props.activeName); //当前key
+const select = (index, item) => {
+	activeKey.value = item.props.name;
 	state.curIndex = index;
-	// console.log(ctx);
-	// if (slots.default() && slots.default()[state.curIndex].el) {
-	// 	slots.default().map(s => {
-	// 		s?.el?.classList.remove("active");
-	// 	});
-	// 	slots.default()[state.curIndex].el.classList.add("active");
-	// }
-	// mitt.emit("current-tabIndex", state.curIndex);
 };
+provide("activeKey", activeKey);
 </script>
 
 <style lang="scss">

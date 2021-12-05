@@ -31,6 +31,10 @@ import gzDatePicker from "./components/DatePicker/index.vue";
 import gzCalendar from "./components/Calendar/index.vue";
 import gzForm from "./components/Form/index.vue";
 import gzFormItem from "./components/FormItem/index.vue";
+import gzBreadCrumb from "./components/BreadCrumb/index.vue";
+import gzBreadCrumbItem from "./components/BreadCrumb/item.vue";
+
+
 import { gzMessage } from "./components/Message/index.js";
 import config from "./config.js";
 
@@ -61,6 +65,9 @@ gzUI.install = function (Vue) {
 	Vue.component(gzCalendar.name, gzCalendar);
 	Vue.component(gzForm.name, gzForm);
 	Vue.component(gzFormItem.name, gzFormItem);
+	Vue.component(gzBreadCrumb.name, gzBreadCrumb);
+	Vue.component(gzBreadCrumbItem.name, gzBreadCrumbItem);
+	
 	// Vue.config.globalProperties.$gzMessage = gzMessage;
 };
 

@@ -271,6 +271,15 @@ const router = createRouter({
 							},
 							component: () => import("views/comp/custom/multiMenu.vue"),
 						},
+						{
+							path: "breadCrumb",
+							name: "BreadCrumb",
+							meta: {
+								title: "面包屑",
+								icon: "attract",
+							},
+							component: () => import("views/comp/custom/breadCrumb.vue"),
+						},
 					],
 				},
 				{
