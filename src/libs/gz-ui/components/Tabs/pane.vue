@@ -11,7 +11,7 @@ export default {
 </script>
 
 <script setup>
-import { inject, re } from "vue";
+import { inject, ref } from "vue";
 const props = defineProps({
 	label: {
 		type: String,
