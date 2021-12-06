@@ -7,10 +7,10 @@
 		<div class="meta">
 			<div class="demo">
 				<gzBreadCrumb separator="/">
-					<gzBreadCrumbItem>Home</gzBreadCrumbItem>
-					<gzBreadCrumbItem><a href="">Application Center</a></gzBreadCrumbItem>
-					<gzBreadCrumbItem><a href="">Application List</a></gzBreadCrumbItem>
-					<gzBreadCrumbItem>An Application</gzBreadCrumbItem>
+					<gzBreadCrumbItem :to="{ path: '/' }">首页</gzBreadCrumbItem>
+					<gzBreadCrumbItem :to="{ path: '/1' }">管理</gzBreadCrumbItem>
+					<gzBreadCrumbItem :to="{ path: '/2' }">列表</gzBreadCrumbItem>
+					<gzBreadCrumbItem :to="{ path: '/3' }">详情</gzBreadCrumbItem>
 				</gzBreadCrumb>
 			</div>
 			<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>

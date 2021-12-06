@@ -1,6 +1,6 @@
 <template>
 	<div class="breadCrumb-item">
-		<span class="breadCrumb-item-text">
+		<span class="breadCrumb-item-text" @click="pathClick(to)">
 			<slot></slot>
 		</span>
 		<span class="breadCrumb-item-separator"> {{ separator }} </span>
@@ -15,10 +15,20 @@ export default {
 
 <script setup>
 import { reactive, ref, onMounted, watch, inject, computed, getCurrentInstance, useSlots, nextTick } from "vue";
-const props = defineProps({});
+import { useRouter } from "vue-router";
+const props = defineProps({
+	to: {
+		type: Object,
+		defaullt: () => {},
+	},
+});
 const emit = defineEmits();
-
+const router = useRouter();
 const separator = inject("separator");
+
+const pathClick = value => {
+	router.push(value.path);
+};
 </script>
 
 <style scoped lang="scss">
@@ -29,6 +39,12 @@ const separator = inject("separator");
 	&:last-child {
 		.breadCrumb-item-separator {
 			display: none;
+		}
+	}
+	&-text {
+		cursor: pointer;
+		&:hover{
+			color:#4093ee
 		}
 	}
 }
