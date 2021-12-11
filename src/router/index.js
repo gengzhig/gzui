@@ -302,6 +302,15 @@ const router = createRouter({
 							component: () => import("views/comp/custom/modalBox.vue"),
 						},
 						{
+							path: "drawer",
+							name: "Drawer",
+							meta: {
+								title: "抽屉",
+								icon: "attract",
+							},
+							component: () => import("views/comp/custom/drawer.vue"),
+						},
+						{
 							path: "loading",
 							name: "Loading",
 							meta: {
