@@ -48,6 +48,15 @@ const router = createRouter({
 							component: () => import("views/comp/custom/button.vue"),
 						},
 						{
+							path: "divider",
+							name: "Divider",
+							meta: {
+								title: "分割线",
+								icon: "s-tools",
+							},
+							component: () => import("views/comp/custom/divider.vue"),
+						},
+						{
 							path: "carousel",
 							name: "Carousel",
 							meta: {

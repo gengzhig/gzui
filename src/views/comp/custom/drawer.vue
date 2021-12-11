@@ -14,9 +14,8 @@
 					<h1>抽屉内的内容</h1>
 				</gzDrawer>
 			</div>
-			<base-copy :code="state.code"></base-copy>
 		</div>
-		<base-copy :code="state.zlcode" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
+		<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
 	</div>
 </template>
 <script setup>
@@ -28,16 +27,25 @@ const drawer = ref(false);
 const direction = ref("rtl");
 const ctx = getCurrentInstance();
 const state = reactive({
-	code: ``,
+	code: `<gzDrawer v-model="drawer" :direction="direction">
+	<h1>抽屉内的内容</h1>
+</gzDrawer>`,
 	attributesBrief: {
 		tableData: [
-			// {
-			// 	param: "full",
-			// 	explain: "加载方式",
-			// 	type: "Boolean",
-			// 	optional: "true局部加载/false全局加载",
-			// 	default: "false",
-			// },
+			{
+				param: "drawer",
+				explain: "抽屉状态",
+				type: "Boolean",
+				optional: "true打开/false关闭",
+				default: "false",
+			},
+			{
+				param: "direction",
+				explain: "打开方向",
+				type: "String",
+				optional: "rtl / ltr / ttb / btt",
+				default: "rtl",
+			},
 		],
 	},
 	eventsBrief: {
