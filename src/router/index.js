@@ -30,6 +30,26 @@ const router = createRouter({
 					component: () => import("views/comp/home.vue"),
 				},
 				{
+					path: "/layout",
+					redirect: "/layout/grid",
+					component: Layout,
+					meta: {
+						title: "布局",
+						icon: "setting",
+					},
+					children: [
+						{
+							path: "grid",
+							name: "Grid",
+							meta: {
+								title: "栅格",
+								icon: "s-tools",
+							},
+							component: () => import("views/comp/custom/grid.vue"),
+						},
+					],
+				},
+				{
 					path: "/general",
 					redirect: "/general/button",
 					component: Layout,

@@ -1,212 +1,425 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Document</title>
-	</head>
 
-	<body>
-		<input id="inp" type="text" placeholder="测试数据双向绑定" />
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Document</title>
+	<style>
+		.wrap {
+			width: 400px;
+			height: 300px;
+			border: 1px solid #ccc;
+			margin: 100px auto;
+			display: flex;
+		}
+
+		.box {
+			height: max-content;
+			/* line-height: 30px; */
+		}
+
+		.box:nth-child(1) {
+			flex: 1;
+			padding-left: 100px;
+			background: red;
+			text-align: center;
+		}
+
+		.box:nth-child(2) {
+			width: 100px;
+			background: green;
+		}
+
+		.content {
+			width: 100px;
+			height: 100px;
+			background: yellow;
+			margin: 0 10px 10px 0;
+		}
+
+		.container {
+			display: flex;
+			flex-direction: row;
+		}
+
+		.c1 {
+			order: 1;
+		}
+
+		.c2 {
+			order: 1;
+		}
+
+		.c3 {
+			order: 1;
+		}
+
+		.c4 {
+			order: 1;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="content c1">1</div>
+		<div class="content c2">2</div>
+		<div class="content c3">3</div>
+		<div class="content c4">4</div>
+	</div>
+
+	<div class="wrap">
+		<div class="box">
+			<span>图标</span>
+			<span>能管平台</span>
+		</div>
+		<div class="box">2</div>
+	</div>
+	<input type="color" />
+	<!-- <input id="inp" type="text" placeholder="测试数据双向绑定" />
 		<br />
 		结果：
-		<h1></h1>
-	</body>
-	<script>
-		function f1(fn) {
-			return new Promise((resolve, reject) => {
-				fn.then(res => {
-					resolve(res);
-				}).catch(err => {
-					reject(err);
-				});
-			});
+		<h1></h1> -->
+</body>
+<script>
+	class F {
+		#SCOPE = 1;
+	}
+	console.dir(F.#SCOPE);
+	const { log } = console;
+	let url = "http://192.168.0.0?id=3&num=%27我%27"
+	// function parseUrl(url) {
+	// 	let obj = {};
+	// 	const [, searchStr] = url.split("?");
+	// 	const str = searchStr.split("&");
+	// 	for (const item of str) {
+	// 		const [key, value] = item.split("=");
+	// 		obj[key] = decodeURIComponent(value);
+	// 	}
+	// 	return obj;
+	// }
+	function parseUrl(url) {
+		let obj = {};
+		const [, searchStr] = url.split("?");
+		const params = new URLSearchParams(searchStr);
+		for (const item of params) {
+			obj[item[0]] = item[1];
 		}
-		async function f3() {
-			try {
-				let res = await f1(f2(2));
-				console.log(res);
-			} catch (error) {
-				console.log(error);
-			}
-		}
-
-		f3();
-
-		function f2(id) {
-			return new Promise((resolve, reject) => {
-				if (id == "1") {
-					resolve(1);
-				} else {
-					reject(2);
-				}
-			});
-		}
-		// function handleInput(e) {
-		// 	console.log(e);
+		return obj;
+		// const str = searchStr.split("&");
+		// for (const item of str) {
+		// 	const [key, value] = item.split("=");
+		// 	obj[key] = decodeURIComponent(value);
 		// }
-		// inp.addEventListener("input", handleInput, false);
+		// return obj;
+	}
+	log(parseUrl(url));
+	// let obj = { a: 1 }
+	// obj.a = 2;
+	// console.log(obj)
+	// let arr = [1, 1, 2, 3, 4, 5];
+	// let newArr = [];
+	// arr.reduce((pre, cur) => {
+	// 	if (!pre.get(cur)) {
+	// 		pre.set(cur, 1);
+	// 		newArr.push(cur)
+	// 	}
+	// 	return pre;
+	// }, new Map());
+	// console.log(newArr);
+	/**
+	 * @param  {} endDate       当前时间
+	 * @param  {} splitTime     需要往前推算的整数时间戳   例如当前时间往前推算整5分钟  1000 * 60 * 5
+	 * @param  {} count         往前推的次数
+	 */
+	// let time = new Date().getTime();
+	// console.log(time);
 
-		// class Vue {
-		// 	constructor(data) {
-		// 		this.data = data;
-		// 		this.init();
-		// 	}
-		// 	init() {
-		// 		this.initData();
-		// 	}
-		// 	initData() {
-		// 		console.log(this);
-		// 	}
-		// }
+	// let newTime = new Date(parseInt(time - 10 * 1000)).toLocaleString().replace(/:\d{1,2}$/, ' ')
+	// console.log(newTime)
+	// function getBeforeDateArray(endDate, splitTime, count) {
+	// 	if (!endDate) {
+	// 		endDate = new Date();
+	// 	}
 
-		// let ff = new Vue({
-		// 	a: 1,
-		// 	b: 2,
-		// });
-		// let gz = console.log.bind(document);
+	// 	if (!splitTime) {
+	// 		// splitTime = 5 * 60 * 1000;
+	// 		splitTime = 10 * 1000;
+	// 	}
 
-		// let data = [
-		// 	{ id: "3", name: "???" },
-		// 	{ id: 3, name: "lisi" },
-		// 	{ id: 1, name: "gengzhi" },
-		// 	{ id: 2, name: "zhangsan" },
-		// 	{ id: 2, name: "zhangsan" },
-		// ];
-		// // 数据重组
-		// function map(data) {
-		// 	// return data.map(d => {
-		// 	// 	return Object.assign({ sex: 1 }, d);
-		// 	// });
-		// 	return data.map(d => d.name);
-		// }
-		// gz(map(data), "数据重组");
+	// 	if (!count) {
+	// 		count = 2;
+	// 	}
 
-		// // 过滤指定条件
-		// function filterProperty(data) {
-		// 	return data.filter(d => [2].includes(d.id));
-		// }
-		// gz(filterProperty(data));
-		// // 过滤掉相同属性的数据
-		// function filter(data) {
-		// 	return data.reduce((pre, cur) => {
-		// 		let findIndex = pre.findIndex(p => {
-		// 			return p.id == cur.id;
-		// 		});
-		// 		if (findIndex == -1) {
-		// 			pre.push(cur);
-		// 		}
-		// 		return pre;
-		// 	}, []);
-		// }
-		// gz(filter(data), "过滤掉相同属性的数据");
-		// // 排序 按照某个属性
-		// function sort(data, methods, property) {
-		// 	return data.sort((a, b) => {
-		// 		return methods == "asc" ? a[property] - b[property] : b[property] - a[property];
-		// 	});
-		// }
-		// gz(sort(data, "asc", "id"));
-		// var worker1 = new Worker("./1.js");
-		// worker1.onmessage = e => {
-		// 	console.log(e.data);
-		// };
-		// var worker2 = new Worker("./2.js");
-		// worker2.onmessage = e => {
-		// 	console.log(e.data);
-		// };
+	// 	var endTime = endDate.getTime();
+	// 	var mod = endTime % splitTime; //所有的时间戳磨去5分钟的时间戳  就是多余的时间戳 所有的-多余的 = 当前整点的时间戳   例如当前时间戳是11分 % 5分 = 1  11-1 = 10 最近的整分钟
 
-		// console.time();
-		// function fb(n) {
-		// 	if (n == 1 || n == 2) {
-		// 		return 1;
-		// 	}
-		// 	return fb(n - 1) + fb(n - 2);
-		// }
-		// let res = fb(43);
-		// let res2 = fb(43);
-		// console.timeEnd();
-		// let data = [
-		// 	{
-		// 		title: "水果",
-		// 		id: 1,
-		// 		pid: 0,
-		// 		children: [
-		// 			{
-		// 				title: "苹果",
-		// 				id: 2,
-		// 				pid: 1,
-		// 			},
-		// 			{
-		// 				title: "西瓜",
-		// 				id: 3,
-		// 				pid: 1,
-		// 				children: [
-		// 					{
-		// 						title: "西瓜瓜籽",
-		// 						id: 4,
-		// 						pid: 3,
-		// 					},
-		// 				],
-		// 			},
-		// 		],
-		// 	},
-		// 	{
-		// 		title: "蔬菜",
-		// 		id: 5,
-		// 		pid: 0,
-		// 		children: [
-		// 			{
-		// 				title: "青菜",
-		// 				id: 6,
-		// 				pid: 5,
-		// 			},
-		// 			{
-		// 				title: "胡萝卜",
-		// 				id: 7,
-		// 				pid: 5,
-		// 			},
-		// 		],
-		// 	},
-		// ];
-		let flatData = [
-			{
-				id: 1,
-				title: "水果",
-				pid: 0,
-			},
-			{
-				id: 2,
-				title: "苹果",
-				pid: 1,
-			},
-			{
-				id: 3,
-				title: "西瓜",
-				pid: 1,
-			},
-			{
-				id: 4,
-				title: "西瓜瓜籽",
-				pid: 3,
-			},
-			{
-				id: 5,
-				title: "蔬菜",
-				pid: 0,
-			},
-			{
-				id: 6,
-				title: "青菜",
-				pid: 5,
-			},
-			{
-				id: 7,
-				title: "胡萝卜",
-				pid: 5,
-			},
-		];
+	// 	var d = new Date();
+	// 	d.setTime(endTime - mod);
+
+	// 	if (mod > 0) {
+	// 		endTime -= mod;
+	// 	}
+
+	// 	var dateArray = [];
+	// 	// while (count-- > 0) {
+	// 	let ds = new Date();
+	// 	d.setTime(endTime - 1 * splitTime); //在原有的基础上 * count次数 就是往前推 例如11分 % 5分 = 1  11-1 = 10    11 -  1 * 5 = 5  ···
+	// 	// ds = ds.toISOString()
+	// 	dateArray.push(ds);
+	// 	// }
+	// 	return dateArray;
+	// }
+	// console.log(getBeforeDateArray())
+
+
+	// let data = [
+	// 	{ name: "gz", age: 11 },
+	// 	{ name: "ch", age: 14 },
+	// 	{ name: "nj", age: 16 },
+	// ];
+	// let res = data.map(d => Object.assign(d, { sex: "male" }));
+	// console.log(res);
+	// let eventbus = {
+	// 	arrays: {
+	// 		click: [],
+	// 	},
+	// 	// 订阅
+	// 	emit: function (type, data) {
+	// 		const a = this.arrays[type];
+	// 		if (!a) return;
+	// 		for (let i = 0; i < a.length; i++) {
+	// 			a[i]();
+	// 		}
+	// 	},
+	// 	// 发布
+	// 	on: function (type, fn) {
+	// 		this.arrays[type] = this.arrays[type] || [];
+	// 		this.arrays[type].push(fn);
+	// 	},
+	// 	off: () => {},
+	// };
+
+	// setTimeout(() => {
+	// 	eventbus.emit("click", "haha");
+	// }, 3000);
+	// eventbus.on("click", data => {
+	// 	console.log(data);
+	// });
+	// let obj = {
+	// 	name: "gz",
+	// 	age: 12,
+	// 	温度: "20摄氏度",
+	// 	湿度: "50摄氏度",
+	// 	压力: "23pa",
+	// };
+	// let { name, b } = obj;
+	// console.log(name);
+	// let newObj = [];
+	// let reg = /^[\u4e00-\u9fa5]+$/g;
+	// for (const key in obj) {
+	// 	if (reg.test(key)) {
+	// 		newObj.push({
+	// 			[key]: obj[key],
+	// 		});
+	// 	}
+	// }
+	// console.log(JSON.stringify(newObj));
+	// function f1(fn) {
+	// 	return new Promise((resolve, reject) => {
+	// 		fn.then(res => {
+	// 			resolve(res);
+	// 		}).catch(err => {
+	// 			reject(err);
+	// 		});
+	// 	});
+	// }
+	// async function f3() {
+	// 	try {
+	// 		let res = await f1(f2(2));
+	// 		console.log(res);
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// }
+
+	// f3();
+
+	// function f2(id) {
+	// 	return new Promise((resolve, reject) => {
+	// 		if (id == "1") {
+	// 			resolve(1);
+	// 		} else {
+	// 			reject(2);
+	// 		}
+	// 	});
+	// }
+	// function handleInput(e) {
+	// 	console.log(e);
+	// }
+	// inp.addEventListener("input", handleInput, false);
+
+	// class Vue {
+	// 	constructor(data) {
+	// 		this.data = data;
+	// 		this.init();
+	// 	}
+	// 	init() {
+	// 		this.initData();
+	// 	}
+	// 	initData() {
+	// 		console.log(this);
+	// 	}
+	// }
+
+	// let ff = new Vue({
+	// 	a: 1,
+	// 	b: 2,
+	// });
+	// let gz = console.log.bind(document);
+
+	// let data = [
+	// 	{ id: "3", name: "???" },
+	// 	{ id: 3, name: "lisi" },
+	// 	{ id: 1, name: "gengzhi" },
+	// 	{ id: 2, name: "zhangsan" },
+	// 	{ id: 2, name: "zhangsan" },
+	// ];
+	// // 数据重组
+	// function map(data) {
+	// 	// return data.map(d => {
+	// 	// 	return Object.assign({ sex: 1 }, d);
+	// 	// });
+	// 	return data.map(d => d.name);
+	// }
+	// gz(map(data), "数据重组");
+
+	// // 过滤指定条件
+	// function filterProperty(data) {
+	// 	return data.filter(d => [2].includes(d.id));
+	// }
+	// gz(filterProperty(data));
+	// // 过滤掉相同属性的数据
+	// function filter(data) {
+	// 	return data.reduce((pre, cur) => {
+	// 		let findIndex = pre.findIndex(p => {
+	// 			return p.id == cur.id;
+	// 		});
+	// 		if (findIndex == -1) {
+	// 			pre.push(cur);
+	// 		}
+	// 		return pre;
+	// 	}, []);
+	// }
+	// gz(filter(data), "过滤掉相同属性的数据");
+	// // 排序 按照某个属性
+	// function sort(data, methods, property) {
+	// 	return data.sort((a, b) => {
+	// 		return methods == "asc" ? a[property] - b[property] : b[property] - a[property];
+	// 	});
+	// }
+	// gz(sort(data, "asc", "id"));
+	// var worker1 = new Worker("./1.js");
+	// worker1.onmessage = e => {
+	// 	console.log(e.data);
+	// };
+	// var worker2 = new Worker("./2.js");
+	// worker2.onmessage = e => {
+	// 	console.log(e.data);
+	// };
+
+	// console.time();
+	// function fb(n) {
+	// 	if (n == 1 || n == 2) {
+	// 		return 1;
+	// 	}
+	// 	return fb(n - 1) + fb(n - 2);
+	// }
+	// let res = fb(43);
+	// let res2 = fb(43);
+	// console.timeEnd();
+	// let data = [
+	// 	{
+	// 		title: "水果",
+	// 		id: 1,
+	// 		pid: 0,
+	// 		children: [
+	// 			{
+	// 				title: "苹果",
+	// 				id: 2,
+	// 				pid: 1,
+	// 			},
+	// 			{
+	// 				title: "西瓜",
+	// 				id: 3,
+	// 				pid: 1,
+	// 				children: [
+	// 					{
+	// 						title: "西瓜瓜籽",
+	// 						id: 4,
+	// 						pid: 3,
+	// 					},
+	// 				],
+	// 			},
+	// 		],
+	// 	},
+	// 	{
+	// 		title: "蔬菜",
+	// 		id: 5,
+	// 		pid: 0,
+	// 		children: [
+	// 			{
+	// 				title: "青菜",
+	// 				id: 6,
+	// 				pid: 5,
+	// 			},
+	// 			{
+	// 				title: "胡萝卜",
+	// 				id: 7,
+	// 				pid: 5,
+	// 			},
+	// 		],
+	// 	},
+	// ];
+	// let flatData = [
+	// 	{
+	// 		id: 1,
+	// 		title: "水果",
+	// 		pid: 0,
+	// 	},
+	// 	{
+	// 		id: 2,
+	// 		title: "苹果",
+	// 		pid: 1,
+	// 	},
+	// 	{
+	// 		id: 3,
+	// 		title: "西瓜",
+	// 		pid: 1,
+	// 	},
+	// 	{
+	// 		id: 4,
+	// 		title: "西瓜瓜籽",
+	// 		pid: 3,
+	// 	},
+	// 	{
+	// 		id: 5,
+	// 		title: "蔬菜",
+	// 		pid: 0,
+	// 	},
+	// 	{
+	// 		id: 6,
+	// 		title: "青菜",
+	// 		pid: 5,
+	// 	},
+	// 	{
+	// 		id: 7,
+	// 		title: "胡萝卜",
+	// 		pid: 5,
+	// 	},
+	// ];
 
 		// function formatterTreeData(data) {
 		// 	let parentData = data.filter(d => d.pid == 0);
@@ -285,5 +498,6 @@
 		// [...map].map(m => {
 		// 	console.log(m);
 		// });
-	</script>
+</script>
+
 </html>

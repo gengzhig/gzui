@@ -35,6 +35,8 @@ import gzBreadCrumb from "./components/BreadCrumb/index.vue";
 import gzBreadCrumbItem from "./components/BreadCrumb/item.vue";
 import gzDrawer from "./components/Drawer/index.vue";
 import gzDivider from "./components/Divider/index.vue";
+import gzRow from "./components/Row/index.vue";
+import gzCol from "./components/Row/col.vue";
 
 import { gzMessage } from "./components/Message/index.js";
 import config from "./config.js";
@@ -70,6 +72,8 @@ gzUI.install = function (Vue) {
 	Vue.component(gzBreadCrumbItem.name, gzBreadCrumbItem);
 	Vue.component(gzDrawer.name, gzDrawer);
 	Vue.component(gzDivider.name, gzDivider);
+	Vue.component(gzRow.name, gzRow);
+	Vue.component(gzCol.name, gzCol);
 	// Vue.config.globalProperties.$gzMessage = gzMessage;
 };
 

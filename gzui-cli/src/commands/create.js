@@ -70,7 +70,6 @@ export async function onCreate(cmd = {}) {
 						default: 0,
 					},
 				]);
-
 				createComponent(info);
 				break;
 			case "lib-entry":
@@ -87,7 +86,6 @@ export async function onCreate(cmd = {}) {
 
 function createComponent(info) {
 	// 输出收集到的组件信息
-	console.log(info);
 }
 
 function createLibEntry() {

@@ -15,7 +15,7 @@
 		"echarts": "^5.1.2",
 		"element3": "^0.0.39",
 		"monaco-editor": "^0.29.1",
-		"vue": "^3.0.5",
+		"vue": "^3.1.5",
 		"vue-cropper": "^0.5.7",
 		"vue-router": "^4.0.3",
 		"vuex": "^4.0.0-rc.2"
