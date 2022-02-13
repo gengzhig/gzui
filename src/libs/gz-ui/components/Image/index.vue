@@ -99,8 +99,10 @@ const addLazyLoadListener = () => {
 		});
 	};
 	let observer = new IntersectionObserver(cb);
+	// 要观察的元素
 	let imagesDom = lazyImages.value.querySelectorAll("img");
 	imagesDom.forEach(image => {
+		// 使用observer里的observe方法，传入观察单个对象
 		observer.observe(image);
 	});
 };

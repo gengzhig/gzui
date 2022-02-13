@@ -10,9 +10,23 @@
 		.wrap {
 			width: 400px;
 			height: 300px;
-			border: 1px solid #ccc;
+			border: 3px solid #ccc;
 			margin: 100px auto;
-			display: flex;
+			display: grid;
+			place-items: center;
+			position: relative;
+		}
+
+		.wrap::after {
+			content: "请拖动到此区域！";
+			font-size: 3vw;
+			position: absolute;
+			display: block;
+		}
+
+		.wrap.dragover {
+			border: 3px dashed yellowgreen;
+			cursor: move;
 		}
 
 		.box {
@@ -44,52 +58,136 @@
 			flex-direction: row;
 		}
 
-		.c1 {
-			order: 1;
-		}
-
-		.c2 {
-			order: 1;
-		}
-
-		.c3 {
-			order: 1;
-		}
-
-		.c4 {
-			order: 1;
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
 		}
 	</style>
 </head>
 
 <body>
 	<div class="container">
-		<div class="content c1">1</div>
-		<div class="content c2">2</div>
-		<div class="content c3">3</div>
-		<div class="content c4">4</div>
+		<div class="content c1" id="gz" draggable="true">1</div>
 	</div>
 
 	<div class="wrap">
-		<div class="box">
-			<span>图标</span>
-			<span>能管平台</span>
-		</div>
-		<div class="box">2</div>
 	</div>
-	<input type="color" />
-	<!-- <input id="inp" type="text" placeholder="测试数据双向绑定" />
-		<br />
-		结果：
-		<h1></h1> -->
+
+	<input type="file">
 </body>
 <script>
-	class F {
-		#SCOPE = 1;
+	function $(el) {
+		return document.querySelector(el)
 	}
-	console.dir(F.#SCOPE);
-	const { log } = console;
-	let url = "http://192.168.0.0?id=3&num=%27我%27"
+
+	function $All(el) {
+		return document.querySelectorAll(el)
+	}
+	// dragstart 开始拖拽
+	// dragenter 进入元素中，标识改为移动标识
+	// dragover 在目标元素经过，阻止默认行为，否则无法触发drop
+	// dragleave 离开元素时，增加一个禁用标识
+	// drop 松手时，根据拖拽组件添加进去
+	// 拖拽 dragstart:开始拖拽 drop:拖拽结束
+
+
+	// 移动 mousedown:鼠标按下 mousemove:鼠标移动 mouseup:鼠标抬起 
+	$(".content").addEventListener("dragstart", handleDragStart);
+	function handleDragStart(e) {
+		e.dataTransfer.setData("text/plain", e.target.id);
+	}
+
+	$(".wrap").addEventListener("dragover", handleDragOver);
+	$(".wrap").addEventListener("dragleave", handleDragLeave);
+	$(".wrap").addEventListener("drop", handleDrop);
+
+	function handleDragOver(e) {
+		e.preventDefault();
+		this.classList.add("dragover");
+	}
+	function handleDragLeave(e) {
+		this.classList.remove("dragover");
+	}
+
+	function handleDrop(e) {
+		$(".wrap").innerHTML = ""
+		e.preventDefault();
+		const dragId = e.dataTransfer.getData("text/plain");
+		// $(".wrap").appendChild($("#" + dragId))
+		[...e.dataTransfer.items].forEach(item => {
+			if (item.kind === "file") {
+				const file = item.getAsFile();
+				createPreview(file);
+			}
+		})
+	}
+
+
+	function createPreview(imageFile) {
+		if (!imageFile.type.startsWith("image/")) {
+			return;
+		}
+		const image = document.createElement("img");
+		image.src = URL.createObjectURL(imageFile);
+		image.onload = () => {
+			URL.revokeObjectURL(this.src)
+		}
+		$(".wrap").appendChild(image)
+	}
+	// const loadAssets = () => {
+	// 	const assetArr = ["./1.js", "./2.js"];
+	// 	for (let i = 0; i < assetArr.length; i++) {
+	// 		fetch(assetArr[i], { mode: "no-cors" }).then(() => { });
+	// 	}
+	// }
+
+	// setTimeout(() => {
+	// 	loadAssets()
+	// }, 1000)
+	// const loadJs = (src) => {
+  // return new Promise((resolve, reject) => {
+  //   let script = document.createElement("script");
+  //   script.src = src;
+  //   script.onload = resolve;
+  //   script.onerror = reject;
+  //   document.head.appendChild(script);
+	// 	})
+	// }
+	// setTimeout(()=>{
+	// 	loadJs("./1.js");
+	// })
+	//  worker
+	// let worker1 = new Worker("./1.js");
+	// let worker2 = new Worker("./2.js");
+	// worker1.onmessage = e => {
+	// 	console.log(e.data)
+	// }
+	// worker2.onmessage = e => {
+	// 	console.log(e.data)
+	// }
+	// let obj = { a: 2 }
+
+	// let proxy = new Proxy(obj, {
+	// 	get(target, key) {
+	// 		if (target[key] === 1) return "haha"
+	// 		return Reflect.get(target, key)
+	// 	},
+	// 	set(target, key, value) {
+	// 		Reflect.set(target, key, value)
+	// 	}
+	// })
+	// console.log(obj.a)
+	// proxy.a = 2
+	// console.log(obj)
+	// console.log(proxy.a)
+
+	// class F {
+	// 	#SCOPE = 1;
+	// }
+	// console.dir(F.#SCOPE);
+	// const { log } = console;
+	// let url = "http://192.168.0.0?id=3&num=%27我%27"
 	// function parseUrl(url) {
 	// 	let obj = {};
 	// 	const [, searchStr] = url.split("?");
@@ -100,22 +198,22 @@
 	// 	}
 	// 	return obj;
 	// }
-	function parseUrl(url) {
-		let obj = {};
-		const [, searchStr] = url.split("?");
-		const params = new URLSearchParams(searchStr);
-		for (const item of params) {
-			obj[item[0]] = item[1];
-		}
-		return obj;
+	// function parseUrl(url) {
+	// 	let obj = {};
+	// 	const [, searchStr] = url.split("?");
+	// 	const params = new URLSearchParams(searchStr);
+	// 	for (const item of params) {
+	// 		obj[item[0]] = item[1];
+	// 	}
+	// 	return obj;
 		// const str = searchStr.split("&");
 		// for (const item of str) {
 		// 	const [key, value] = item.split("=");
 		// 	obj[key] = decodeURIComponent(value);
 		// }
 		// return obj;
-	}
-	log(parseUrl(url));
+	// }
+	// log(parseUrl(url));
 	// let obj = { a: 1 }
 	// obj.a = 2;
 	// console.log(obj)
