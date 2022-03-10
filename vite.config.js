@@ -39,4 +39,8 @@ export default defineConfig({
 		},
 	},
 	plugins: [vue(), vueJsx()],
+	test: {
+		environment: "jsdom",
+		global: true,
+	},
 });

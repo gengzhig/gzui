@@ -7,7 +7,7 @@
 		"dev:server": "npm run start --prefix server",
 		"dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
 		"build": "vite build",
-		"test": "jest",
+		"test": "vitest",
 		"docs:dev": "vitepress dev docs",
 		"docs:build": "vitepress build docs",
 		"docs:serve": "vitepress serve docs"
@@ -31,13 +31,15 @@
 		"@vitejs/plugin-vue-jsx": "^1.2.0",
 		"@vue/babel-plugin-jsx": "^1.1.1",
 		"@vue/compiler-sfc": "3.1.5",
-		"@vue/test-utils": "^2.0.0-rc.16",
+		"@vue/test-utils": "^2.0.0-rc.17",
 		"babel-jest": "^27.3.1",
+		"c8": "^7.11.0",
 		"jest": "^27.3.1",
 		"sass": "^1.32.5",
 		"vite": "^2.0.0-beta.12",
 		"vitepress": "^0.20.0",
 		"vitepress-theme-demoblock": "^1.2.2",
+		"vitest": "^0.5.9",
 		"vue-template-compiler": "^2.6.14"
 	}
 }
