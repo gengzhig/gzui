@@ -22,7 +22,11 @@
 					:highlightList="state.highlightList"
 				></gz-tree>
 			</div>
-			<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
+			<base-copy
+				:code="state.code"
+				:attributeBrief="state.attributesBrief"
+				:eventBrief="state.eventsBrief"
+			></base-copy>
 		</div>
 	</div>
 </template>
@@ -37,10 +41,12 @@ const state = reactive({
 		{
 			id: 1,
 			label: "一级 1",
+			open: true,
 			children: [
 				{
 					id: 2,
 					label: "二级 1-1",
+					// open: true,
 					children: [
 						{
 							id: 3,
@@ -53,9 +59,11 @@ const state = reactive({
 		{
 			id: 4,
 			label: "一级 2",
+			open: true,
 			children: [
 				{
 					id: 5,
+					open: true,
 					label: "二级 2-1",
 					children: [
 						{
