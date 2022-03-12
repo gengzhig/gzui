@@ -11,22 +11,10 @@
 	<div v-for="(item, index) in treeData" :key="index" class="tree-row">
 		<span
 			class="indent"
-			:style="{ paddingLeft: item.children ? (item.level - 1) * indent + 'px' : (item.level) * indent + 'px' }"
+			:style="{ paddingLeft: item.children ? (item.level - 1) * indent + 'px' : item.level * indent + 'px' }"
 		></span>
-		<img
-			src="./add-icon.png"
-			class="tree-icon"
-			v-if="item.children && !item.open"
-			@click="iconTroggle(item)"
-			alt
-		/>
-		<img
-			src="./minus-icon.png"
-			class="tree-icon"
-			v-if="item.children && item.open"
-			@click="iconTroggle(item)"
-			alt
-		/>
+		<img src="./add-icon.png" class="tree-icon" v-if="item.children && !item.open" @click="iconTroggle(item)" alt />
+		<img src="./minus-icon.png" class="tree-icon" v-if="item.children && item.open" @click="iconTroggle(item)" alt />
 		<span :class="[item.children ? 'parent' : 'leaf']">{{ item.label }}</span>
 	</div>
 </template>
@@ -65,24 +53,21 @@ const props = defineProps({
 		default: () => [],
 	},
 });
+let treeData = ref(null);
 let indent = ref(15);
 const treeListRef = ref(null);
 const emit = defineEmits(["nodeClick"]);
 // 扁平化需要渲染的数据
-const flatTreeData = (data) => {
-	return data.reduce((acc, item) => (
-		item.open
-			? acc.concat(item, flatTreeData(item.children))
-			: acc.concat(item)
-	), [])
-}
-let treeData = ref(null)
-treeData = flatTreeData(props.data);
+const flatTreeData = data => {
+	return data.reduce((acc, item) => (item.open ? acc.concat(item, flatTreeData(item.children)) : acc.concat(item)), []);
+};
 
-const iconTroggle = (item) => {
+treeData.value = flatTreeData(props.data);
+
+const iconTroggle = item => {
 	item.open = !item.open;
-	console.log(treeData);
-}
+	treeData.value = flatTreeData(props.data);
+};
 // 默认高亮节点
 // const highlightNode = num => {
 // 	let treeNodes = document.querySelectorAll(".gz-tree .gz-tree-item");
@@ -122,9 +107,6 @@ const findSiblings = tag => {
 	}
 	return siblings;
 };
-
-
-
 </script>
 
 <style lang="scss" scoped>
