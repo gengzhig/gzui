@@ -20,7 +20,7 @@
 		:style="{ paddingLeft: paddingLeft(item) }"
 		@click="e => highLight(item, e)"
 	>
-		<!-- icon -->
+		<!-- icons -->
 		<renderIcon v-if="item.children" :item="item" @iconClick="iconClick"></renderIcon>
 		<!-- label -->
 		<span>{{ item.label }}</span>
