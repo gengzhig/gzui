@@ -6,32 +6,26 @@
  * @Description: file content
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Tree\recusionTree.vue
 -->
+<!---
+  1.禁用，展开/折叠
+	2.点选高亮
+	3.节点禁选
+-->
 <template>
 	<!-- 扁平数据 -->
-	<div v-for="(item, index) in treeData" :key="index" class="tree-row">
-		<span
-			class="indent"
-			:style="{ paddingLeft: item.children ? (item.level - 1) * indent + 'px' : item.level * indent + 'px' }"
-		></span>
-		<img src="./add-icon.png" class="tree-icon" v-if="item.children && !item.open" @click="iconTroggle(item)" alt />
-		<img src="./minus-icon.png" class="tree-icon" v-if="item.children && item.open" @click="iconTroggle(item)" alt />
-		<span :class="[item.children ? 'parent' : 'leaf']">{{ item.label }}</span>
+	<div
+		v-for="(item, index) in treeData"
+		:key="index"
+		:class="['tree-row', item.toggleDisabled && 'toggle-disabled']"
+		:style="{ paddingLeft: paddingLeft(item) }"
+		@click="e => highLight(item, e)"
+	>
+		<!-- icon -->
+		<renderIcon v-if="item.children" :item="item" @iconClick="iconClick"></renderIcon>
+		<!-- label -->
+		<span>{{ item.label }}</span>
 	</div>
 </template>
-<!-- <div ref="treeListRef" class="gz-tree-list" v-for="(item, index) in data" :key="index">
-		<div class="gz-tree-item" :treeId="item.id" @click="e => handleNodeClick(item, e)">
-			<img src="@/assets/icon/arrow.png" v-if="item.children && item.children.length > 0" alt />
-			{{ item.label }}
-		</div>
-		<template v-if="item.children && item.children.length > 0">
-			<recusion-tree
-				:data="item.children"
-				@nodeClick="nodeClick"
-				:hoverBgColor="hoverBgColor"
-				:highlightList="highlightList"
-			></recusion-tree>
-		</template>
-	</div>-->
 <script>
 export default {
 	name: "recusionTree",
@@ -39,6 +33,11 @@ export default {
 </script>
 <script setup>
 import { onMounted, reactive, useSlots, ref, computed } from "vue";
+import renderIcon from "./renderIcon.vue";
+
+import { flatTreeData } from "./utils.js";
+import { highLight } from "./composable/highLight.js";
+
 const props = defineProps({
 	data: {
 		type: Array,
@@ -53,59 +52,21 @@ const props = defineProps({
 		default: () => [],
 	},
 });
-let treeData = ref(null);
-let indent = ref(15);
-const treeListRef = ref(null);
 const emit = defineEmits(["nodeClick"]);
-// 扁平化需要渲染的数据
-const flatTreeData = data => {
-	return data.reduce((acc, item) => (item.open ? acc.concat(item, flatTreeData(item.children)) : acc.concat(item)), []);
-};
 
-treeData.value = flatTreeData(props.data);
+let indent = ref(15);
+let treeData = ref(null);
+const treeListRef = ref(null);
 
-const iconTroggle = item => {
-	item.open = !item.open;
+onMounted(() => {
 	treeData.value = flatTreeData(props.data);
+});
+const paddingLeft = item => {
+	let { level } = item;
+	return item.children ? (level - 1) * indent.value + "px" : level * indent.value + "px";
 };
-// 默认高亮节点
-// const highlightNode = num => {
-// 	let treeNodes = document.querySelectorAll(".gz-tree .gz-tree-item");
-// 	let highTreeNodes = [...treeNodes].filter(t => {
-// 		return num.includes(Number(t.getAttribute("treeid")));
-// 	});
-// 	highTreeNodes.map(h => {
-// 		h.classList.add("active");
-// 	});
-// };
-// setTimeout(() => {
-// 	highlightNode(props.highlightList);
-// });
-
-// const handleNodeClick = (item, e) => {
-// 	let treeNodes = document.querySelectorAll(".gz-tree .gz-tree-item");
-// 	[...treeNodes].map(t => {
-// 		t.classList.remove("active");
-// 	});
-// 	e.target.classList.toggle("expanded");
-// 	e.target.classList.toggle("active");
-// 	item.active = e.target.className.includes("active");
-// 	emit("nodeClick", item);
-// };
-// const nodeClick = val => {
-// 	emit("nodeClick", val);
-// };
-// 查找所有兄弟元素
-const findSiblings = tag => {
-	let parentEl = tag.parentNode;
-	let childs = parentEl.children;
-	let siblings = [];
-	for (let i = 0; i < childs.length; i++) {
-		if (tag != childs[i]) {
-			siblings.push(childs[i]);
-		}
-	}
-	return siblings;
+const iconClick = item => {
+	treeData.value = flatTreeData(props.data);
 };
 </script>
 
@@ -113,44 +74,18 @@ const findSiblings = tag => {
 .tree-row {
 	display: flex;
 	align-items: center;
-	.tree-icon {
-		width: 15px;
-		height: 15px;
-		margin: 0 3px;
-		cursor: pointer;
+	cursor: pointer;
+	&.toggle-disabled {
+		cursor: not-allowed;
+		span {
+			color: #adb0b8;
+		}
 	}
+	&.active {
+		background-color: rgba(24, 160, 88, 0.1);
+	}
+	// &:hover {
+	// 	background-color: rgb(243, 243, 245);
+	// }
 }
-
-// .gz-tree-list {
-// 	padding-left: 20px;
-// }
-// .gz-tree-item {
-// 	display: flex;
-// 	align-items: center;
-// 	height: 26px;
-// 	cursor: pointer;
-// 	img {
-// 		transform: rotate(0deg);
-// 		transition: 0.3s ease-in-out;
-// 	}
-// 	&:hover {
-// 		background: v-bind("hoverBgColor");
-// 		color: #fff;
-// 	}
-// 	& ~ .gz-tree-list {
-// 		display: none;
-// 	}
-// 	&.expanded {
-// 		img {
-// 			transform: rotate(90deg);
-// 			transition: 0.3s ease-in-out;
-// 		}
-// 	}
-// 	&.expanded ~ .gz-tree-list {
-// 		display: block;
-// 	}
-// 	&.active {
-// 		background: #2681ff;
-// 	}
-// }
 </style>

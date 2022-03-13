@@ -50,32 +50,16 @@ const formatterTreeData = (data, level = 1) => {
 		if (d.children) {
 			formatterTreeData(d.children, d.level + 1);
 		}
-	})
+	});
+};
 
-}
-
-formatterTreeData(props.data)
+formatterTreeData(props.data);
 console.log(props.data);
-
-// // 扁平化需要渲染的数据
-// const flatTreeData = (data) => {
-// 	return data.reduce((acc, item) => (
-// 		item.open
-// 			? acc.concat(item, flatTreeData(item.children))
-// 			: acc.concat(item)
-// 	), [])
-// }
-// let treeData = ref(null)
-// treeData = flatTreeData(props.data)
-
-// console.log(treeData);
 
 const slots = useSlots();
 const nodeClick = val => {
 	emit("nodeClick", val);
 };
-
-
 </script>
 
 <style lang="scss"></style>
