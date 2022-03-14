@@ -3,7 +3,9 @@
 // "active"||""||禁用节点"disabled"
 // 高亮
 export const highLight = (item, e) => {
-	let dom = e.target.parentNode;
+	let targetClass = e.target.getAttribute("class");
+	let dom = null;
+	dom = targetClass.includes("tree-row") ? e.target : e.target.parentNode
 	if (dom) {
 		let siblingDom = findSiblings(dom);
 		siblingDom.forEach(node => {

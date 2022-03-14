@@ -23,7 +23,7 @@
 		<!-- icons -->
 		<renderIcon v-if="item.children" :item="item" @iconClick="iconClick"></renderIcon>
 		<!-- label -->
-		<span>{{ item.label }}</span>
+		<span class="tree-node">{{ item.label }}</span>
 	</div>
 </template>
 <script>
@@ -74,6 +74,7 @@ const iconClick = item => {
 .tree-row {
 	display: flex;
 	align-items: center;
+	padding: 3px 0;
 	cursor: pointer;
 	&.toggle-disabled {
 		cursor: not-allowed;
