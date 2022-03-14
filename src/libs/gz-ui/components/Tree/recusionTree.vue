@@ -18,7 +18,8 @@
 		:key="index"
 		:class="['tree-row', item.toggleDisabled && 'toggle-disabled']"
 		:style="{ paddingLeft: paddingLeft(item) }"
-		@click="e => highLight(item, e)"
+		@click="e => 
+		
 	>
 		<!-- icons -->
 		<renderIcon v-if="item.children" :item="item" @iconClick="iconClick"></renderIcon>
