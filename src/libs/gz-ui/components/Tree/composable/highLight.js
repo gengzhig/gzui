@@ -5,7 +5,24 @@
 export const highLight = (item, e) => {
 	let targetClass = e.target.getAttribute("class");
 	let dom = null;
-	dom = targetClass.includes("tree-row") ? e.target : e.target.parentNode
+	switch (targetClass) {
+		// 节点数量
+		case "tree-node-count":
+			dom = e.target.parentNode.parentNode;
+			break;
+		// 行 空白
+		case "tree-node":
+			dom = e.target.parentNode;
+			break;
+		// icon
+		case "tree-icon":
+			return;
+			break;
+		// label
+		default:
+			dom = e.target;
+			break;
+	}
 	if (dom) {
 		let siblingDom = findSiblings(dom);
 		siblingDom.forEach(node => {

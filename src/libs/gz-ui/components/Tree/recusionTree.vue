@@ -71,22 +71,4 @@ const iconClick = item => {
 </script>
 
 <style lang="scss" scoped>
-.tree-row {
-	display: flex;
-	align-items: center;
-	padding: 3px 0;
-	cursor: pointer;
-	&.toggle-disabled {
-		cursor: not-allowed;
-		span {
-			color: #adb0b8;
-		}
-	}
-	&.active {
-		background-color: rgba(24, 160, 88, 0.1);
-	}
-	// &:hover {
-	// 	background-color: rgb(243, 243, 245);
-	// }
-}
 </style>
