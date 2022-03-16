@@ -18,10 +18,17 @@
 			:style="{ paddingLeft: paddingLeft(item) }"
 			@click="e => nodeClick(item, e)"
 		>
-			<!-- icons -->
-			<renderIcon v-if="item.children" :item="item" @iconClick="iconClick"></renderIcon>
+			<!-- 展开图标 设置插槽-->
+			<renderIcon
+				v-if="item.children"
+				:item="item"
+				:singleConfig="singleConfig"
+				@iconClick="iconClick"
+			></renderIcon>
+			<!-- 复选框 -->
+			<renderCheckBox :item="item" @checkboxClick="checkboxClick"></renderCheckBox>
 			<!-- label -->
-			<span class="tree-node" :title="item.label" :style="treeNodeStyle">
+			<span :data-check="item.checked" class="tree-node" :title="item.label" :style="treeNodeStyle">
 				{{ item.label }}
 				<span
 					v-if="singleConfig.number.show"
@@ -42,9 +49,12 @@ export default {
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import renderIcon from "./renderIcon.vue";
+import renderCheckBox from "./renderCheckBox.vue";
 
 import { flatTreeData } from "./utils.js";
+
 import { highLight } from "./composable/highLight.js";
+
 import { color } from "echarts";
 
 const emit = defineEmits(["nodeClick"]);
@@ -157,7 +167,32 @@ const formatterTreeData = (data, level = 1) => {
 
 const iconClick = item => {
 	treeData.value = flatTreeData(props.data);
+	// console.log(treeData.value);
 };
+
+// 复选框点击 - 获取所有勾选数据
+const checkboxClick = item => {
+	let firstCheckData = treeData.value.filter(t => t.checked && !t.toggleDisabled);
+	console.log(firstCheckData);
+	console.log(flatTreeData(firstCheckData););
+	function flatTreeData(data) {
+		let result = []
+		data.map(t => {
+			result.push(t);
+			// if (t.checked && t.children) {
+
+			// 	t.children.map(c => {
+			// 		c.checked = true;
+			// 		if (c.children) {
+			// 			flatTreeData(c.children)
+			// 		}
+			// 	})
+			// }
+		})
+		return result;
+	}
+	// console.log();
+}
 
 // 节点点击
 const nodeClick = (item, e) => {
@@ -197,15 +232,18 @@ defineExpose({
 			white-space: nowrap;
 			text-overflow: ellipsis;
 			overflow: hidden;
+			// display: inline-flex;
+			// align-items: center;
 		}
 		&.toggle-disabled {
 			cursor: not-allowed;
 			span {
-				color: #adb0b8;
+				color: #adb0b8 !important;
 			}
 		}
 		&.active {
-			background-color: rgba(24, 160, 88, 0.1);
+			background-color: v-bind("singleConfig.row.activeColor");
+
 			.tree-node {
 				color: v-bind("treeNodeStyle.activeColor") !important;
 				.tree-node-count {

@@ -45,6 +45,7 @@ const state = reactive({
 			label: "一级 1",
 			open: true,
 			number: 10,
+			checked: true,
 			children: [
 				{
 					id: 2,
@@ -52,6 +53,7 @@ const state = reactive({
 					toggleDisabled: true,
 					number: 10,
 					open: true,
+					checked: true,
 					children: [
 						{
 							id: 3,
@@ -112,8 +114,16 @@ const state = reactive({
 					label: "二级 3-2", number: 20,
 					children: [
 						{
-							id: 13, number: 21,
+							id: 13,
+							number: 21,
 							label: "三级 3-2-1",
+							children: [
+								{
+									id: 22,
+									number: 22,
+									label: "四级 3-2-1-1",
+								},
+							]
 						},
 					],
 				},
@@ -141,7 +151,8 @@ let globalConfig = reactive({
 	height: 300,
 	padding: 3,
 	indent: 15, // 缩进距离
-	bgImage: "https://t7.baidu.com/it/u=3178628428,2853935042&fm=193&f=GIF",
+	// bgImage: "https://t7.baidu.com/it/u=3178628428,2853935042&fm=193&f=GIF",
+	bgImage: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.jj20.com%2Fup%2Fallimg%2F911%2F111G5133543%2F15111G33543-1.jpg&refer=http%3A%2F%2Fpic.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1650000194&t=de4345f59b09b51b6ac1814ea309fd6d",
 	directionTransition: "ltr", // 过渡动画 从左到右
 	expandAll: false,
 	// checkable: true,
@@ -151,12 +162,13 @@ let globalConfig = reactive({
 
 let singleConfig = reactive({
 	row: {
-		activeColor: "" // 行高亮颜色
+		activeColor: "rgba(24, 160, 88, 0.1)", // 行高亮颜色
+		disabledColor: "#adb0b8"
 	},
 	icon: {
 		width: 15,
 		height: 15,
-		horizontalPadding: 3
+		horizontalMargin: 3 // 水平margin
 	},
 	label: {
 		fontSize: 18,

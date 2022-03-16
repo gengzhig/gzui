@@ -3,8 +3,12 @@
 // "active"||""||禁用节点"disabled"
 // 高亮
 export const highLight = (item, e, cb) => {
+	if (item.toggleDisabled) return;
+	if (!e.target) return;
 	let targetClass = e.target.getAttribute("class");
 	let dom = null;
+	// 拦截复选框点击事件
+	if (targetClass.includes("tree-checkbox")) return;
 	switch (targetClass) {
 		// 节点数量
 		case "tree-node-count":
@@ -16,6 +20,7 @@ export const highLight = (item, e, cb) => {
 			break;
 		// icon
 		case "tree-icon":
+			dom = e.target.parentNode;
 			return;
 			break;
 		// label
@@ -29,18 +34,21 @@ export const highLight = (item, e, cb) => {
 			node.classList.remove("active");
 		});
 		let classList = dom.getAttribute("class");
-		if (classList.includes("toggle-disabled")) {
-			return;
-		} else {
-			if (classList.includes("active")) {
-				dom.classList.remove("active");
+		if (classList) {
+			if (classList.includes("toggle-disabled")) {
+				return;
 			} else {
-				dom.classList.add("active");
+				if (classList.includes("active")) {
+					dom.classList.remove("active");
+				} else {
+					dom.classList.add("active");
+				}
 			}
 		}
 	}
-	console.log(item);
-	cb(dom.getAttribute("class").includes("active"));
+	if (!item.children) {
+		cb(dom.getAttribute("class").includes("active"));
+	}
 };
 
 // 查找所有兄弟元素

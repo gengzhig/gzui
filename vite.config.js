@@ -13,7 +13,6 @@
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import { defineConfig } from "vite"; // 代码提示
-// import svgLoader from 'vite-svg-loader' // 引入vite-svg-loader插件
 import path from "path";
 
 export default defineConfig({
@@ -42,7 +41,6 @@ export default defineConfig({
 	plugins: [
 		vue(),
 		vueJsx(),
-		// svgLoader(), // 使用vite-svg-loader插件
 	],
 	test: {
 		environment: "jsdom",
