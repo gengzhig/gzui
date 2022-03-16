@@ -19,22 +19,15 @@
 			@click="e => nodeClick(item, e)"
 		>
 			<!-- 展开图标 设置插槽-->
-			<renderIcon
-				v-if="item.children"
-				:item="item"
-				:singleConfig="singleConfig"
-				@iconClick="iconClick"
-			></renderIcon>
+			<renderIcon v-if="item.children" :item="item" :singleConfig="singleConfig" @iconClick="iconClick"></renderIcon>
 			<!-- 复选框 -->
 			<renderCheckBox :item="item" @checkboxClick="checkboxClick"></renderCheckBox>
 			<!-- label -->
 			<span :data-check="item.checked" class="tree-node" :title="item.label" :style="treeNodeStyle">
 				{{ item.label }}
-				<span
-					v-if="singleConfig.number.show"
-					class="tree-node-count"
-					:style="treeNodeCountStyle"
-				>({{ item.number }})</span>
+				<span v-if="singleConfig.number.show" class="tree-node-count" :style="treeNodeCountStyle"
+					>({{ item.number }})</span
+				>
 			</span>
 		</div>
 	</div>
@@ -61,11 +54,11 @@ const emit = defineEmits(["nodeClick"]);
 let props = defineProps({
 	globalConfig: {
 		type: Object,
-		default: () => { }
+		default: () => {},
 	},
 	singleConfig: {
 		type: Object,
-		default: () => { }
+		default: () => {},
 	},
 	data: {
 		type: Array,
@@ -90,8 +83,8 @@ let gzTreeStyle = computed(() => {
 		width: width + "px",
 		height: height + "px",
 		padding: padding + "px",
-		"background-image": `url(${bgImage})`
-	}
+		"background-image": `url(${bgImage})`,
+	};
 });
 
 // 过渡方向
@@ -99,24 +92,24 @@ let directTransition = computed(() => {
 	let { directionTransition } = props.globalConfig;
 	switch (directionTransition) {
 		case "ltr":
-			return `translateX(100%)`
+			return `translateX(100%)`;
 			break;
 		case "rtl":
-			return `translateX(-100%)`
+			return `translateX(-100%)`;
 			break;
 		default:
 			break;
 	}
-})
+});
 
 let treeNodeStyle = computed(() => {
 	let { color, activeColor, fontSize } = props.singleConfig.label;
 	return {
 		color: color,
 		activeColor: activeColor,
-		fontSize: fontSize + "px"
-	}
-})
+		fontSize: fontSize + "px",
+	};
+});
 
 let treeNodeCountStyle = computed(() => {
 	let { color, activeColor, fontSize, show } = props.singleConfig.number;
@@ -124,13 +117,13 @@ let treeNodeCountStyle = computed(() => {
 		color: color,
 		activeColor: activeColor,
 		fontSize: fontSize + "px",
-		show: show
-	}
-})
+		show: show,
+	};
+});
 
 const paddingLeft = item => {
 	let { level } = item;
-	let { indent } = props.globalConfig
+	let { indent } = props.globalConfig;
 	return item.children ? (level - 1) * indent + "px" : level * indent + "px";
 };
 
@@ -146,11 +139,11 @@ const formatterExpandAll = data => {
 	data.map(d => {
 		if (d.children) {
 			d.open = true;
-			formatterExpandAll(d.children)
+			formatterExpandAll(d.children);
 		}
-	})
+	});
 	return data;
-}
+};
 
 // 格式化数据，添加层级(调整输入错误open的情况)
 const formatterTreeData = (data, level = 1) => {
@@ -159,7 +152,7 @@ const formatterTreeData = (data, level = 1) => {
 		if (d.children) {
 			formatterTreeData(d.children, d.level + 1);
 		} else {
-			delete d.open
+			delete d.open;
 		}
 	});
 	return data;
@@ -173,31 +166,39 @@ const iconClick = item => {
 // 复选框点击 - 获取所有勾选数据
 const checkboxClick = item => {
 	let firstCheckData = treeData.value.filter(t => t.checked && !t.toggleDisabled);
+	let result = [];
 	console.log(firstCheckData);
-	console.log(flatTreeData(firstCheckData););
+	flatTreeData(firstCheckData);
+	console.log(result);
 	function flatTreeData(data) {
-		let result = []
 		data.map(t => {
 			result.push(t);
-			// if (t.checked && t.children) {
-
-			// 	t.children.map(c => {
-			// 		c.checked = true;
-			// 		if (c.children) {
-			// 			flatTreeData(c.children)
-			// 		}
-			// 	})
-			// }
-		})
-		return result;
+			if (!t.toggleDisabled && t.children) {
+				t.children.map(c => {
+					let find = result.find(r => {
+						return r.id == c.id;
+					});
+					if (!find) {
+						result.push(c);
+					}
+				});
+				// t.children.map(c => {
+				// 	c.checked = true;
+				// 	if (c.children) {
+				// 		flatTreeData(c.children);
+				// 	}
+				// });
+			}
+		});
+		// return result;
 	}
 	// console.log();
-}
+};
 
 // 节点点击
 const nodeClick = (item, e) => {
 	// 高亮函数
-	highLight(item, e, (status) => {
+	highLight(item, e, status => {
 		console.log(item, status);
 	});
 	// console.log(item, e.target.getAttribute("class"))
@@ -206,12 +207,12 @@ const nodeClick = (item, e) => {
 
 // 暴露方法
 const toggleTree = () => {
-	gzTreeRef.value.classList.toggle("hide")
-}
+	gzTreeRef.value.classList.toggle("hide");
+};
 
 defineExpose({
-	toggleTree
-})
+	toggleTree,
+});
 </script>
 
 <style lang="scss">
