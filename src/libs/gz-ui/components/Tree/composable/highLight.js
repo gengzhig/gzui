@@ -2,7 +2,7 @@
 // class类名
 // "active"||""||禁用节点"disabled"
 // 高亮
-export const highLight = (item, e) => {
+export const highLight = (item, e, cb) => {
 	let targetClass = e.target.getAttribute("class");
 	let dom = null;
 	switch (targetClass) {
@@ -39,6 +39,8 @@ export const highLight = (item, e) => {
 			}
 		}
 	}
+	console.log(item);
+	cb(dom.getAttribute("class").includes("active"));
 };
 
 // 查找所有兄弟元素

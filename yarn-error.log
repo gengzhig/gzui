@@ -1,20 +1,20 @@
 Arguments: 
-  D:\Program Files\nodejs\node.exe D:\Program Files\nodejs\node_global\node_modules\yarn\bin\yarn.js
+  D:\Program Files\nodejs\node.exe D:\Develop\nodejs\node_global\node_modules\yarn\bin\yarn.js add -D vite-svg-loader
 
 PATH: 
-  C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;D:\bin;D:\Program Files\Java\jdk1.8.0_191\bin;D:\Program Files\Java\jdk1.8.0_191\jre\bin;D:\sdk\platform-tools;D:\sdk\tools;D:\Program Files\nodejs\node_global;D:\Program Files\TortoiseGit\bin;d:\Program Files\Git\cmd;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\python;C:\Program Files\python\Scripts;;D:\BtSoft\panel\script;D:\Program Files\nodejs\;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;d:\Users\耿智\AppData\Local\Programs\Microsoft VS Code\bin;D:\Program Files\nodejs\node_global;;C:\Users\耿智\AppData\Local\Microsoft\WindowsApps;C:\Users\耿智\AppData\Roaming\npm
+  C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;D:\Program Files\TortoiseSVN\bin;D:\Program Files\Git\cmd;D:\Program Files\TortoiseGit\bin;D:\Users\Administrator\AppData\Roaming\nvm;D:\Program Files\nodejs;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;D:\Develop\nodejs\node_global;D:\Users\Administrator\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Administrator\AppData\Roaming\npm;D:\Users\Administrator\AppData\Roaming\nvm;D:\Program Files\nodejs
 
 Yarn version: 
   1.22.10
 
 Node version: 
-  14.17.2
+  16.14.0
 
 Platform: 
   win32 x64
 
 Trace: 
-  Error: ENOENT: no such file or directory, copyfile 'C:\Users\耿智\AppData\Local\Yarn\Cache\v6\npm-ansi-styles-3.2.1-41fbb20243e50b12be0f04b8dedbf07520ce841d-integrity\node_modules\ansi-styles\index.js' -> 'D:\workspace\gz-ui\node_modules\@babel\highlight\node_modules\ansi-styles\index.js'
+  Error: EEXIST: file already exists, mkdir 'D:\workspace\gz-ui\node_modules\vitepress-theme-demoblock\node_modules\@docsearch'
 
 npm manifest: 
   {
@@ -22,19 +22,22 @@ npm manifest:
   	"version": "2.0.3",
   	"description": "耿智开发的一套基于vue3的前端组件库",
   	"scripts": {
-  		"dev": "vite",
+  		"dev:client": "vite",
+  		"dev:server": "npm run start --prefix server",
+  		"dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
   		"build": "vite build",
-  		"test": "jest",
+  		"test": "vitest",
   		"docs:dev": "vitepress dev docs",
   		"docs:build": "vitepress build docs",
   		"docs:serve": "vitepress serve docs"
   	},
   	"dependencies": {
   		"axios": "^0.21.1",
+  		"concurrently": "^7.0.0",
   		"echarts": "^5.1.2",
   		"element3": "^0.0.39",
   		"monaco-editor": "^0.29.1",
-  		"vue": "^3.0.5",
+  		"vue": "^3.1.5",
   		"vue-cropper": "^0.5.7",
   		"vue-router": "^4.0.3",
   		"vuex": "^4.0.0-rc.2"
@@ -47,13 +50,15 @@ npm manifest:
   		"@vitejs/plugin-vue-jsx": "^1.2.0",
   		"@vue/babel-plugin-jsx": "^1.1.1",
   		"@vue/compiler-sfc": "3.1.5",
-  		"@vue/test-utils": "^2.0.0-rc.16",
+  		"@vue/test-utils": "^2.0.0-rc.17",
   		"babel-jest": "^27.3.1",
+  		"c8": "^7.11.0",
   		"jest": "^27.3.1",
   		"sass": "^1.32.5",
   		"vite": "^2.0.0-beta.12",
   		"vitepress": "^0.20.0",
   		"vitepress-theme-demoblock": "^1.2.2",
+  		"vitest": "^0.5.9",
   		"vue-template-compiler": "^2.6.14"
   	}
   }

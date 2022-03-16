@@ -143,7 +143,7 @@ let globalConfig = reactive({
 	indent: 15, // 缩进距离
 	bgImage: "https://t7.baidu.com/it/u=3178628428,2853935042&fm=193&f=GIF",
 	directionTransition: "ltr", // 过渡动画 从左到右
-	expandAll: true,
+	expandAll: false,
 	// checkable: true,
 	// moreHidden: true,
 	// moreHiddenCount: 10

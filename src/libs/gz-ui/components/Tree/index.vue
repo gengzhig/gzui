@@ -162,8 +162,10 @@ const iconClick = item => {
 // 节点点击
 const nodeClick = (item, e) => {
 	// 高亮函数
-	highLight(item, e);
-	console.log(item, e.target.getAttribute("class"))
+	highLight(item, e, (status) => {
+		console.log(item, status);
+	});
+	// console.log(item, e.target.getAttribute("class"))
 	// emit("nodeClick", val);
 };
 
