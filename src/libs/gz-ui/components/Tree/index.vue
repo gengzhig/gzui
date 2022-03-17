@@ -19,15 +19,27 @@
 			@click="e => nodeClick(item, e)"
 		>
 			<!-- 展开图标 设置插槽-->
-			<renderIcon v-if="item.children" :item="item" :singleConfig="singleConfig" @iconClick="iconClick"></renderIcon>
+			<renderIcon
+				v-if="item.children"
+				:item="item"
+				:singleConfig="singleConfig"
+				@iconClick="iconClick"
+			></renderIcon>
 			<!-- 复选框 -->
-			<renderCheckBox :item="item" @checkboxClick="checkboxClick"></renderCheckBox>
+			<renderCheckBox
+				v-if="globalConfig.checkable"
+				:checkableRelation="globalConfig.checkableRelation"
+				:item="item"
+				@checkboxClick="checkboxClick"
+			></renderCheckBox>
 			<!-- label -->
 			<span :data-check="item.checked" class="tree-node" :title="item.label" :style="treeNodeStyle">
 				{{ item.label }}
-				<span v-if="singleConfig.number.show" class="tree-node-count" :style="treeNodeCountStyle"
-					>({{ item.number }})</span
-				>
+				<span
+					v-if="singleConfig.number.show"
+					class="tree-node-count"
+					:style="treeNodeCountStyle"
+				>({{ item.number }})</span>
 			</span>
 		</div>
 	</div>
@@ -47,6 +59,7 @@ import renderCheckBox from "./renderCheckBox.vue";
 import { flatTreeData } from "./utils.js";
 
 import { highLight } from "./composable/highLight.js";
+import { checkClick } from "./composable/checkClick.js";
 
 import { color } from "echarts";
 
@@ -54,11 +67,11 @@ const emit = defineEmits(["nodeClick"]);
 let props = defineProps({
 	globalConfig: {
 		type: Object,
-		default: () => {},
+		default: () => { },
 	},
 	singleConfig: {
 		type: Object,
-		default: () => {},
+		default: () => { },
 	},
 	data: {
 		type: Array,
@@ -160,39 +173,16 @@ const formatterTreeData = (data, level = 1) => {
 
 const iconClick = item => {
 	treeData.value = flatTreeData(props.data);
-	// console.log(treeData.value);
 };
 
-// 复选框点击 - 获取所有勾选数据
-const checkboxClick = item => {
-	let firstCheckData = treeData.value.filter(t => t.checked && !t.toggleDisabled);
-	let result = [];
-	console.log(firstCheckData);
-	flatTreeData(firstCheckData);
-	console.log(result);
-	function flatTreeData(data) {
-		data.map(t => {
-			result.push(t);
-			if (!t.toggleDisabled && t.children) {
-				t.children.map(c => {
-					let find = result.find(r => {
-						return r.id == c.id;
-					});
-					if (!find) {
-						result.push(c);
-					}
-				});
-				// t.children.map(c => {
-				// 	c.checked = true;
-				// 	if (c.children) {
-				// 		flatTreeData(c.children);
-				// 	}
-				// });
-			}
-		});
-		// return result;
-	}
-	// console.log();
+// 复选框点击 
+const checkboxClick = (type, item) => {
+	let { sendCheckDataWay } = props.globalConfig;
+	checkClick(type, item, sendCheckDataWay, treeData.value, allData => {
+		console.log(allData);
+	}, singleData => {
+		console.log(singleData);
+	});
 };
 
 // 节点点击
@@ -244,7 +234,6 @@ defineExpose({
 		}
 		&.active {
 			background-color: v-bind("singleConfig.row.activeColor");
-
 			.tree-node {
 				color: v-bind("treeNodeStyle.activeColor") !important;
 				.tree-node-count {

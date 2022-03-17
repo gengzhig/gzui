@@ -1,49 +1,53 @@
 <template>
 	<div :class="['tree-checkbox', item.checked ? 'checked' : '']" @click="e => toggle(item, e)">
-		<img
-			class="tree-checkbox-img"
-			src="./icon/all.png"
-			v-if="item.checked && !item.toggleDisabled"
-			alt
-		/>
-		<!-- <img src="./icon/half.png" v-if="item.checked" alt /> -->
+		<template v-if="!item.toggleDisabled">
+			<!-- 全选 -->
+			<img class="tree-checkbox-img" src="./icon/all.png" v-if="item.checked === true" alt />
+			<!-- 半选 -->
+			<img src="./icon/half.png" v-if="item.checked === 'half'" alt />
+		</template>
 	</div>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, watch } from "vue";
+
 const props = defineProps({
 	item: {
 		type: Object,
 	},
+	checkableRelation: {
+		type: String,
+		default: "both"
+	}
 });
 
 const emit = defineEmits(["checkboxClick"]);
 
-
 const toggle = (item, e) => {
-	// if (!item.children) return;
+	let { checkableRelation } = props;
 	if (item.toggleDisabled) return;
 	item.checked = !item.checked;
-
-	// console.log(e.target, item);
-	// 有子级
-	if (item.children) {
-		fatherAndSonLinkage(item.children, item.checked);
+	switch (checkableRelation) {
+		case "none":
+			emit("checkboxClick", "none", item);
+			break;
+		// 向下联动
+		case "downward":
+			emit("checkboxClick", "downward", item);
+			break;
+		// 向上联动
+		case "upward":
+			emit("checkboxClick", "upward", item);
+			break;
+		// 上下联动
+		case "both":
+			emit("checkboxClick", "both", item);
+			break;
+		default:
+			break;
 	}
-	emit("checkboxClick", item);
 };
-
-// 父子联动
-const fatherAndSonLinkage = (children, status) => {
-	children.map(c => {
-		c.checked = status;
-		if (c.children) {
-			fatherAndSonLinkage(c.children, status);
-		}
-	})
-	// console.log(item);
-}
 
 // 获取同级兄弟元素
 
@@ -70,6 +74,18 @@ const fatherAndSonLinkage = (children, status) => {
 		height: 100%;
 		background-size: 100% 100%;
 		background-repeat: no-repeat;
+	}
+}
+
+// 禁止折叠 复选框样式
+.tree-row.toggle-disabled {
+	.tree-checkbox {
+		background-color: #adb0b8;
+		outline: 1px solid #adb0b8;
+		&.checked {
+			background-color: #adb0b8;
+			outline: 1px solid #adb0b8;
+		}
 	}
 }
 </style>

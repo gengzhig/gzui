@@ -8,6 +8,7 @@ export const highLight = (item, e, cb) => {
 	let targetClass = e.target.getAttribute("class");
 	let dom = null;
 	// 拦截复选框点击事件
+	if (!targetClass) return;
 	if (targetClass.includes("tree-checkbox")) return;
 	switch (targetClass) {
 		// 节点数量
@@ -54,11 +55,11 @@ export const highLight = (item, e, cb) => {
 // 查找所有兄弟元素
 const findSiblings = tag => {
 	let parentEl = tag.parentNode;
-	let childs = parentEl.children;
+	let children = parentEl.children;
 	let siblings = [];
-	for (let i = 0; i < childs.length; i++) {
-		if (tag != childs[i]) {
-			siblings.push(childs[i]);
+	for (let i = 0; i < children.length; i++) {
+		if (tag != children[i]) {
+			siblings.push(children[i]);
 		}
 	}
 	return siblings;
