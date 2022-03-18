@@ -9,38 +9,46 @@
 <!-- 支持展开收起动作 -->
 <template>
 	<button @click="toggleTree">展开/收起</button>
-	<div class="gz-tree" ref="gzTreeRef" :style="gzTreeStyle">
-		<!-- 扁平数据 -->
+	<div class="gz-tree" ref="gzTreeRef" :style="gzTreeStyle" @scroll="handleScroll">
+		<!-- 滚动层 -->
 		<div
-			v-for="(item, index) in treeData"
-			:key="index"
-			:class="['tree-row', item.toggleDisabled && 'toggle-disabled']"
-			:style="{ paddingLeft: paddingLeft(item) }"
-			@click="e => nodeClick(item, e)"
-		>
-			<!-- 展开图标 设置插槽-->
-			<renderIcon
-				v-if="item.children"
-				:item="item"
-				:singleConfig="singleConfig"
-				@iconClick="iconClick"
-			></renderIcon>
-			<!-- 复选框 -->
-			<renderCheckBox
-				v-if="globalConfig.checkable"
-				:checkableRelation="globalConfig.checkableRelation"
-				:item="item"
-				@checkboxClick="checkboxClick"
-			></renderCheckBox>
-			<!-- label -->
-			<span :data-check="item.checked" class="tree-node" :title="item.label" :style="treeNodeStyle">
-				{{ item.label }}
-				<span
-					v-if="singleConfig.number.show"
-					class="tree-node-count"
-					:style="treeNodeCountStyle"
-				>({{ item.number }})</span>
-			</span>
+			v-if="globalConfig.virtualScroll"
+			class="gz-tree-view-phantom"
+			:style="{ height: phantomHeight }"
+		></div>
+		<!-- 扁平数据 -->
+		<div class="gz-tree-container" ref="realContainer">
+			<div
+				v-for="(item, index) in visibleData"
+				:key="index"
+				:class="['tree-row', item.toggleDisabled && 'toggle-disabled']"
+				:style="treeRowStyle(item)"
+				@click="e => nodeClick(item, e)"
+			>
+				<!-- 展开图标 设置插槽-->
+				<renderIcon
+					v-if="item.children"
+					:item="item"
+					:singleConfig="singleConfig"
+					@iconClick="iconClick"
+				></renderIcon>
+				<!-- 复选框 -->
+				<renderCheckBox
+					v-if="globalConfig.checkable"
+					:checkableRelation="globalConfig.checkableRelation"
+					:item="item"
+					@checkboxClick="checkboxClick"
+				></renderCheckBox>
+				<!-- label -->
+				<span :data-check="item.checked" class="tree-node" :title="item.label" :style="treeNodeStyle">
+					{{ item.label }}
+					<span
+						v-if="singleConfig.number.show"
+						class="tree-node-count"
+						:style="treeNodeCountStyle"
+					>({{ item.number }})</span>
+				</span>
+			</div>
 		</div>
 	</div>
 </template>
@@ -61,7 +69,6 @@ import { flatTreeData } from "./utils.js";
 import { highLight } from "./composable/highLight.js";
 import { checkClick } from "./composable/checkClick.js";
 
-import { color } from "echarts";
 
 const emit = defineEmits(["nodeClick"]);
 let props = defineProps({
@@ -77,20 +84,13 @@ let props = defineProps({
 		type: Array,
 		default: () => [],
 	},
-	hoverBgColor: {
-		type: String,
-		default: "#f5f7fa",
-	},
-	highlightList: {
-		type: Array,
-		default: () => [],
-	},
 });
 
 let gzTreeStyle = computed(() => {
-	let { width, height, padding, bgImage, expandAll } = props.globalConfig;
-	if (expandAll) {
-		treeData.value = formatterExpandAll(props.data);
+	let { width, height, padding, bgImage, expand } = props.globalConfig;
+	if (expand == "all" || expand == "none") {
+		expand = (expand == "all" ? true : false);
+		treeData.value = formatterExpandAll(props.data, expand);
 	}
 	return {
 		width: width + "px",
@@ -98,6 +98,12 @@ let gzTreeStyle = computed(() => {
 		padding: padding + "px",
 		"background-image": `url(${bgImage})`,
 	};
+});
+
+let phantomHeight = computed(() => {
+	let { height } = props.singleConfig.row;
+	let pHeight = treeData.value ? treeData.value.length * height : props.globalConfig.height;
+	return pHeight + "px";
 });
 
 // 过渡方向
@@ -134,25 +140,54 @@ let treeNodeCountStyle = computed(() => {
 	};
 });
 
-const paddingLeft = item => {
+const treeRowStyle = item => {
 	let { level } = item;
 	let { indent } = props.globalConfig;
-	return item.children ? (level - 1) * indent + "px" : level * indent + "px";
+	let { height } = props.singleConfig.row;
+	return {
+		height: height + "px",
+		paddingLeft: item.children ? (level - 1) * indent + "px" : level * indent + "px"
+	}
 };
 
 let treeData = ref(null);
 let gzTreeRef = ref(null);
+let visibleData = ref(null);
+let realContainer = ref(null);
 
 onMounted(() => {
 	treeData.value = flatTreeData(formatterTreeData(props.data));
+	let { virtualScroll } = props.globalConfig;
+	if (!virtualScroll) {
+		visibleData.value = treeData.value;
+	} else {
+		// 虚拟滚动
+		virtualScroll && updateVisibleData();
+	}
 });
 
-// 全部展开
-const formatterExpandAll = data => {
+const updateVisibleData = scrollTop => {
+	scrollTop = scrollTop || 0;
+	const visibleCount = Math.ceil(props.globalConfig.height / props.singleConfig.row.height);
+	const start = Math.floor(scrollTop / props.singleConfig.row.height);
+	const end = start + visibleCount;
+	visibleData.value = treeData.value.slice(start, end);
+	realContainer.value.style.webkitTransform = `translate3d(0, ${start * props.singleConfig.row.height}px, 0)`;
+};
+
+const handleScroll = () => {
+	const scrollTop = gzTreeRef.value.scrollTop;
+	let { virtualScroll } = props.globalConfig
+	virtualScroll && updateVisibleData(scrollTop);
+
+};
+
+// 全部展开/收起
+const formatterExpandAll = (data, expand) => {
 	data.map(d => {
 		if (d.children) {
-			d.open = true;
-			formatterExpandAll(d.children);
+			d.open = expand;
+			formatterExpandAll(d.children, expand);
 		}
 	});
 	return data;
@@ -171,8 +206,10 @@ const formatterTreeData = (data, level = 1) => {
 	return data;
 };
 
+// 图标点击
 const iconClick = item => {
 	treeData.value = flatTreeData(props.data);
+	visibleData.value = treeData.value;
 };
 
 // 复选框点击 
@@ -195,11 +232,12 @@ const nodeClick = (item, e) => {
 	// emit("nodeClick", val);
 };
 
-// 暴露方法
+// 显示隐藏树
 const toggleTree = () => {
 	gzTreeRef.value.classList.toggle("hide");
 };
 
+// 暴露方法
 defineExpose({
 	toggleTree,
 });
@@ -213,6 +251,20 @@ defineExpose({
 	transition: all 0.3s ease-in-out;
 	overflow: auto;
 	box-sizing: border-box;
+	position: relative;
+	&-view-phantom {
+		position: absolute;
+		left: 0;
+		top: 0;
+		right: 0;
+		z-index: -1;
+	}
+	&-container {
+		left: 0;
+		right: 0;
+		top: 0;
+		position: absolute;
+	}
 	.tree-row {
 		display: flex;
 		align-items: center;
@@ -223,8 +275,6 @@ defineExpose({
 			white-space: nowrap;
 			text-overflow: ellipsis;
 			overflow: hidden;
-			// display: inline-flex;
-			// align-items: center;
 		}
 		&.toggle-disabled {
 			cursor: not-allowed;
@@ -241,9 +291,6 @@ defineExpose({
 				}
 			}
 		}
-		// &:hover {
-		// 	background-color: rgb(243, 243, 245);
-		// }
 	}
 	&.hide {
 		opacity: 0;

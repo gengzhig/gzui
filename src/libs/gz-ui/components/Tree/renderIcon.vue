@@ -76,6 +76,7 @@ const iconTroggle = item => {
 <style scoped lang="scss">
 .tree-icon {
 	cursor: pointer;
+	position: relative;
 }
 .toggle-disabled {
 	cursor: not-allowed;

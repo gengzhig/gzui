@@ -14,9 +14,7 @@
 				}"
 				v-for="item in state.visibleData"
 				:key="item"
-			>
-				{{ item.title }}
-			</div>
+			>{{ item.title }}</div>
 		</div>
 	</div>
 </template>

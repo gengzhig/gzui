@@ -18,13 +18,17 @@ export const checkClick = (type, item, sendCheckDataWay, treeData, cbAllData, cb
         default:
             break;
     }
+    let oldData = null, newData = null;
+    let allData = getCheckAllData(treeData).map(t => ({
+        id: t.id,
+        label: t.label,
+    }));
     if (sendCheckDataWay == "all") {
-        let allData = getCheckAllData(treeData).map(t => ({
-            id: t.id,
-            label: t.label,
-        }));
         cbAllData(allData);
-    } else {
+    } else if (sendCheckDataWay == "change") {
+        newData = allData
+        console.log(oldData, newData);
+    } else if (sendCheckDataWay == "single") {
         cbSingleData({
             label: item.label,
             checked: item.checked

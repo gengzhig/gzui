@@ -18,10 +18,8 @@
 				<gz-tree
 					:globalConfig="globalConfig"
 					:singleConfig="singleConfig"
-					:hoverBgColor="state.hoverBgColor"
 					:data="state.data"
 					@nodeClick="nodeClick"
-					:highlightList="state.highlightList"
 				></gz-tree>
 			</div>
 			<base-copy
@@ -38,7 +36,6 @@ import { reactive, toRefs, ref } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 
 const state = reactive({
-	highlightList: [1, 9],
 	data: [
 		{
 			id: 1,
@@ -206,15 +203,16 @@ const state = reactive({
 // 全局配置
 let globalConfig = reactive({
 	width: 500,
-	height: 600,
+	height: 300,
 	padding: 3,
 	indent: 20, // 缩进距离
 	// bgImage: "https://t7.baidu.com/it/u=3178628428,2853935042&fm=193&f=GIF",
 	bgImage: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic.jj20.com%2Fup%2Fallimg%2F911%2F111G5133543%2F15111G33543-1.jpg&refer=http%3A%2F%2Fpic.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1650000194&t=de4345f59b09b51b6ac1814ea309fd6d",
 	directionTransition: "ltr", // 过渡动画 从左到右
-	expandAll: true,
+	expand: "all", // 展开状态 all:全部打开 none:全部收起 默认状态:"default"或""
 	checkable: true,
-	sendCheckDataWay: "all", // 点击复选框发送数据方式 all:全部勾选数据; single:当前点击数据
+	virtualScroll: true, // 虚拟滚动 （试验功能）
+	sendCheckDataWay: "change", // 点击复选框发送数据方式 all:全部勾选数据; single:当前点击数据；change：变化的数据，符合地图图层 
 	checkableRelation: "both" // 父子节点选中关系'upward' | 'downward' | 'both' | 'none' 
 	// moreHidden: true,
 	// moreHiddenCount: 10
@@ -222,6 +220,7 @@ let globalConfig = reactive({
 
 let singleConfig = reactive({
 	row: {
+		height: 30,
 		activeColor: "rgba(24, 160, 88, 0.1)", // 行高亮颜色
 		disabledColor: "#adb0b8"
 	},
