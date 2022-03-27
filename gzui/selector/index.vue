@@ -7,7 +7,7 @@
  * @FilePath: \gi-ui\src\libs\gz-ui\components\Selector\index.vue
 -->
 <template>
-	<div class="select" v-focus>
+	<div class="select">
 		<SelectInput
 			:width="width"
 			:height="height"

@@ -27,7 +27,7 @@ module.exports = {
 			{
 				text: "布局",
 				children: [
-					{ text: "栅格", link: "/components/button/" },
+					{ text: "栅格", link: "/components/grid/" },
 				],
 			},
 			{

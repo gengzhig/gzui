@@ -1,14 +1,16 @@
 <template>
-	<div class="star-container" ref="starContainer" :style="{ height: height + 'px', width: width + 'px' }">
+	<div
+		class="star-container"
+		ref="starContainer"
+		:style="{ height: height + 'px', width: width + 'px' }"
+	>
 		<span
 			:class="['iconfont icon-star', starNum <= num ? 'active' : '']"
-			v-active
 			v-for="starNum in 5"
 			:key="starNum"
 			:style="{ fontSize: size + 'px' }"
 			@click="changeSatr($event)"
-		>
-		</span>
+		></span>
 	</div>
 </template>
 
@@ -63,9 +65,12 @@ export default {
 }
 @font-face {
 	font-family: "iconfont"; /* Project id 2686328 */
-	src: url("//at.alicdn.com/t/font_2686328_skauhedz5wm.woff2?t=1626747534640") format("woff2"),
-		url("//at.alicdn.com/t/font_2686328_skauhedz5wm.woff?t=1626747534640") format("woff"),
-		url("//at.alicdn.com/t/font_2686328_skauhedz5wm.ttf?t=1626747534640") format("truetype");
+	src: url("//at.alicdn.com/t/font_2686328_skauhedz5wm.woff2?t=1626747534640")
+			format("woff2"),
+		url("//at.alicdn.com/t/font_2686328_skauhedz5wm.woff?t=1626747534640")
+			format("woff"),
+		url("//at.alicdn.com/t/font_2686328_skauhedz5wm.ttf?t=1626747534640")
+			format("truetype");
 }
 .iconfont {
 	font-family: "iconfont" !important;
