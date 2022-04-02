@@ -108,6 +108,7 @@ let phantomHeight = computed(() => {
 
 // 过渡方向
 let directTransition = computed(() => {
+
 	let { directionTransition } = props.globalConfig;
 	switch (directionTransition) {
 		case "ltr":

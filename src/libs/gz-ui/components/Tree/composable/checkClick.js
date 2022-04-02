@@ -1,4 +1,5 @@
 // 复选框点击 
+let oldData = null, newData = null, isFirst = true;;
 export const checkClick = (type, item, sendCheckDataWay, treeData, cbAllData, cbSingleData) => {
     switch (type) {
         case "upward":
@@ -18,7 +19,7 @@ export const checkClick = (type, item, sendCheckDataWay, treeData, cbAllData, cb
         default:
             break;
     }
-    let oldData = null, newData = null;
+
     let allData = getCheckAllData(treeData).map(t => ({
         id: t.id,
         label: t.label,
@@ -26,8 +27,37 @@ export const checkClick = (type, item, sendCheckDataWay, treeData, cbAllData, cb
     if (sendCheckDataWay == "all") {
         cbAllData(allData);
     } else if (sendCheckDataWay == "change") {
-        newData = allData
-        console.log(oldData, newData);
+        if (isFirst) {
+            oldData = allData;
+            newData = allData;
+            isFirst = false;
+        } else {
+            newData = allData;
+            // 增加勾选
+            // if (newData.length > oldData.length) {
+            console.log(oldData, newData);
+            let result = getChangeData(oldData, newData);
+            console.log(result);
+            function getChangeData(oldData, newData) {
+                let oLen = oldData.length;
+                let nLen = newData.length;
+                let changeData = new Set();
+                if (oLen > nLen) {
+                    for (let i = 0; i < oLen; i++) {
+                        for (let j = 0; j < nLen; j++) {
+                            if (oldData[i].id !== newData[j].id) {
+                                changeData.add(oldData[i])
+                            }
+                        }
+                    }
+                }
+                return [...changeData]
+            }
+            // } else if (newData.length < oldData.length) {
+            //     // 减少勾选
+            // }
+            // console.log(allData);
+        }
     } else if (sendCheckDataWay == "single") {
         cbSingleData({
             label: item.label,
