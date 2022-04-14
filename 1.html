@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+
+	<body>
+		<button id="subA">子应用</button>
+	</body>
+	<script src="./1.js"></script>
+	<script>
+		// 测试
+		const scheduler = new Scheduler(3);
+		const addTask = (time, order) => {
+			scheduler.add(time, order);
+		};
+		addTask(1000, "1");
+		addTask(1000, "2");
+		addTask(1500, "3");
+		addTask(1000, "4");
+		scheduler.taskStart();
+		/**
+		 * 模拟延时
+		 * @param {number} delay 延迟时间
+		 * @returns {Promise<any>}
+		 */
+		// function sleep(delay) {
+		// 	return new Promise((_, reject) => {
+		// 		setTimeout(() => reject("超时喽"), delay);
+		// 	});
+		// }
+
+		// /**
+		//  * 模拟请求
+		//  */
+		// function request() {
+		// 	// 假设请求需要 1s
+		// 	return new Promise(resolve => {
+		// 		setTimeout(() => resolve("成功喽"), 1000);
+		// 	});
+		// }
+
+		// /**
+		//  * 判断是否超时
+		//  * @param {() => Promise<any>} requestFn 请求函数
+		//  * @param {number} delay 延迟时长
+		//  * @returns {Promise<any>}
+		//  */
+		// function timeoutPromise(requestFn, delay) {
+		// return new Promise((resolve, reject) => {
+		// 	const promises = [requestFn(), sleep(delay)];
+		// 	for (const promise of promises) {
+		// 		// 超时则执行失败，不超时则执行成功
+		// 		promise.then(
+		// 			res => resolve(res),
+		// 			err => reject(err)
+		// 		);
+		// 	}
+		// });
+		// 	return Promise.race([requestFn(), sleep(delay)]);
+		// }
+
+		// timeoutPromise(request, 1500)
+		// 	.then(res => {
+		// 		console.log(res);
+		// 	})
+		// 	.catch(err => {
+		// 		console.log(err);
+		// 	});
+	</script>
+</html>
