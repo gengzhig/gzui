@@ -10,28 +10,15 @@
 	<div class="gzInput">
 		<!-- 基础、密码框 -->
 		<template v-if="inputType != 'textarea'">
-			<input
-				:type="inputType"
-				:disabled="disabled"
-				:placeholder="placeholder"
+			<input :type="inputType" :disabled="disabled" :placeholder="placeholder"
 				:style="{ textAlign: center ? 'center' : 'left', width: typeof width == 'number' ? width + 'px' : width }"
-				v-model="inputContent"
-				@input="input"
-				@keyup="keyup"
-				@focus="focus($event)"
-				@blur="blur($event)"
-			/>
+				v-model="inputContent" @input="input" @keyup="keyup" @focus="focus($event)" @blur="blur($event)" />
 		</template>
 		<!-- 文本域 -->
 		<template v-if="inputType == 'textarea'">
-			<textarea
-				:placeholder="placeholder"
-				:rows="rows"
-				:disabled="disabled"
-				v-model="textAreaValue"
-				@input="textAreaInput"
-				:style="{ textAlign: center ? 'center' : 'left', width: typeof width == 'number' ? width + 'px' : width }"
-			/>
+			<textarea :placeholder="placeholder" :rows="rows" :disabled="disabled" :minlength="minlength"
+				:maxlength="maxlength" :readonly="readonly" v-model="textAreaValue" @input="textAreaInput"
+				:style="{ textAlign: center ? 'center' : 'left', width: typeof width == 'number' ? width + 'px' : width }" />
 		</template>
 	</div>
 </template>
@@ -60,6 +47,18 @@ const props = defineProps({
 	rows: {
 		type: Number,
 		default: 5,
+	},
+	maxlength: {
+		type: Number,
+		default: 200,
+	},
+	minlength: {
+		type: Number,
+		default: 0,
+	},
+	readonly: {
+		type: Boolean,
+		default: false,
 	},
 	disabled: {
 		type: Boolean,
@@ -126,20 +125,24 @@ input {
 	border-radius: 4px;
 	border: 1px solid #dcdfe6;
 	box-sizing: border-box;
+
 	&:disabled {
 		cursor: not-allowed;
 	}
 }
+
 textarea {
 	resize: vertical;
 	width: 100%;
 	padding: 5px 15px;
 	line-height: 1.5;
 	box-sizing: border-box;
+
 	&:disabled {
 		cursor: not-allowed;
 	}
 }
+
 textarea:focus {
 	outline: none !important;
 	border-color: #719ece;

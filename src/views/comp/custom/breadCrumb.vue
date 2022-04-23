@@ -10,7 +10,7 @@
 					<gzBreadCrumbItem :to="{ path: '/' }">首页</gzBreadCrumbItem>
 					<gzBreadCrumbItem :to="{ path: '/1' }">管理</gzBreadCrumbItem>
 					<gzBreadCrumbItem :to="{ path: '/2' }">列表</gzBreadCrumbItem>
-					<gzBreadCrumbItem :to="{ path: '/3' }">详情</gzBreadCrumbItem>
+					<gzBreadCrumbItem>详情</gzBreadCrumbItem>
 				</gzBreadCrumb>
 			</div>
 			<base-copy :code="state.code" :attributeBrief="state.attributesBrief" :eventBrief="state.eventsBrief"></base-copy>
@@ -21,30 +21,29 @@
 import { reactive, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 const state = reactive({
-	code: ``,
+	code: `
+<gzBreadCrumb separator="/">
+	<gzBreadCrumbItem :to="{ path: '/' }">首页</gzBreadCrumbItem>
+	<gzBreadCrumbItem :to="{ path: '/1' }">管理</gzBreadCrumbItem>
+	<gzBreadCrumbItem :to="{ path: '/2' }">列表</gzBreadCrumbItem>
+	<gzBreadCrumbItem>详情</gzBreadCrumbItem>
+</gzBreadCrumb>`,
 	attributesBrief: {
 		tableData: [
 			{
-				param: "width",
-				explain: "显示宽度",
-				type: "Number",
+				param: "separator",
+				explain: "分隔符",
+				type: "String",
 				optional: "---",
-				default: "---",
+				default: "/",
 			},
 			{
-				param: "line",
-				explain: "显示行数",
-				type: "Number",
+				param: "to",
+				explain: "路由跳转目标，同 vue-router 的 to属性",
+				type: "string/object",
 				optional: "---",
 				default: "---",
-			},
-			{
-				param: "triggerClick",
-				explain: "点击展示完整文本",
-				type: "Boolean",
-				optional: "true/false",
-				default: "---",
-			},
+			}
 		],
 	},
 	eventsBrief: {
@@ -57,6 +56,7 @@ const state = reactive({
 .demo {
 	.el-row {
 		margin-bottom: 20px;
+
 		button {
 			margin-right: 10px;
 		}

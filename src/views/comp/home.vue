@@ -10,7 +10,6 @@
 	<div class="home-page">
 		<h1>设计原则</h1>
 		<gz-button type="primary" @click="experience">体验可视化编辑</gz-button>
-		<gz-button type="primary" @click="livePlayer">livePlayer</gz-button>
 		<h3>一致性 Consistency</h3>
 		<p>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</p>
 		<p>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</p>
@@ -35,9 +34,10 @@ const router = useRouter();
 const experience = () => {
 	router.push("/editor");
 };
-const livePlayer = () => {
-	router.push("/livePlayer");
-};
+let arr = [1, 2, 3, 4];
+// 冒泡排序
+// 最大值
+
 </script>
 
 <style lang="scss" scoped>
@@ -46,12 +46,14 @@ const livePlayer = () => {
 		color: #1f2f3d;
 		margin: 20px 0 20px;
 	}
+
 	p {
 		font-size: 14px;
 		color: #5e6d82;
 		line-height: 1.5em;
 		margin: 1em 0;
 	}
+
 	h3 {
 		color: #1f2f3d;
 		font-size: 22px;

@@ -24,12 +24,8 @@
 		<h3>文本域</h3>
 		<div class="meta">
 			<div class="demo">
-				<gz-input
-					v-model:textAreaValue="textAreaValue"
-					inputType="textarea"
-					:rows="rows"
-					:placeholder="placeholder"
-				></gz-input>
+				<gz-input v-model:textAreaValue="textAreaValue" inputType="textarea" width="100%" :rows="rows" :readonly="false"
+					:maxlength="100" :placeholder="placeholder"></gz-input>
 			</div>
 			<base-copy :code="textAreaCode" :attributeBrief="attributesBrief" :eventBrief="eventsBrief"></base-copy>
 		</div>
@@ -41,7 +37,6 @@ import { reactive, ref, toRefs } from "vue";
 import baseCopy from "@/components/baseFunction/Copy.vue";
 const textAreaValue = ref("测试文本域输入");
 const inputValue = ref("");
-const inputValue2 = ref("");
 const rows = ref(5);
 const disabled = ref(true);
 const type = ref("type");
@@ -105,6 +100,27 @@ const attributesBrief = ref({
 			default: "5",
 		},
 		{
+			param: "maxlength",
+			explain: "允许用户输入的最大字符长度 (Unicode) 。未指定表示无限长度。",
+			type: "Number",
+			optional: "---",
+			default: 200,
+		},
+		{
+			param: "minlength",
+			explain: "允许用户输入的最小字符长度 (Unicode) 。未指定表示无限长度。",
+			type: "Number",
+			optional: "---",
+			default: 0,
+		},
+		{
+			param: "readonly",
+			explain: "文本域是否只读",
+			type: "Boolean",
+			optional: "---",
+			default: false,
+		},
+		{
 			param: "placeholder",
 			explain: "输入框占位文本",
 			type: "String",
@@ -118,4 +134,5 @@ const eventsBrief = ref({
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+</style>
